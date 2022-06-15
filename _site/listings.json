@@ -2,6 +2,8 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/posts/rva-pets/index.html",
+      "/posts/riddler-express-march-20-2020/index.html",
       "/posts/scrantonicity-part-1/index.html"
     ]
   }

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.449">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2020-04-23">
+<meta name="description" content="Analyzing pet ownership in RVA">
+
+<title>Eric Ekholm - RVA Pets</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+<script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Eric Ekholm</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About Me</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html">Blog</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">RVA Pets</h1>
+                  <div>
+        <div class="description">
+          <p>Analyzing pet ownership in RVA</p>
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">RVA</div>
+                <div class="quarto-category">Geography</div>
+                <div class="quarto-category">EDA</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">April 23, 2020</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>I recently stumbled across the <a href="https://data.richmondgov.com/">RVA Open Data Portal</a> and, when browsing through the datasets available, noticed they had one on pet licenses issued by the city. Since I’m a huge dog fan &amp; love our pitty Nala more than most people in my life, I figured I’d splash around in the data a little bit to see what I can learn about pets in RVA. You can get the data <a href="https://data.richmondgov.com/Unique-and-Inclusive-Neighborhoods/Pet-Licenses/fgv9-bhf4">here</a>, although note that the most recent data is from April 2019.</p>
+<p>First, let’s load our packages and set our plot themes/colors</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(osmdata)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(hrbrthemes)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(wesanderson)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidytext)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggtext)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_ipsum</span>())</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>pal <span class="ot">&lt;-</span> <span class="fu">wes_palette</span>(<span class="st">"Zissou1"</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>colors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Dog"</span> <span class="ot">=</span> pal[<span class="dv">1</span>], <span class="st">"Cat"</span> <span class="ot">=</span> pal[<span class="dv">3</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next, we’ll read in the data and clean it up a little bit. In this dataset, each row represents a licensed pet in Richmond, Virginia. The dataset includes animal type (dog, cat, puppy, kitten) and the address of the owners. Whoever set up the data was also nice enough to include longitude and latitude for each address in the dataset, which means I don’t need to go out and get it. For our purposes here, I’m going to lump puppies in with dogs and kittens in with cats. I’m also going to extract the “location” column into a few separate columns. Let’s take a look at the first few entries.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>pets_raw <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(here<span class="sc">::</span><span class="fu">here</span>(<span class="st">"data/rva_pets_2019.csv"</span>))</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>pets_clean <span class="ot">&lt;-</span> pets_raw <span class="sc">%&gt;%</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract</span>(<span class="at">col =</span> location_1,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>          <span class="at">into =</span> <span class="fu">c</span>(<span class="st">"address"</span>, <span class="st">"zip"</span>, <span class="st">"lat"</span>, <span class="st">"long"</span>),</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">regex =</span> <span class="st">"(.*)</span><span class="sc">\n</span><span class="st">.*(</span><span class="sc">\\</span><span class="st">d{5})</span><span class="sc">\n\\</span><span class="st">((.*), (.*)</span><span class="sc">\\</span><span class="st">)"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">animal_type =</span> <span class="fu">str_replace_all</span>(animal_type, <span class="fu">c</span>(<span class="st">"Puppy"</span> <span class="ot">=</span> <span class="st">"Dog"</span>, <span class="st">"Kitten"</span> <span class="ot">=</span> <span class="st">"Cat"</span>)))</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(pets_clean) <span class="sc">%&gt;%</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">format =</span> <span class="st">"html"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options =</span> <span class="fu">c</span>(<span class="st">"striped"</span>, <span class="st">"hover"</span>, <span class="st">"condensed"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> animal_type </th>
+   <th style="text-align:left;"> animal_name </th>
+   <th style="text-align:left;"> address </th>
+   <th style="text-align:left;"> zip </th>
+   <th style="text-align:left;"> lat </th>
+   <th style="text-align:left;"> long </th>
+   <th style="text-align:right;"> load_date </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Cat </td>
+   <td style="text-align:left;"> Molly </td>
+   <td style="text-align:left;"> 301 Virginia Street APT 1008 </td>
+   <td style="text-align:left;"> 23219 </td>
+   <td style="text-align:left;"> 37.53294 </td>
+   <td style="text-align:left;"> -77.433825 </td>
+   <td style="text-align:right;"> 20180627 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Dog </td>
+   <td style="text-align:left;"> Sam </td>
+   <td style="text-align:left;"> 1407 Wilmington Avenue </td>
+   <td style="text-align:left;"> 23227 </td>
+   <td style="text-align:left;"> 37.58294 </td>
+   <td style="text-align:left;"> -77.455213 </td>
+   <td style="text-align:right;"> 20180627 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Cat </td>
+   <td style="text-align:left;"> Taffy </td>
+   <td style="text-align:left;"> 114 N Harvie Street </td>
+   <td style="text-align:left;"> 23220 </td>
+   <td style="text-align:left;"> 37.548414 </td>
+   <td style="text-align:left;"> -77.45745 </td>
+   <td style="text-align:right;"> 20180627 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Dog </td>
+   <td style="text-align:left;"> Jackson </td>
+   <td style="text-align:left;"> 4804 Riverside Drive </td>
+   <td style="text-align:left;"> 23225 </td>
+   <td style="text-align:left;"> 37.527326 </td>
+   <td style="text-align:left;"> -77.483249 </td>
+   <td style="text-align:right;"> 20180627 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Dog </td>
+   <td style="text-align:left;"> Cirrus </td>
+   <td style="text-align:left;"> 3107 E Marshall Street </td>
+   <td style="text-align:left;"> 23223 </td>
+   <td style="text-align:left;"> 37.52904 </td>
+   <td style="text-align:left;"> -77.412272 </td>
+   <td style="text-align:right;"> 20180627 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Dog </td>
+   <td style="text-align:left;"> Henri </td>
+   <td style="text-align:left;"> 1900 Maple Shade Lane </td>
+   <td style="text-align:left;"> 23227 </td>
+   <td style="text-align:left;"> 37.581979 </td>
+   <td style="text-align:left;"> -77.466207 </td>
+   <td style="text-align:right;"> 20180627 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<p>Ok, now that our data is set up, let’s see if there are more cats or dogs in the city.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>pets_clean <span class="sc">%&gt;%</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(animal_type) <span class="sc">%&gt;%</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> n, <span class="at">y =</span> animal_type)) <span class="sc">+</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">color =</span> pal[<span class="dv">1</span>], <span class="at">fill =</span> pal[<span class="dv">1</span>]) <span class="sc">+</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">x =</span> n<span class="dv">-50</span>, <span class="at">label =</span> n), <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>) <span class="sc">+</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Number of Cats vs Dogs"</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/counts-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Alright, so, lots more dogs. Like almost 4 to 1 dogs to cats. Which is something I can get behind. I’m a firm believer in the fact that dogs are wayyy better than cats.</p>
+<p>I’m also interested in the most common names for pets in RVA.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>pets_clean <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(animal_type) <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(animal_name, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">15</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> n, <span class="at">y =</span> <span class="fu">reorder_within</span>(animal_name, n, animal_type))) <span class="sc">+</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_col</span>(<span class="at">color =</span> pal[<span class="dv">1</span>], <span class="at">fill =</span> pal[<span class="dv">1</span>]) <span class="sc">+</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">if_else</span>(animal_type <span class="sc">==</span> <span class="st">"Cat"</span>, n <span class="sc">-</span> .<span class="dv">25</span>, n <span class="sc">-</span> <span class="dv">1</span>), <span class="at">label =</span> n), <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>) <span class="sc">+</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(<span class="sc">~</span>animal_type, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_reordered</span>() <span class="sc">+</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="st">"Top Pet Names"</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="cn">NULL</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/names-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>These seem pretty standard to me, and unfortunately, nothing is screaming “RVA” here. No “Bagels,” no “Gwars,” etc.</p>
+<p>I also pulled out zip codes into their own column earlier, so we can take a look at which zip codes have the most dogs and cats.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>pets_clean <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(zip)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(zip) <span class="sc">%&gt;%</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(animal_type, <span class="at">sort =</span> <span class="cn">TRUE</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(animal_type) <span class="sc">%&gt;%</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">top_n</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> n, <span class="at">y =</span> <span class="fu">reorder_within</span>(zip, n, animal_type))) <span class="sc">+</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_col</span>(<span class="at">color =</span> pal[<span class="dv">1</span>], <span class="at">fill =</span> pal[<span class="dv">1</span>]) <span class="sc">+</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">if_else</span>(animal_type <span class="sc">==</span> <span class="st">"Cat"</span>, n <span class="sc">-</span> <span class="dv">1</span>, n <span class="sc">-</span> <span class="dv">4</span>), <span class="at">label =</span> n), <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>) <span class="sc">+</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(<span class="sc">~</span>animal_type, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_reordered</span>() <span class="sc">+</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="st">"Number of Pets by Zipcode"</span>,</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="cn">NULL</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/by%20zip-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Alright, so most of the pets here live in Forest Hill/generally south of the river in 23225, and another big chunk live in 23220, which covers a few neighborhoods &amp; includes The Fan, which is probably where most of the pet action is.</p>
+<p>And finally, since we have the latitude and longitude, I can put together a streetmap of the city showing where all of these little critters live. To do this, I’m going to grab some shape files through the OpenStreetMaps API and plot the pet datapoints on top of those.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>pets_map <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(pets_clean <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(long)), <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"long"</span>, <span class="st">"lat"</span>),</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">crs =</span> <span class="dv">4326</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>get_rva_maps <span class="ot">&lt;-</span> <span class="cf">function</span>(key, value) {</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">getbb</span>(<span class="st">"Richmond Virginia United States"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">opq</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_osm_feature</span>(<span class="at">key =</span> key,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>                    <span class="at">value =</span> value) <span class="sc">%&gt;%</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">osmdata_sf</span>()</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>rva_streets <span class="ot">&lt;-</span> <span class="fu">get_rva_maps</span>(<span class="at">key =</span> <span class="st">"highway"</span>, <span class="at">value =</span> <span class="fu">c</span>(<span class="st">"motorway"</span>, <span class="st">"primary"</span>, <span class="st">"secondary"</span>, <span class="st">"tertiary"</span>))</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>small_streets <span class="ot">&lt;-</span> <span class="fu">get_rva_maps</span>(<span class="at">key =</span> <span class="st">"highway"</span>, <span class="at">value =</span> <span class="fu">c</span>(<span class="st">"residential"</span>, <span class="st">"living_street"</span>,</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>                                                         <span class="st">"unclassified"</span>,</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>                                                         <span class="st">"service"</span>, <span class="st">"footway"</span>, <span class="st">"cycleway"</span>))</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>river <span class="ot">&lt;-</span> <span class="fu">get_rva_maps</span>(<span class="at">key =</span> <span class="st">"waterway"</span>, <span class="at">value =</span> <span class="st">"river"</span>)</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="fu">c</span>(<span class="st">"big_streets"</span>, <span class="st">"small_streets"</span>, <span class="st">"river"</span>),</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">lines =</span> <span class="fu">map</span>(</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">.x =</span> <span class="fu">lst</span>(rva_streets, small_streets, river),</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">.f =</span> <span class="sc">~</span><span class="fu">pluck</span>(., <span class="st">"osm_lines"</span>)</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>coords <span class="ot">&lt;-</span> <span class="fu">pluck</span>(rva_streets, <span class="st">"bbox"</span>)</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>annotations <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>  <span class="at">label =</span> <span class="fu">c</span>(<span class="st">"&lt;span style='color:#FFFFFF'&gt;&lt;span style='color:#EBCC2A'&gt;**Cats**&lt;/span&gt; and &lt;span style='color:#3B9AB2'&gt;**Dogs**&lt;/span&gt; in RVA&lt;/span&gt;"</span>),</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">77.555</span>),</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">c</span>(<span class="fl">37.605</span>),</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>  <span class="at">hjust =</span> <span class="fu">c</span>(<span class="dv">0</span>)</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>rva_pets <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> df<span class="sc">$</span>lines[[<span class="dv">1</span>]],</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>          <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>          <span class="at">size =</span> .<span class="dv">3</span>,</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>          <span class="at">alpha =</span> .<span class="dv">8</span>, </span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>          <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> pets_map, <span class="fu">aes</span>(<span class="at">color =</span> animal_type), <span class="at">alpha =</span> .<span class="dv">6</span>, <span class="at">size =</span> .<span class="dv">75</span>) <span class="sc">+</span></span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_richtext</span>(<span class="at">data =</span> annotations, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">label =</span> label, <span class="at">hjust =</span> hjust), <span class="at">fill =</span> <span class="cn">NA</span>, <span class="at">label.color =</span> <span class="cn">NA</span>, </span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>                <span class="at">label.padding =</span> grid<span class="sc">::</span><span class="fu">unit</span>(<span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">4</span>), <span class="st">"pt"</span>), <span class="at">size =</span> <span class="dv">11</span>) <span class="sc">+</span> </span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(</span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">77.55</span>, <span class="sc">-</span><span class="fl">77.4</span>),</span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">ylim =</span> <span class="fu">c</span>(<span class="fl">37.5</span>, <span class="fl">37.61</span>),</span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">expand =</span> <span class="cn">TRUE</span></span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(</span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> colors</span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"grey10"</span>),</span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"grey10"</span>),</span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>    <span class="at">text =</span> <span class="fu">element_markdown</span>()</span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="fig-anonymous-1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><a href="https://github.com/ekholme/viz_portfolio/blob/master/RVA-VA%20Data/rva_pets_map.png?raw=true"><img src="https://github.com/ekholme/viz_portfolio/blob/master/RVA-VA%20Data/rva_pets_map.png?raw=true" class="img-fluid figure-img" style="width:100.0%"></a></p>
+</figure>
+</div>
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">https://creativecommons.org/licenses/by-nc/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{ekholm2020,
+  author = {Eric Ekholm},
+  title = {RVA {Pets}},
+  date = {2020-04-23},
+  url = {https://www.ericekholm.com/posts/rva-pets},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-ekholm2020" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
+Eric Ekholm. 2020. <span>“RVA Pets.”</span> April 23, 2020. <a href="https://www.ericekholm.com/posts/rva-pets">https://www.ericekholm.com/posts/rva-pets</a>.
+</div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

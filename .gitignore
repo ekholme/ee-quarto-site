@@ -1,1 +1,4 @@
 /.quarto/
+*.csv
+*.xlsx
+*.xls
