@@ -6,3 +6,26 @@ freeze: true
 
 # Enable banner style title blocks
 title-block-banner: true
+
+#license stuff
+license: "CC BY-NC"
+
+#table of contents
+toc: true
+toc-title: Table of Contents
+toc-location: left
+toc-depth: 2
+
+#knitr options
+execute:
+  echo: true
+  message: false
+  warning: false
+
+#default author
+author:
+  - name: Eric Ekholm
+  - url: https://ericekholm.com
+
+#citation stuff
+citation: true

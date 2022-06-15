@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>Eric Ekholm</title>
+<link>https://www.ericekholm.com/blog.html</link>
+<atom:link href="https://www.ericekholm.com/blog.xml" rel="self" type="application/rss+xml"/>
+<description></description>
+<generator>quarto-0.9.449</generator>
+<lastBuildDate>Sat, 14 Mar 2020 04:00:00 GMT</lastBuildDate>
+<item>
+  <title>Scratonicity - Part 1</title>
+  <link>https://www.ericekholm.com/posts/scrantonicity-part-1/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">https://creativecommons.org/licenses/by-nc/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{ekholm2020,
+  author = {Eric Ekholm},
+  title = {Scratonicity - {Part} 1},
+  date = {2020-03-14},
+  url = {https://www.ericekholm.com/posts/scrantonicity-part-1},
+  langid = {en}
+}
+</code></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-ekholm2020" class="csl-entry quarto-appendix-citeas">
+Eric Ekholm. 2020. <span>“Scratonicity - Part 1.”</span> March 14, 2020.
+<a href="https://www.ericekholm.com/posts/scrantonicity-part-1">https://www.ericekholm.com/posts/scrantonicity-part-1</a>.
+</div></div></section></div> ]]></description>
+  <category>The Office</category>
+  <category>EDA</category>
+  <category>Text Analysis</category>
+  <guid>https://www.ericekholm.com/posts/scrantonicity-part-1/index.html</guid>
+  <pubDate>Sat, 14 Mar 2020 04:00:00 GMT</pubDate>
+</item>
+</channel>
+</rss>
