@@ -1,14 +1,19 @@
 ---
-title: "ee-quarto-site"
-listing:
-  contents: posts
-  sort: "date desc"
-  type: default
-  categories: true
-  sort-ui: false
-  filter-ui: false
-page-layout: full
-title-block-banner: true
+title: "Eric Ekholm"
+image: img/prof_pic.jpg
+about: 
+  template: jolla
+  links:
+    - icon: twitter
+      text: Twitter
+      href: https://twitter.com/ekholm_e
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/eric-ekholm-8a481022/
+    - icon: github
+      text: Github
+      href: https://github.com/ekholme/
+
 ---
 
-
+I am an educator, researcher, data scientist, and writer. I am currently an Education Data Specialist for Chesterfield County Public Schools, where I use data to help guide decisions and improve students' educational experiences.

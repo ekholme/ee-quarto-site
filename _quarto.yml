@@ -2,17 +2,18 @@ project:
   type: website
 
 website:
-  title: "ee-quarto-site"
+  title: "Eric Ekholm"
   navbar:
     right:
       - about.qmd
+      - blog.qmd
       - icon: github
         href: https://github.com/
       - icon: twitter
         href: https://twitter.com
 format:
   html:
-    theme: cosmo
+    theme: litera
     css: styles.css
 
 
