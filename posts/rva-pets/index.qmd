@@ -3,7 +3,7 @@ title: "RVA Pets"
 description: |
   Analyzing pet ownership in RVA
 date: "2020-04-23"
-categories: [RVA, Geography, EDA]
+categories: [R, RVA, Geography, EDA]
 ---
 
 

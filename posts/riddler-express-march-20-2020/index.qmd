@@ -3,7 +3,7 @@ title: "Riddler Express - March 20, 2020"
 description: |
   Solving a math puzzle and exploring the accumulate() function
 date: "2020-03-31"
-categories: [Puzzles, Coding Challenge]
+categories: [R, Puzzles, Coding Challenge]
 ---
 
 

@@ -3,7 +3,7 @@ title: "Scratonicity - Part 1"
 description: |
   An initial exploration of dialogue from The Office
 date: "2020-03-14"
-categories: [The Office, EDA, Text Analysis]
+categories: [R, The Office, EDA, Text Analysis]
 ---
 
 
