@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.449">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2020-12-18">
+<meta name="description" content="Wrangling JSON data from an API">
+
+<title>Eric Ekholm - Dungeons and Dragons - Part 1</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Eric Ekholm</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About Me</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html">Blog</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Dungeons and Dragons - Part 1</h1>
+                  <div>
+        <div class="description">
+          <p>Wrangling JSON data from an API</p>
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">R</div>
+                <div class="quarto-category">Tutorial</div>
+                <div class="quarto-category">API</div>
+                <div class="quarto-category">D&amp;D</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">December 18, 2020</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of Contents</h2>
+   
+  <ul>
+  <li><a href="#setup" id="toc-setup" class="nav-link active" data-scroll-target="#setup">Setup</a></li>
+  <li><a href="#fetching-data" id="toc-fetching-data" class="nav-link" data-scroll-target="#fetching-data">Fetching Data</a></li>
+  <li><a href="#restructuring-data" id="toc-restructuring-data" class="nav-link" data-scroll-target="#restructuring-data">Restructuring Data</a></li>
+  </ul>
+</nav>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>I’ve been playing Dungeons and Dragons 5th edition (D&amp;D 5e) for a few years now and really enjoy it, although COVID has really hindered my opportunity to play. That said, I recently discovered a D&amp;D 5e <a href="https://www.dnd5eapi.co/">API</a>, so I figured I’d do a series of blog posts analyzing D&amp;D data from this API. In this first post, I wanted to do a quick walkthrough of how to get data from this API using R and wrangling it into a structure that’s more or less conducive to later analysis. In later posts, I’ll explore the data and then get into some modeling.</p>
+<p>As something of an aside – the API has data for character classes, spells, races, monsters, etc. I’m mostly going to focus on the monsters data, but might use some of the other data later on.</p>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">Setup</h2>
+<p>First, I’ll load the packages I need to get and wrangle the data, which is really just <code>{tidyverse}</code>, <code>{jsonlite}</code> and good old base R. I’m also adding in the base URL of the API.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jsonlite)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>dnd_base <span class="ot">&lt;-</span> <span class="st">"https://www.dnd5eapi.co/api/monsters/"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="fetching-data" class="level2">
+<h2 class="anchored" data-anchor-id="fetching-data">Fetching Data</h2>
+<p>So, the first step here is to actually get the data from the API. Let’s walk through the process here, illustrating this with a single monster (the aboleth) and then applying the process to all of the monsters.</p>
+<p>We’ll use the <code>fromJSON()</code> function to get JSON data from the API. We’ll see that this gives us a pretty gnarly nested list.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>example <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(<span class="fu">paste0</span>(dnd_base, <span class="st">"aboleth"</span>))</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(example)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>List of 28
+ $ index                 : chr "aboleth"
+ $ name                  : chr "Aboleth"
+ $ size                  : chr "Large"
+ $ type                  : chr "aberration"
+ $ alignment             : chr "lawful evil"
+ $ armor_class           : int 17
+ $ hit_points            : int 135
+ $ hit_dice              : chr "18d10"
+ $ speed                 :List of 2
+  ..$ walk: chr "10 ft."
+  ..$ swim: chr "40 ft."
+ $ strength              : int 21
+ $ dexterity             : int 9
+ $ constitution          : int 15
+ $ intelligence          : int 18
+ $ wisdom                : int 15
+ $ charisma              : int 18
+ $ proficiencies         :'data.frame': 5 obs. of  2 variables:
+  ..$ value      : int [1:5] 6 8 6 12 10
+  ..$ proficiency:'data.frame': 5 obs. of  3 variables:
+  .. ..$ index: chr [1:5] "saving-throw-con" "saving-throw-int" "saving-throw-wis" "skill-history" ...
+  .. ..$ name : chr [1:5] "Saving Throw: CON" "Saving Throw: INT" "Saving Throw: WIS" "Skill: History" ...
+  .. ..$ url  : chr [1:5] "/api/proficiencies/saving-throw-con" "/api/proficiencies/saving-throw-int" "/api/proficiencies/saving-throw-wis" "/api/proficiencies/skill-history" ...
+ $ damage_vulnerabilities: list()
+ $ damage_resistances    : list()
+ $ damage_immunities     : list()
+ $ condition_immunities  : list()
+ $ senses                :List of 2
+  ..$ darkvision        : chr "120 ft."
+  ..$ passive_perception: int 20
+ $ languages             : chr "Deep Speech, telepathy 120 ft."
+ $ challenge_rating      : int 10
+ $ xp                    : int 5900
+ $ special_abilities     :'data.frame': 3 obs. of  3 variables:
+  ..$ name: chr [1:3] "Amphibious" "Mucous Cloud" "Probing Telepathy"
+  ..$ desc: chr [1:3] "The aboleth can breathe air and water." "While underwater, the aboleth is surrounded by transformative mucus. A creature that touches the aboleth or tha"| __truncated__ "If a creature communicates telepathically with the aboleth, the aboleth learns the creature's greatest desires "| __truncated__
+  ..$ dc  :'data.frame':    3 obs. of  3 variables:
+  .. ..$ dc_type     :'data.frame': 3 obs. of  3 variables:
+  .. ..$ dc_value    : int [1:3] NA 14 NA
+  .. ..$ success_type: chr [1:3] NA "none" NA
+ $ actions               :'data.frame': 4 obs. of  7 variables:
+  ..$ name        : chr [1:4] "Multiattack" "Tentacle" "Tail" "Enslave"
+  ..$ desc        : chr [1:4] "The aboleth makes three tentacle attacks." "Melee Weapon Attack: +9 to hit, reach 10 ft., one target. Hit: 12 (2d6 + 5) bludgeoning damage. If the target i"| __truncated__ "Melee Weapon Attack: +9 to hit, reach 10 ft. one target. Hit: 15 (3d6 + 5) bludgeoning damage." "The aboleth targets one creature it can see within 30 ft. of it. The target must succeed on a DC 14 Wisdom savi"| __truncated__
+  ..$ options     :'data.frame':    4 obs. of  2 variables:
+  .. ..$ choose: int [1:4] 1 NA NA NA
+  .. ..$ from  :List of 4
+  ..$ attack_bonus: int [1:4] NA 9 9 NA
+  ..$ dc          :'data.frame':    4 obs. of  3 variables:
+  .. ..$ dc_type     :'data.frame': 4 obs. of  3 variables:
+  .. ..$ dc_value    : int [1:4] NA 14 NA 14
+  .. ..$ success_type: chr [1:4] NA "none" NA "none"
+  ..$ damage      :List of 4
+  .. ..$ : NULL
+  .. ..$ :'data.frame': 2 obs. of  2 variables:
+  .. ..$ :'data.frame': 1 obs. of  2 variables:
+  .. ..$ : NULL
+  ..$ usage       :'data.frame':    4 obs. of  2 variables:
+  .. ..$ type : chr [1:4] NA NA NA "per day"
+  .. ..$ times: int [1:4] NA NA NA 3
+ $ legendary_actions     :'data.frame': 3 obs. of  4 variables:
+  ..$ name        : chr [1:3] "Detect" "Tail Swipe" "Psychic Drain (Costs 2 Actions)"
+  ..$ desc        : chr [1:3] "The aboleth makes a Wisdom (Perception) check." "The aboleth makes one tail attack." "One creature charmed by the aboleth takes 10 (3d6) psychic damage, and the aboleth regains hit points equal to "| __truncated__
+  ..$ attack_bonus: int [1:3] NA NA 0
+  ..$ damage      :List of 3
+  .. ..$ : NULL
+  .. ..$ : NULL
+  .. ..$ :'data.frame': 1 obs. of  2 variables:
+ $ url                   : chr "/api/monsters/aboleth"</code></pre>
+</div>
+</div>
+<p>To clean this list up a bit, we’ll use the <code>enframe()</code> function (from <code>{tibble}</code>) to convert the lists into a dataframe and then the <code>pivot_wider()</code> function to reshape this into a single-row tibble.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>example <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">enframe</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> name,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_from =</span> value) <span class="sc">%&gt;%</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 1
+Columns: 28
+$ index                  &lt;list&gt; "aboleth"
+$ name                   &lt;list&gt; "Aboleth"
+$ size                   &lt;list&gt; "Large"
+$ type                   &lt;list&gt; "aberration"
+$ alignment              &lt;list&gt; "lawful evil"
+$ armor_class            &lt;list&gt; 17
+$ hit_points             &lt;list&gt; 135
+$ hit_dice               &lt;list&gt; "18d10"
+$ speed                  &lt;list&gt; ["10 ft.", "40 ft."]
+$ strength               &lt;list&gt; 21
+$ dexterity              &lt;list&gt; 9
+$ constitution           &lt;list&gt; 15
+$ intelligence           &lt;list&gt; 18
+$ wisdom                 &lt;list&gt; 15
+$ charisma               &lt;list&gt; 18
+$ proficiencies          &lt;list&gt; [&lt;data.frame[5 x 2]&gt;]
+$ damage_vulnerabilities &lt;list&gt; []
+$ damage_resistances     &lt;list&gt; []
+$ damage_immunities      &lt;list&gt; []
+$ condition_immunities   &lt;list&gt; []
+$ senses                 &lt;list&gt; ["120 ft.", 20]
+$ languages              &lt;list&gt; "Deep Speech, telepathy 120 ft."
+$ challenge_rating       &lt;list&gt; 10
+$ xp                     &lt;list&gt; 5900
+$ special_abilities      &lt;list&gt; [&lt;data.frame[3 x 3]&gt;]
+$ actions                &lt;list&gt; [&lt;data.frame[4 x 7]&gt;]
+$ legendary_actions      &lt;list&gt; [&lt;data.frame[3 x 4]&gt;]
+$ url                    &lt;list&gt; "/api/monsters/aboleth"</code></pre>
+</div>
+</div>
+<p>Great. This is more or less the structure we want. You might notice that all of our columns are lists rather than atomic vectors – we’ll deal with that later once we get all of the data.</p>
+<p>Now that we know the basic process, we’ll just apply this to all of the monsters with data available through the API. To do that, I’ll write a function that executes the previous steps, get a list of all of the monsters available in the API, use <code>map()</code> to iterate the “fetch” function for each monster, and then bind all of the resulting rows together.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fetch_monster <span class="ot">&lt;-</span> <span class="cf">function</span>(monster) {</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  dnd_url <span class="ot">&lt;-</span> <span class="st">"https://www.dnd5eapi.co/api/monsters/"</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  ret <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(<span class="fu">paste0</span>(dnd_url, monster)) <span class="sc">%&gt;%</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">enframe</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> name,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">values_from =</span> value)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(ret)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">#this gets all of the monster indices to plug into the fetch function</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>mons <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(dnd_base)<span class="sc">$</span>results <span class="sc">%&gt;%</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(index)</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>monster_lists <span class="ot">&lt;-</span> <span class="fu">map</span>(mons, fetch_monster)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>mons_bind <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(monster_lists)</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(mons_bind)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 332
+Columns: 31
+$ index                  &lt;list&gt; "aboleth", "acolyte", "adult-black-dragon", "a…
+$ name                   &lt;list&gt; "Aboleth", "Acolyte", "Adult Black Dragon", "A…
+$ size                   &lt;list&gt; "Large", "Medium", "Huge", "Huge", "Huge", "Hu…
+$ type                   &lt;list&gt; "aberration", "humanoid", "dragon", "dragon", …
+$ alignment              &lt;list&gt; "lawful evil", "any alignment", "chaotic evil"…
+$ armor_class            &lt;list&gt; 17, 10, 19, 19, 18, 19, 18, 19, 19, 19, 19, 18…
+$ hit_points             &lt;list&gt; 135, 9, 195, 225, 172, 212, 184, 256, 207, 256…
+$ hit_dice               &lt;list&gt; "18d10", "2d8", "17d12", "18d12", "15d12", "17…
+$ speed                  &lt;list&gt; ["10 ft.", "40 ft."], ["30 ft."], ["40 ft.", "…
+$ strength               &lt;list&gt; 21, 10, 23, 25, 23, 25, 23, 27, 23, 27, 27, 22…
+$ dexterity              &lt;list&gt; 9, 10, 14, 10, 10, 10, 12, 14, 12, 10, 10, 10,…
+$ constitution           &lt;list&gt; 15, 10, 21, 23, 21, 23, 21, 25, 21, 25, 25, 22…
+$ intelligence           &lt;list&gt; 18, 10, 14, 16, 14, 16, 18, 16, 18, 16, 16, 8,…
+$ wisdom                 &lt;list&gt; 15, 14, 13, 15, 13, 15, 15, 15, 15, 13, 13, 12…
+$ charisma               &lt;list&gt; 18, 11, 17, 19, 17, 19, 17, 24, 17, 21, 21, 12…
+$ proficiencies          &lt;list&gt; [&lt;data.frame[5 x 2]&gt;], [&lt;data.frame[2 x 2]&gt;], …
+$ damage_vulnerabilities &lt;list&gt; [], [], [], [], [], [], [], [], [], [], [], []…
+$ damage_resistances     &lt;list&gt; [], [], [], [], [], [], [], [], [], [], [], []…
+$ damage_immunities      &lt;list&gt; [], [], "acid", "lightning", "fire", "lightnin…
+$ condition_immunities   &lt;list&gt; [], [], [], [], [], [], [], [], [&lt;data.frame[1…
+$ senses                 &lt;list&gt; ["120 ft.", 20], [12], ["60 ft.", "120 ft.", 2…
+$ languages              &lt;list&gt; "Deep Speech, telepathy 120 ft.", "any one lan…
+$ challenge_rating       &lt;list&gt; 10, 0.25, 14, 16, 13, 15, 14, 17, 15, 17, 16, …
+$ xp                     &lt;list&gt; 5900, 50, 11500, 15000, 10000, 13000, 11500, 1…
+$ special_abilities      &lt;list&gt; [&lt;data.frame[3 x 3]&gt;], [&lt;data.frame[1 x 3]&gt;], …
+$ actions                &lt;list&gt; [&lt;data.frame[4 x 7]&gt;], [&lt;data.frame[1 x 4]&gt;], …
+$ legendary_actions      &lt;list&gt; [&lt;data.frame[3 x 4]&gt;], [], [&lt;data.frame[3 x 4]…
+$ url                    &lt;list&gt; "/api/monsters/aboleth", "/api/monsters/acolyt…
+$ subtype                &lt;list&gt; &lt;NULL&gt;, "any race", &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;N…
+$ reactions              &lt;list&gt; &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;…
+$ forms                  &lt;list&gt; &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;…</code></pre>
+</div>
+</div>
+<p>Notice that we have the same structure as in the previous example, but now with 322 rows instead of 1. Now we can take care of coercing some of these list columns into atomic vectors.</p>
+</section>
+<section id="restructuring-data" class="level2">
+<h2 class="anchored" data-anchor-id="restructuring-data">Restructuring Data</h2>
+<p>One problem here, though, is that the possible variable values for each column differ depending on the monster (for some variables). Variables like strength, hit points, challenge rating, and xp will always be a single integer value, but variables like legendary_actions can differ greatly. People who play D&amp;D will know that normal monsters don’t have any legendary actions, and so this will be NULL for those monsters. But some monsters might have 1 or 2 legendary actions, whereas big baddies like ancient dragons can have several. This same varying structure applies to columns like proficiencies, special abilities, reactions, etc. Ultimately, this means that a list column is probably the best way to represent this type of data, since lists are more flexible, whereas some columns can be represented as an atomic vector, and so we need to figure out how to address this.</p>
+<p>To do this, we can write a couple of functions. The first, <code>compare_lens()</code> (below), will determine if the length of each element of a list is equal to whatever size we want to compare against (I’ve set the default to 1, which is what we want to use in this case). It then uses the <code>all()</code> function to determine if all of these comparisons are equal to TRUE, and will return a single value of TRUE if this is the case (and a single FALSE if not).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>compare_lens <span class="ot">&lt;-</span> <span class="cf">function</span>(x, <span class="at">size =</span> <span class="dv">1</span>) {</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">all</span>(<span class="fu">map_lgl</span>(x, <span class="sc">~</span><span class="fu">length</span>(<span class="fu">unlist</span>(.x)) <span class="sc">==</span> size))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next, we’ll use the <code>compare_lens()</code> function as the test expression in another function, <code>cond_unlist</code> (or conditionally unlist), below. The idea here is if <code>compare_lens()</code> is TRUE, then we will unlist the list (simplify it to a vector) passed to the function; otherwise, we’ll leave it as is (as a list). Putting these functions together, the logic is:</p>
+<ul>
+<li>Determine if all elements of a list have a length equal to 1.</li>
+<li>If so, turn that list into a vector.</li>
+<li>If not, leave it as a list.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>cond_unlist <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">compare_lens</span>(x) <span class="sc">==</span> <span class="cn">TRUE</span>) {</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">unlist</span>(x)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    x</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The final step is to apply this function to all of the columns (which, recall, are lists) in our mons_bind tibble. We can do this using a combination of <code>mutate()</code> and <code>across()</code>. After doing this, we’ll see that some of the columns in our data frame have been simplified to character, integer, and double vectors, whereas others remain lists (lists of lists, lists of data frames).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>mons_df <span class="ot">&lt;-</span> mons_bind <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="at">.cols =</span> <span class="fu">everything</span>(), <span class="sc">~</span><span class="fu">cond_unlist</span>(<span class="at">x =</span> .x)))</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(mons_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 332
+Columns: 31
+$ index                  &lt;chr&gt; "aboleth", "acolyte", "adult-black-dragon", "ad…
+$ name                   &lt;chr&gt; "Aboleth", "Acolyte", "Adult Black Dragon", "Ad…
+$ size                   &lt;chr&gt; "Large", "Medium", "Huge", "Huge", "Huge", "Hug…
+$ type                   &lt;chr&gt; "aberration", "humanoid", "dragon", "dragon", "…
+$ alignment              &lt;chr&gt; "lawful evil", "any alignment", "chaotic evil",…
+$ armor_class            &lt;int&gt; 17, 10, 19, 19, 18, 19, 18, 19, 19, 19, 19, 18,…
+$ hit_points             &lt;int&gt; 135, 9, 195, 225, 172, 212, 184, 256, 207, 256,…
+$ hit_dice               &lt;chr&gt; "18d10", "2d8", "17d12", "18d12", "15d12", "17d…
+$ speed                  &lt;list&gt; ["10 ft.", "40 ft."], ["30 ft."], ["40 ft.", "…
+$ strength               &lt;int&gt; 21, 10, 23, 25, 23, 25, 23, 27, 23, 27, 27, 22,…
+$ dexterity              &lt;int&gt; 9, 10, 14, 10, 10, 10, 12, 14, 12, 10, 10, 10, …
+$ constitution           &lt;int&gt; 15, 10, 21, 23, 21, 23, 21, 25, 21, 25, 25, 22,…
+$ intelligence           &lt;int&gt; 18, 10, 14, 16, 14, 16, 18, 16, 18, 16, 16, 8, …
+$ wisdom                 &lt;int&gt; 15, 14, 13, 15, 13, 15, 15, 15, 15, 13, 13, 12,…
+$ charisma               &lt;int&gt; 18, 11, 17, 19, 17, 19, 17, 24, 17, 21, 21, 12,…
+$ proficiencies          &lt;list&gt; [&lt;data.frame[5 x 2]&gt;], [&lt;data.frame[2 x 2]&gt;], …
+$ damage_vulnerabilities &lt;list&gt; [], [], [], [], [], [], [], [], [], [], [], []…
+$ damage_resistances     &lt;list&gt; [], [], [], [], [], [], [], [], [], [], [], []…
+$ damage_immunities      &lt;list&gt; [], [], "acid", "lightning", "fire", "lightnin…
+$ condition_immunities   &lt;list&gt; [], [], [], [], [], [], [], [], [&lt;data.frame[1…
+$ senses                 &lt;list&gt; ["120 ft.", 20], [12], ["60 ft.", "120 ft.", 2…
+$ languages              &lt;chr&gt; "Deep Speech, telepathy 120 ft.", "any one lang…
+$ challenge_rating       &lt;dbl&gt; 10.00, 0.25, 14.00, 16.00, 13.00, 15.00, 14.00,…
+$ xp                     &lt;int&gt; 5900, 50, 11500, 15000, 10000, 13000, 11500, 18…
+$ special_abilities      &lt;list&gt; [&lt;data.frame[3 x 3]&gt;], [&lt;data.frame[1 x 3]&gt;], …
+$ actions                &lt;list&gt; [&lt;data.frame[4 x 7]&gt;], [&lt;data.frame[1 x 4]&gt;], …
+$ legendary_actions      &lt;list&gt; [&lt;data.frame[3 x 4]&gt;], [], [&lt;data.frame[3 x 4]…
+$ url                    &lt;chr&gt; "/api/monsters/aboleth", "/api/monsters/acolyte…
+$ subtype                &lt;list&gt; &lt;NULL&gt;, "any race", &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;N…
+$ reactions              &lt;list&gt; &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;…
+$ forms                  &lt;list&gt; &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;, &lt;NULL&gt;…</code></pre>
+</div>
+</div>
+<p>And there we have it. Our data is now in a pretty good state for some analysis. Depending on what we’re interested in doing, we could also do some additional feature engineering on the list columns, but the choices there will be contingent on the analyses we want to do.</p>
+<p>For my next blog in this series, I’ll use this data to do some exploratory analysis, which I hope to get to in the next week or so.</p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">https://creativecommons.org/licenses/by-nc/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{ekholm2020,
+  author = {Eric Ekholm},
+  title = {Dungeons and {Dragons} - {Part} 1},
+  date = {2020-12-18},
+  url = {https://www.ericekholm.com/posts/dungeons-and-dragons-part-1},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-ekholm2020" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
+Eric Ekholm. 2020. <span>“Dungeons and Dragons - Part 1.”</span>
+December 18, 2020. <a href="https://www.ericekholm.com/posts/dungeons-and-dragons-part-1">https://www.ericekholm.com/posts/dungeons-and-dragons-part-1</a>.
+</div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

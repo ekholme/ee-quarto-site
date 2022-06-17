@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.449">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2020-05-06">
+<meta name="description" content="Practicing Poisson regression using Xmen data">
+
+<title>Eric Ekholm - Unconsciousness in the Xmen</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Eric Ekholm</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About Me</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html">Blog</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Unconsciousness in the Xmen</h1>
+                  <div>
+        <div class="description">
+          <p>Practicing Poisson regression using Xmen data</p>
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">R</div>
+                <div class="quarto-category">Tutorial</div>
+                <div class="quarto-category">glm</div>
+                <div class="quarto-category">Poisson Regression</div>
+                <div class="quarto-category">stats</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">May 6, 2020</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of Contents</h2>
+   
+  <ul>
+  <li><a href="#setup" id="toc-setup" class="nav-link active" data-scroll-target="#setup">Setup</a></li>
+  <li><a href="#exploring-the-data" id="toc-exploring-the-data" class="nav-link" data-scroll-target="#exploring-the-data">Exploring the Data</a></li>
+  <li><a href="#cleaning-aggregating-and-joining" id="toc-cleaning-aggregating-and-joining" class="nav-link" data-scroll-target="#cleaning-aggregating-and-joining">Cleaning, Aggregating, and Joining</a></li>
+  <li><a href="#modeling" id="toc-modeling" class="nav-link" data-scroll-target="#modeling">Modeling</a></li>
+  </ul>
+</nav>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>A part of me has always wanted to get into comic books. I think it would be a really good fit for me – I’m definitely a nerd. I play video games, I read fantasy novels, I code/do data science for fun. Comic books should be right up my alley. But for whatever reason, I’ve never taken the plunge. Maybe it’s a time commitment thing. Maybe I know I’ll like them too much. Maybe it’s too daunting to figure out how to start. Regardless, even thought I’m not <em>into</em> comic books, they are intriguing to me, and the X-Men particularly so, which is why I wanted to take a little bit of time to analyze this X-men data promoted by the <a href="https://github.com/rfordatascience/tidytuesday/blob/master/README.md">#tidytuesday</a> project.</p>
+<p>The other main purpose of this blog post is to toy around with running a Poisson regression. A few months ago, I saw a <a href="https://www.tidyverse.org/blog/2020/04/parsnip-adjacent/">post</a> about how the tidymodels framework had some new “parsnip-adjacent” packages, with one being <a href="https://cran.r-project.org/web/packages/poissonreg/index.html"><code>{poissonreg}</code></a> which fits – you guessed it – Poisson regressions. I haven’t had much reason to use Poisson regression in any of my previous work or in datasets I’ve toyed around with, but this X-men dataset seems like a good excuse to try it out. So, onward and upward!</p>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">Setup</h2>
+<p>First, I’ll load some packages, set some miscellaneous options, and import the data. This data comes from the <a href="http://www.claremontrun.com/">Claremont Run</a> project, which mines data from Chris Claremont’s run (1975-1991) writing the X-men comics. To learn more about the project, you can visit the website. There are several datasets available, but for this analysis, I’m going to use data from the characters dataset, the character_visualization dataset, and the locations dataset.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(hrbrthemes)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gameofthrones)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vip)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_ipsum</span>())</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>lann <span class="ot">&lt;-</span> <span class="fu">got</span>(<span class="dv">1</span>, <span class="at">option =</span> <span class="st">"Lannister"</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>characters <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">'https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-06-30/characters.csv'</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>locations <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">'https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-06-30/locations.csv'</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>character_visualization <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">'https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-06-30/character_visualization.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="exploring-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="exploring-the-data">Exploring the Data</h2>
+<p>Let’s first look at the characters dataset. In this dataset, each row corresponds to a character in an issue, and each column corresponds to actions or events relevant to that character. Here’s a glimpse of that data:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>characters <span class="sc">%&gt;%</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 4,209
+Columns: 34
+$ issue                                         &lt;dbl&gt; 97, 97, 97, 97, 97, 97, …
+$ character                                     &lt;chr&gt; "Professor X", "Wolverin…
+$ rendered_unconcious                           &lt;dbl&gt; 0, 0, 0, 1, 0, 0, 0, 0, …
+$ captured                                      &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, …
+$ declared_dead                                 &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, …
+$ redressed                                     &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, …
+$ depowered                                     &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, …
+$ clothing_torn                                 &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, …
+$ subject_to_torture                            &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, …
+$ quits_team                                    &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, …
+$ surrenders                                    &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, …
+$ number_of_kills_humans                        &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, …
+$ number_of_kills_non_humans                    &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, …
+$ initiates_physical_conflict                   &lt;chr&gt; NA, NA, "1", NA, NA, NA,…
+$ expresses_reluctance_to_fight                 &lt;dbl&gt; NA, NA, 1, NA, NA, NA, N…
+$ on_a_date_with_which_character                &lt;chr&gt; NA, NA, NA, NA, NA, NA, …
+$ kiss_with_which_character                     &lt;chr&gt; NA, NA, NA, NA, NA, NA, …
+$ hand_holding_with_which_character             &lt;chr&gt; "Moira MacTaggert", NA, …
+$ dancing_with_which_character                  &lt;chr&gt; NA, NA, NA, NA, NA, NA, …
+$ flying_with_another_character                 &lt;chr&gt; NA, NA, NA, "Storm", "Je…
+$ arm_in_arm_with_which_character               &lt;chr&gt; NA, NA, NA, NA, NA, NA, …
+$ hugging_with_which_character                  &lt;chr&gt; NA, NA, NA, NA, NA, NA, …
+$ physical_contact_other                        &lt;chr&gt; "Moira MacTaggert", "Sto…
+$ carrying_with_which_character                 &lt;chr&gt; NA, NA, NA, NA, NA, NA, …
+$ shared_bed_with_which_character               &lt;lgl&gt; NA, NA, NA, NA, NA, NA, …
+$ shared_room_domestically_with_which_character &lt;lgl&gt; NA, NA, NA, NA, NA, NA, …
+$ explicitly_states_i_love_you_to_whom          &lt;chr&gt; NA, NA, NA, NA, NA, NA, …
+$ shared_undress                                &lt;chr&gt; NA, NA, NA, NA, NA, NA, …
+$ shower_number_of_panels_shower_lasts          &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, …
+$ bath_number_of_panels_bath_lasts              &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, …
+$ depicted_eating_food                          &lt;dbl&gt; 1, 0, 0, 0, 0, 0, 0, 0, …
+$ visible_tears_number_of_panels                &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, …
+$ visible_tears_number_of_intances              &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, …
+$ special_notes                                 &lt;chr&gt; NA, NA, NA, NA, NA, NA, …</code></pre>
+</div>
+</div>
+<p>So, we can see in this dataset things like who Professor X held hands with in issue 97, how many humans were killed by Magneto in issue 105, etc. We see lots of NAs and 0s in this dataset. The only column I’m going to use from this is the rendered unconscious column, which will be outcome variable in the models later.</p>
+<p>In the character_visualization dataset, each row represents a per-issue count of the number of times a character is depicted, speaks, thinks, has a narrative statement (I think this is probably only relevant for the narrator character?), either when the character is in costume or not in costume.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>character_visualization <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 9,800
+Columns: 7
+$ issue     &lt;dbl&gt; 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, 97, …
+$ costume   &lt;chr&gt; "Costume", "Costume", "Costume", "Costume", "Costume", "Cost…
+$ character &lt;chr&gt; "Editor narration", "Omnipresent narration", "Professor X = …
+$ speech    &lt;dbl&gt; 0, 0, 0, 7, 24, 0, 11, 9, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+$ thought   &lt;dbl&gt; 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+$ narrative &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+$ depicted  &lt;dbl&gt; 0, 0, 0, 10, 23, 0, 9, 17, 17, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0,…</code></pre>
+</div>
+</div>
+<p>In the location dataset, each row corresponds to a location in which part of the issue takes place, with as many locations listed per issue as appear in that issue. The dataset also includes a “context” column that describes things like whether the location is shown in the present, as part of a flashback, in a dream, etc. Here’s a glimpse:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>locations <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 1,413
+Columns: 4
+$ issue    &lt;dbl&gt; 97, 97, 97, 97, 97, 98, 98, 98, 98, 98, 99, 99, 99, 99, 99, 9…
+$ location &lt;chr&gt; "Space", "X-Mansion", "Rio Diablo Research Facility", "Kenned…
+$ context  &lt;chr&gt; "Dream", "Present", "Present", "Present", "Present", "Present…
+$ notes    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, "Cuts back and fo…</code></pre>
+</div>
+</div>
+<p>Across these datasets, it probably makes the most sense to aggegrate data up to the issue level, since that’s kind of the lowest common denominator here. So, essentially the question I’m going to try to answer in this blog post is:</p>
+<p><em>What features of an X-men issue predict how many characters are rendered unconscious in that issue?</em></p>
+<p>First, let’s look at the distribution of rendered unconscious:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>characters <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(issue, <span class="at">wt =</span> rendered_unconcious, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> n)) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">fill =</span> lann, <span class="at">bins =</span> <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Right, so, this is a pretty strongly right-skewed distribution, which is sort of what we’d expect from a Poisson distribution, especially one with a low expected number of events (which I’d imagine is the case in comic books).</p>
+</section>
+<section id="cleaning-aggregating-and-joining" class="level2">
+<h2 class="anchored" data-anchor-id="cleaning-aggregating-and-joining">Cleaning, Aggregating, and Joining</h2>
+<p>Next, let’s aggregate our data up to the issue level. This will give us data where a row represents an issue rather than a character within an issue or a location within an issue. We’ll start with the characters dataset. There’s a lot we <em>could</em> do with this data, but because there are only 183 issues represented in this dataset, we need to be cognizant about how many predictors we’re including. So the only variable I’m going to use here is rendered unconscious as the outcome, which will represent the number of characters rendered unconscious in a given issue.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>rend_df <span class="ot">&lt;-</span> characters <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(issue) <span class="sc">%&gt;%</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">rendered_unconscious =</span> <span class="fu">sum</span>(rendered_unconcious, <span class="at">na.rm =</span> <span class="cn">FALSE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next, let’s work on the character_visualization dataset. Again, trying to keep the number of predictors relatively small, I’m going to winnow this down to represent counts of how many times a handful of key characters are depicted in each issue. I don’t know a ton about the X-men, but I know who some of the more important characters are, so I’m going to choose Wolverine, Professor X, Magneto, and Jean Grey here.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>char_sum <span class="ot">&lt;-</span> character_visualization <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(character, <span class="st">"Wolverine|Xavier|Jean Grey|Magneto"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(issue, character) <span class="sc">%&gt;%</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">depict =</span> <span class="fu">sum</span>(depicted, <span class="at">na.rm =</span> <span class="cn">FALSE</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">character =</span> <span class="fu">case_when</span>(</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_detect</span>(character, <span class="st">"Jean Grey"</span>) <span class="sc">~</span> <span class="st">"Jean_Grey"</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_detect</span>(character, <span class="st">"Wolv"</span>) <span class="sc">~</span> <span class="st">"Wolverine"</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_detect</span>(character, <span class="st">"Magneto"</span>) <span class="sc">~</span> <span class="st">"Magneto"</span>,</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">str_detect</span>(character, <span class="st">"Xavier"</span>) <span class="sc">~</span> <span class="st">"Professor_X"</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from =</span> character,</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> depict</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next, let’s work on our locations dataset. First, let’s look at the most common locations. Again, since we only have 183 rows in our dataset that we’re modeling with, I only want to choose a handful of variables to include in the model here.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>locations <span class="sc">%&gt;%</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(location, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 785 × 2
+   location                             n
+   &lt;chr&gt;                            &lt;int&gt;
+ 1 X-Mansion                          100
+ 2 Danger Room                         27
+ 3 Space                               19
+ 4 Muir Island, Scotland               14
+ 5 Unspecified region in Australia     14
+ 6 Eagle Plaza, Dallas Texas           11
+ 7 Central Park                        10
+ 8 Morlock residence under New York    10
+ 9 Princess Lilandra's Home Planet     10
+10 San Francisco                       10
+# … with 775 more rows</code></pre>
+</div>
+</div>
+<p>Ok, so, I’m just going to go with the 3 most common locations: the X-mansion, the Danger Room (whatever that is), and Space. Danger Room sounds to me like a place where people might be rendered unconscious.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>use_locs <span class="ot">&lt;-</span> locations <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(location, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">top_n</span>(<span class="dv">3</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(location)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>locs_sum <span class="ot">&lt;-</span> locations <span class="sc">%&gt;%</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(issue) <span class="sc">%&gt;%</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mansion =</span> use_locs[[<span class="dv">1</span>]] <span class="sc">%in%</span> location,</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">danger_room =</span> use_locs[[<span class="dv">2</span>]] <span class="sc">%in%</span> location,</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">space =</span> use_locs[[<span class="dv">3</span>]] <span class="sc">%in%</span> location) <span class="sc">%&gt;%</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is_logical), as.numeric))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This will return a dataset that tells us whether a given issue has the X-mansion, the Danger Room, or Space as a location.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>locs_sum <span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 183
+Columns: 4
+$ issue       &lt;dbl&gt; 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 1…
+$ mansion     &lt;dbl&gt; 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0…
+$ danger_room &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0…
+$ space       &lt;dbl&gt; 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0…</code></pre>
+</div>
+</div>
+<p>Now we can join the three datasets into one useful for modeling. I’m using an inner join here because, for whatever reason, the character visualization dataset has more issues represented than the others, and we only want issues that are represented in all 3 dataframes.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>issues_joined <span class="ot">&lt;-</span> <span class="fu">reduce</span>(<span class="fu">list</span>(rend_df, char_sum, locs_sum), <span class="sc">~</span><span class="fu">inner_join</span>(.x, .y, <span class="at">by =</span> <span class="st">"issue"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="modeling" class="level2">
+<h2 class="anchored" data-anchor-id="modeling">Modeling</h2>
+<p>Cool, so now we’re done preprocessing our data – now we can specify our model.</p>
+<p>I mentioned before that one issue here is that this is a small set of data. We have 183 observations (again, each observation is an issue), which isn’t many. One way to make our modeling more robust is to use bootstrap resampling (see our good friend <a href="https://en.wikipedia.org/wiki/Bootstrapping_(statistics)">Wikipedia</a> for an explanation) and to fit models to several resamples.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0408</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>booties <span class="ot">&lt;-</span> <span class="fu">bootstraps</span>(issues_joined, <span class="at">times =</span> <span class="dv">100</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(booties<span class="sc">$</span>splits, <span class="at">n =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+&lt;Analysis/Assess/Total&gt;
+&lt;183/68/183&gt;
+
+[[2]]
+&lt;Analysis/Assess/Total&gt;
+&lt;183/66/183&gt;
+
+[[3]]
+&lt;Analysis/Assess/Total&gt;
+&lt;183/66/183&gt;
+
+[[4]]
+&lt;Analysis/Assess/Total&gt;
+&lt;183/70/183&gt;
+
+[[5]]
+&lt;Analysis/Assess/Total&gt;
+&lt;183/64/183&gt;</code></pre>
+</div>
+</div>
+<p>What we can see here is that every bootstrap sample has 183 rows in the analysis set, which is what the model will be trained on, and then some other number of rows in the assessment set. This other number is the out-of-bag sample – the rows that weren’t randomly sampled by the bootstrap process.</p>
+<p>Next, I’m going to set up a workflow. I think of this as like a little suitcase that can carry things I want to use in my model around – I think that analogy might be from Julia Silge? Anyway, I’m going to start by adding the formula I want to use in my model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>xmen_wf <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_formula</span>(rendered_unconscious <span class="sc">~</span> Magneto <span class="sc">+</span> Jean_Grey <span class="sc">+</span> Wolverine <span class="sc">+</span> Professor_X <span class="sc">+</span> mansion <span class="sc">+</span> danger_room <span class="sc">+</span> space)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now we can further specify the model. Remember that since our outcome is a count, we’ll be fitting a Poisson regression. Looking at the outcome distribution earlier, I don’t think I need to use a zero-inflated model here (although maybe? Again, this isn’t really my expertise), so I’m just going to proceed with a regular Poisson regression, fit using the <code>{glmnet}</code> engine. I’m also going to tune the <code>penalty</code> and <code>mixture</code> arguments, which control the amount of total regularization applied to the model as well as the proportion of the penalty that is L1 (lasso) vs L2 (ridge regression).</p>
+<p><strong>Brief Interpolation on what a Poisson regression is</strong> A Poisson regression is a generalized linear model (GLM) used to model count data. Like the name implies, GLMs are generalizations of linear models that use a link function, g(), to transform the expected value of the response (outcome) to a linear function of the predictor variables. Poisson regression uses a log link function to accomplish this transformation. For people interested in reading more, I really like John Fox’s book, <a href="https://www.amazon.com/Applied-Regression-Analysis-Generalized-Linear/dp/1452205663/ref=pd_sbs_14_1/139-8800507-2098708?_encoding=UTF8&amp;pd_rd_i=1452205663&amp;pd_rd_r=e7cdfc71-d6fa-4967-abbc-e11aa551df8f&amp;pd_rd_w=mqE5D&amp;pd_rd_wg=fNSQ2&amp;pf_rd_p=bdc67ba8-ab69-42ee-b8d8-8f5336b36a83&amp;pf_rd_r=4R6NXGVFTRME8MRA7WY3&amp;psc=1&amp;refRID=4R6NXGVFTRME8MRA7WY3"><em>Applied Regression Analysis</em></a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(poissonreg)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>poisson_mod <span class="ot">&lt;-</span> <span class="fu">poisson_reg</span>(</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">penalty =</span> <span class="fu">tune</span>(),</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">mixture =</span> <span class="fu">tune</span>()</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"glmnet"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Since I’m tuning a couple of parameters, I need to make a grid with possible values to tune across</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>poisson_tune <span class="ot">&lt;-</span> <span class="fu">grid_max_entropy</span>(</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">penalty</span>(),</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mixture</span>(), </span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">size =</span> <span class="dv">10</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And I’ll drop the model spec into the previous workflow.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>xmen_wf <span class="ot">&lt;-</span> xmen_wf <span class="sc">%&gt;%</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(poisson_mod)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>xmen_wf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>══ Workflow ════════════════════════════════════════════════════════════════════
+Preprocessor: Formula
+Model: poisson_reg()
+
+── Preprocessor ────────────────────────────────────────────────────────────────
+rendered_unconscious ~ Magneto + Jean_Grey + Wolverine + Professor_X + 
+    mansion + danger_room + space
+
+── Model ───────────────────────────────────────────────────────────────────────
+Poisson Regression Model Specification (regression)
+
+Main Arguments:
+  penalty = tune()
+  mixture = tune()
+
+Computational engine: glmnet </code></pre>
+</div>
+</div>
+<p>And now we can fit the model using our bootstrap resamples.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>xmen_fit <span class="ot">&lt;-</span> <span class="fu">tune_grid</span>(</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  xmen_wf,</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">resamples =</span> booties,</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">grid =</span> poisson_tune</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Our models have fit, so now we can look at our results:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>xmen_fit <span class="sc">%&gt;%</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect_metrics</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 20 × 8
+    penalty mixture .metric .estimator   mean     n std_err .config             
+      &lt;dbl&gt;   &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;               
+ 1 8.81e- 4  0.0155 rmse    standard   1.93     100 0.0894  Preprocessor1_Model…
+ 2 8.81e- 4  0.0155 rsq     standard   0.0277   100 0.00398 Preprocessor1_Model…
+ 3 4.67e- 7  0.0676 rmse    standard   1.93     100 0.0896  Preprocessor1_Model…
+ 4 4.67e- 7  0.0676 rsq     standard   0.0277   100 0.00398 Preprocessor1_Model…
+ 5 5.56e- 1  0.148  rmse    standard   1.71     100 0.0201  Preprocessor1_Model…
+ 6 5.56e- 1  0.148  rsq     standard   0.0288   100 0.00426 Preprocessor1_Model…
+ 7 4.76e-10  0.190  rmse    standard   1.93     100 0.0895  Preprocessor1_Model…
+ 8 4.76e-10  0.190  rsq     standard   0.0277   100 0.00398 Preprocessor1_Model…
+ 9 1.09e- 2  0.500  rmse    standard   1.92     100 0.0841  Preprocessor1_Model…
+10 1.09e- 2  0.500  rsq     standard   0.0278   100 0.00403 Preprocessor1_Model…
+11 2.44e- 7  0.517  rmse    standard   1.94     100 0.0896  Preprocessor1_Model…
+12 2.44e- 7  0.517  rsq     standard   0.0277   100 0.00398 Preprocessor1_Model…
+13 1.73e-10  0.622  rmse    standard   1.94     100 0.0896  Preprocessor1_Model…
+14 1.73e-10  0.622  rsq     standard   0.0277   100 0.00398 Preprocessor1_Model…
+15 1.10e- 5  0.881  rmse    standard   1.94     100 0.0897  Preprocessor1_Model…
+16 1.10e- 5  0.881  rsq     standard   0.0277   100 0.00398 Preprocessor1_Model…
+17 1.99e- 1  0.942  rmse    standard   1.69     100 0.0190  Preprocessor1_Model…
+18 1.99e- 1  0.942  rsq     standard   0.0302   100 0.00404 Preprocessor1_Model…
+19 5.97e-10  0.985  rmse    standard   1.94     100 0.0897  Preprocessor1_Model…
+20 5.97e-10  0.985  rsq     standard   0.0277   100 0.00398 Preprocessor1_Model…</code></pre>
+</div>
+</div>
+<p>Ok, so, my limited understanding of Poisson regression is that neither RMSE or R-squared values are ideal metrics, and some googling led me to find that there’s an <a href="https://github.com/tidymodels/yardstick/issues/146">open issue to add a Poisson log loss metric to the yardstick package</a>, so we’ll gloss over these for now.</p>
+<p>Anyway, let’s pick the best model here, finalize the model, and then fit it to our full training data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>best_params <span class="ot">&lt;-</span> xmen_fit <span class="sc">%&gt;%</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select_best</span>(<span class="at">metric =</span> <span class="st">"rmse"</span>)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>final_mod <span class="ot">&lt;-</span> xmen_wf <span class="sc">%&gt;%</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">finalize_workflow</span>(best_params) <span class="sc">%&gt;%</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(<span class="at">data =</span> issues_joined)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And let’s check out how important how variables are. This should give us the coefficients from our model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>final_mod <span class="sc">%&gt;%</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull_workflow_fit</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vi</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7 × 3
+  Variable    Importance Sign 
+  &lt;chr&gt;            &lt;dbl&gt; &lt;chr&gt;
+1 mansion        0.157   NEG  
+2 danger_room    0.113   NEG  
+3 Professor_X    0.0197  POS  
+4 Jean_Grey      0.0133  POS  
+5 Wolverine      0.00938 POS  
+6 Magneto        0.00701 POS  
+7 space          0       NEG  </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>final_mod <span class="sc">%&gt;%</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull_workflow_fit</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">vip</span>(<span class="at">num_features =</span> <span class="dv">7</span>, <span class="at">fill =</span> lann)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Right, so, one thing to keep in mind here is that the location variables and the character variables are on different scales, so the effects aren’t directly comparable. But the interpretation here is that more appearances of Professor X are more strongly associated with more characters rendered unconscious in an issue than are more appearances of Magneto, although all of these coefficients are positive, suggesting that more appearances of any of these four characters are associated with more renderings unconscious in that issue. Similarly, the effects of danger_room and mansion are negative, suggesting that if the issue features either of those locations, there tend to be fewer characters rendered unconscious. The coefficient for space is 0, which probably means it got regularized out. Probably the most important piece, here, though, is that these effects seem to be <em>very</em> small, which means they likely don’t actually matter.</p>
+<p>I’m going to call it right here. Even though the model I built doesn’t seem to have much explanatory power, it forced me to read some more about Poisson regression and to dig back into the tidymodels framework, which I’ll count as a win. Plus it gives me an excuse to gather “domain knowledge” about comic books so I can do a better job next time.</p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">https://creativecommons.org/licenses/by-nc/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{ekholm2020,
+  author = {Eric Ekholm},
+  title = {Unconsciousness in the {Xmen}},
+  date = {2020-05-06},
+  url = {https://www.ericekholm.com/posts/unconsciousness-in-the-xmen},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-ekholm2020" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
+Eric Ekholm. 2020. <span>“Unconsciousness in the Xmen.”</span> May 6,
+2020. <a href="https://www.ericekholm.com/posts/unconsciousness-in-the-xmen">https://www.ericekholm.com/posts/unconsciousness-in-the-xmen</a>.
+</div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

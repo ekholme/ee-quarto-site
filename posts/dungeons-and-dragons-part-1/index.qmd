@@ -1,0 +1,122 @@
+---
+title: "Dungeons and Dragons - Part 1"
+description: |
+  Wrangling JSON data from an API
+date: "2020-12-18"
+categories: [R, Tutorial, API, D&D]
+---
+
+
+I've been playing Dungeons and Dragons 5th edition (D&D 5e) for a few years now and really enjoy it, although COVID has really hindered my opportunity to play. That said, I recently discovered a D&D 5e [API](https://www.dnd5eapi.co/), so I figured I'd do a series of blog posts analyzing D&D data from this API. In this first post, I wanted to do a quick walkthrough of how to get data from this API using R and wrangling it into a structure that's more or less conducive to later analysis. In later posts, I'll explore the data and then get into some modeling.
+
+As something of an aside -- the API has data for character classes, spells, races, monsters, etc. I'm mostly going to focus on the monsters data, but might use some of the other data later on.
+
+## Setup
+
+First, I'll load the packages I need to get and wrangle the data, which is really just `{tidyverse}`, `{jsonlite}` and good old base R. I'm also adding in the base URL of the API.
+
+```{r setup, results = "hide", message = FALSE, echo = TRUE}
+
+library(tidyverse)
+library(jsonlite)
+
+dnd_base <- "https://www.dnd5eapi.co/api/monsters/"
+```
+
+## Fetching Data
+
+So, the first step here is to actually get the data from the API. Let's walk through the process here, illustrating this with a single monster (the aboleth) and then applying the process to all of the monsters.
+
+We'll use the `fromJSON()` function to get JSON data from the API. We'll see that this gives us a pretty gnarly nested list.
+
+```{r}
+example <- fromJSON(paste0(dnd_base, "aboleth"))
+
+glimpse(example)
+```
+
+
+To clean this list up a bit, we'll use the `enframe()` function (from `{tibble}`) to convert the lists into a dataframe and then the `pivot_wider()` function to reshape this into a single-row tibble.
+
+```{r}
+example %>%
+  enframe() %>%
+  pivot_wider(names_from = name,
+              values_from = value) %>%
+  glimpse()
+```
+
+
+Great. This is more or less the structure we want. You might notice that all of our columns are lists rather than atomic vectors -- we'll deal with that later once we get all of the data.
+
+Now that we know the basic process, we'll just apply this to all of the monsters with data available through the API. To do that, I'll write a function that executes the previous steps, get a list of all of the monsters available in the API, use `map()` to iterate the "fetch" function for each monster, and then bind all of the resulting rows together.
+
+```{r}
+fetch_monster <- function(monster) {
+  dnd_url <- "https://www.dnd5eapi.co/api/monsters/"
+  
+  ret <- fromJSON(paste0(dnd_url, monster)) %>%
+    enframe() %>%
+    pivot_wider(names_from = name,
+                values_from = value)
+  
+  return(ret)
+}
+
+#this gets all of the monster indices to plug into the fetch function
+mons <- fromJSON(dnd_base)$results %>%
+  pull(index)
+
+monster_lists <- map(mons, fetch_monster)
+
+mons_bind <- bind_rows(monster_lists)
+
+glimpse(mons_bind)
+```
+
+
+Notice that we have the same structure as in the previous example, but now with 322 rows instead of 1. Now we can take care of coercing some of these list columns into atomic vectors.
+
+## Restructuring Data
+
+One problem here, though, is that the possible variable values for each column differ depending on the monster (for some variables). Variables like strength, hit points, challenge rating, and xp will always be a single integer value, but variables like legendary_actions can differ greatly. People who play D&D will know that normal monsters don't have any legendary actions, and so this will be NULL for those monsters. But some monsters might have 1 or 2 legendary actions, whereas big baddies like ancient dragons can have several. This same varying structure applies to columns like proficiencies, special abilities, reactions, etc. Ultimately, this means that a list column is probably the best way to represent this type of data, since lists are more flexible, whereas some columns can be represented as an atomic vector, and so we need to figure out how to address this.
+
+To do this, we can write a couple of functions. The first, `compare_lens()` (below), will determine if the length of each element of a list is equal to whatever size we want to compare against (I've set the default to 1, which is what we want to use in this case). It then uses the `all()` function to determine if all of these comparisons are equal to TRUE, and will return a single value of TRUE if this is the case (and a single FALSE if not).
+
+```{r}
+compare_lens <- function(x, size = 1) {
+  all(map_lgl(x, ~length(unlist(.x)) == size))
+}
+```
+
+
+Next, we'll use the `compare_lens()` function as the test expression in another function, `cond_unlist` (or conditionally unlist), below. The idea here is if `compare_lens()` is TRUE, then we will unlist the list (simplify it to a vector) passed to the function; otherwise, we'll leave it as is (as a list). Putting these functions together, the logic is:
+
+- Determine if all elements of a list have a length equal to 1.
+- If so, turn that list into a vector.
+- If not, leave it as a list.
+
+```{r}
+cond_unlist <- function(x) {
+  if (compare_lens(x) == TRUE) {
+    unlist(x)
+  } else {
+    x
+  }
+}
+```
+
+
+The final step is to apply this function to all of the columns (which, recall, are lists) in our mons_bind tibble. We can do this using a combination of `mutate()` and `across()`. After doing this, we'll see that some of the columns in our data frame have been simplified to character, integer, and double vectors, whereas others remain lists (lists of lists, lists of data frames).
+
+```{r}
+mons_df <- mons_bind %>%
+  mutate(across(.cols = everything(), ~cond_unlist(x = .x)))
+
+glimpse(mons_df)
+```
+
+
+And there we have it. Our data is now in a pretty good state for some analysis. Depending on what we're interested in doing, we could also do some additional feature engineering on the list columns, but the choices there will be contingent on the analyses we want to do.
+
+For my next blog in this series, I'll use this data to do some exploratory analysis, which I hope to get to in the next week or so.

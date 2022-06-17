@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.449">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2020-05-06">
+<meta name="description" content="Examples and tutorial for writing rolling aggregate/window functions">
+
+<title>Eric Ekholm - Writing Window Functions</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Eric Ekholm</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About Me</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html">Blog</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Writing Window Functions</h1>
+                  <div>
+        <div class="description">
+          <p>Examples and tutorial for writing rolling aggregate/window functions</p>
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">R</div>
+                <div class="quarto-category">Tutorial</div>
+                <div class="quarto-category">Function Writing</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">May 6, 2020</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of Contents</h2>
+   
+  <ul>
+  <li><a href="#setup" id="toc-setup" class="nav-link active" data-scroll-target="#setup">Setup</a></li>
+  <li><a href="#step-1-testing-iteration" id="toc-step-1-testing-iteration" class="nav-link" data-scroll-target="#step-1-testing-iteration">Step 1: Testing Iteration</a></li>
+  <li><a href="#step-2-building-out-functions" id="toc-step-2-building-out-functions" class="nav-link" data-scroll-target="#step-2-building-out-functions">Step 2: Building Out Functions</a></li>
+  <li><a href="#step-3-pad-the-output" id="toc-step-3-pad-the-output" class="nav-link" data-scroll-target="#step-3-pad-the-output">Step 3: Pad the Output</a></li>
+  <li><a href="#step-4-use-functions-to-add-columns-to-data" id="toc-step-4-use-functions-to-add-columns-to-data" class="nav-link" data-scroll-target="#step-4-use-functions-to-add-columns-to-data">Step 4: Use Functions to Add Columns to Data</a></li>
+  <li><a href="#wrapping-up" id="toc-wrapping-up" class="nav-link" data-scroll-target="#wrapping-up">Wrapping Up</a></li>
+  </ul>
+</nav>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>I was recently working on exploring some time series data for a <a href="https://www.kaggle.com/c/m5-forecasting-accuracy">Kaggle competition</a> and found myself wanting to calculate the rolling average of some sales. I don’t often work with time series data, so I had to look up functions to use to calculate rolling averages (n.b.&nbsp;that if you don’t know what a rolling average is, read <a href="https://en.wikipedia.org/wiki/Moving_average">here</a>), and I was surprised that dplyr doesn’t have one built in. It turns out there are several packages that <strong>do</strong> have rolling aggregate (average, standard deviation, etc) functions, such as the <a href="https://CRAN.R-project.org/package=RcppRoll">RcppRoll</a> package and the <a href="https://CRAN.R-project.org/package=zoo">zoo</a> package. But I also thought it provided a nice opportunity to practice writing some of my own rolling aggregate functions, which I’m going to walk through here.</p>
+<section id="setup" class="level1">
+<h1>Setup</h1>
+<p>First, I’m going to load packages. For this, I’m only using <code>{tidyverse}</code> (and within tidyverse, mostly <code>{purrr}</code> for iteration) and <code>{RcppRoll}</code> as a ground-truth to test my functions. I’m also going to use the <code>{glue}</code> package later on, but that’s less central and I’ll load it when I need it.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RcppRoll)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Next, I’m going to set up a minimal tibble to use for calculations. This will have an day column and a val column. The val column is the one I’m going to be doing calculations on, and the day column is going to serve as an index for the rolling average.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0408</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">day =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">250</span>),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">val =</span> <span class="fu">rnorm</span>(<span class="dv">250</span>, <span class="at">mean =</span> <span class="dv">5</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 250 × 2
+     day   val
+   &lt;int&gt; &lt;dbl&gt;
+ 1     1  2.64
+ 2     2  5.30
+ 3     3  4.29
+ 4     4  5.76
+ 5     5  3.75
+ 6     6  4.89
+ 7     7  4.50
+ 8     8  3.84
+ 9     9  4.74
+10    10  6.41
+# … with 240 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="step-1-testing-iteration" class="level1">
+<h1>Step 1: Testing Iteration</h1>
+<p>So, my process for building this function is going to be to create something very basic with few variables first and then gradually abstract this out to make a more responsive function. Eventually, I’ll get to a point where the rolling aggregation function will be general enough to allow for the specification of arbitrary aggregate functions and windows.</p>
+<p>The first step, then, is just to test the logic of the calculation I need to create to calculate rolling averages. I’ll do this by assuming a 28 day window (we’ll be able to change the window later), create a “truth” to test against using RcppRoll’s <code>roll_mean()</code> function, and then iterate using <code>map()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>truth <span class="ot">&lt;-</span> <span class="fu">roll_mean</span>(df<span class="sc">$</span>val, <span class="at">n =</span> <span class="dv">28</span>, <span class="at">align =</span> <span class="st">"right"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> <span class="fu">map_dbl</span>(</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">28</span><span class="sc">:</span><span class="fu">length</span>(df<span class="sc">$</span>val)), <span class="co">#this represents the days I want to calculate the average for. I'm starting on day 28 (because I want a 28-day rolling average, </span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#and the first time I'll have 28 days of data is on day 28) and going through the last day</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(a) {</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mean</span>(df<span class="sc">$</span>val[(a <span class="sc">-</span> <span class="dv">27</span>)<span class="sc">:</span>a], <span class="at">na.rm =</span> <span class="cn">FALSE</span>) </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  } <span class="co">#this specifies what I'm doing -- taking the mean of the 'val' column for each 28 day window </span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#(day 1-28, day 2-29, etc). If I don't subtract 1 window value when I subset, </span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#I'll actually get 29 days.</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(truth, test) <span class="co">#this tests to see that the vectors are equal.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+</section>
+<section id="step-2-building-out-functions" class="level1">
+<h1>Step 2: Building Out Functions</h1>
+<p>Great, so the logic of the calculation works. Now, let’s extend it a little bit to create a function where I can specify the variable I want to use as well as the window I want to take the rolling average over.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ee_roll_mean <span class="ot">&lt;-</span> <span class="cf">function</span>(x, window) {</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map_dbl</span>(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(window<span class="sc">:</span><span class="fu">length</span>(x)),</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">function</span>(a) {</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mean</span>(x[(a <span class="sc">-</span> window<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>a], <span class="at">na.rm =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>test_2 <span class="ot">&lt;-</span> <span class="fu">ee_roll_mean</span>(df<span class="sc">$</span>val, <span class="dv">28</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(test_2, truth)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+<p>It works when we set the window value to 28, but let’s also test that it works when we use a different window just to be safe.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>truth_win8 <span class="ot">&lt;-</span> <span class="fu">roll_mean</span>(df<span class="sc">$</span>val, <span class="at">n =</span> <span class="dv">8</span>, <span class="at">align =</span> <span class="st">"right"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>test_win8 <span class="ot">&lt;-</span> <span class="fu">ee_roll_mean</span>(df<span class="sc">$</span>val, <span class="at">window =</span> <span class="dv">8</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(truth_win8, test_win8)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+<p>This works well for taking the rolling average – we can specify the values we want to take the average over as well as the window for that average. But there are other functions we might be interested in getting rolling aggregates for as well. For instance, we might want to know the minimum or standard deviation of a value during some windows of time. Rather than write separate functions to do this, we can just extend our previous function to allow us to supply whichever aggregation function we want.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ee_roll_func <span class="ot">&lt;-</span> <span class="cf">function</span>(x, window, <span class="at">fn =</span> mean) {</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map_dbl</span>(</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(window<span class="sc">:</span><span class="fu">length</span>(x)),</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">function</span>(a) {</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fn</span>(x[(a <span class="sc">-</span> window<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>a], <span class="at">na.rm =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  ) </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>test_3 <span class="ot">&lt;-</span> <span class="fu">ee_roll_func</span>(df<span class="sc">$</span>val, <span class="at">window =</span> <span class="dv">8</span>, <span class="at">fn =</span> sd)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">#testing against the RcppRoll function that does the same thing</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>truth_3 <span class="ot">&lt;-</span> <span class="fu">roll_sd</span>(df<span class="sc">$</span>val, <span class="at">n =</span> <span class="dv">8</span>, <span class="at">align =</span> <span class="st">"right"</span>)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(test_3, truth_3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
+</section>
+<section id="step-3-pad-the-output" class="level1">
+<h1>Step 3: Pad the Output</h1>
+<p>One thing I’m noticing when looking at the output of each of these functions is that the length of the output vectors differ depending on the value we pass to the window argument.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 223</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(test_win8)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 243</code></pre>
+</div>
+</div>
+<p>I’m also noticing that these outputs are shorter than the length of the input vector (which is length 250). This makes sense because the function can’t take, for example, the 28 day average before the 28th day, and so the length of the output vector will be 27 elements shorter than the length of the input vector.</p>
+<p>This isn’t so great if we want to add the results of this function back into our original df, though, because all of the vectors in a df need to be the same length. One solution is to “pad” our output vector with the appropriate amount of NA values so that it is the same length as the input vector and can therefore get added as a column in our df. So let’s do that.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>ee_roll_func_padded <span class="ot">&lt;-</span> <span class="cf">function</span>(x, window, <span class="at">fn =</span> mean) {</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map_dbl</span>(</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">c</span>(window<span class="sc">:</span><span class="fu">length</span>(x)),</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">function</span>(a) {</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fn</span>(x[(a <span class="sc">-</span> window<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>a], <span class="at">na.rm =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">append</span>(<span class="fu">rep</span>(<span class="cn">NA_real_</span>, <span class="at">times =</span> window<span class="dv">-1</span>), <span class="at">values =</span> .)   <span class="co">#this will pad the front with a number of NAs equal</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">#to the window value minus 1</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>test_pad1 <span class="ot">&lt;-</span> <span class="fu">ee_roll_func_padded</span>(df<span class="sc">$</span>val, <span class="at">window =</span> <span class="dv">8</span>) <span class="co">#note that if we don't supply a function, it will use the mean</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>test_pad2 <span class="ot">&lt;-</span> <span class="fu">ee_roll_func_padded</span>(df<span class="sc">$</span>val, <span class="at">window =</span> <span class="dv">20</span>)</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>test_pad1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1]       NA       NA       NA       NA       NA       NA       NA 4.372225
+  [9] 4.634703 4.773530 4.751241 4.837210 4.835834 4.947405 5.023067 5.159392
+ [17] 5.259393 4.897024 5.154236 4.748580 4.790054 4.403228 4.522648 4.519479
+ [25] 4.480582 4.687750 4.701154 4.851093 4.652568 4.847791 4.811578 4.864686
+ [33] 4.672642 4.530416 4.582749 4.682431 4.717240 4.746443 4.652665 4.466197
+ [41] 4.611190 4.706513 4.568209 4.517622 4.872942 5.065789 5.186852 5.390533
+ [49] 5.395041 5.507209 5.403271 5.174482 5.179670 5.038712 5.020135 4.838939
+ [57] 4.875701 4.755078 4.865224 5.176775 5.202352 5.000563 4.797047 4.894503
+ [65] 4.810376 5.004196 4.977340 4.848640 4.753013 4.961929 5.142875 5.096611
+ [73] 5.248953 5.181127 4.941060 4.842180 4.693671 4.603321 4.722901 4.707204
+ [81] 4.667018 4.490093 4.642128 4.688560 4.940980 5.010917 4.865457 5.077085
+ [89] 4.943111 5.104771 5.225281 5.405689 5.459406 5.772019 5.873998 5.653444
+ [97] 5.727537 5.800159 5.719428 5.649400 5.519840 5.130266 4.799206 5.049435
+[105] 4.941485 4.868625 4.976469 5.154863 5.039641 5.037770 5.202060 4.829763
+[113] 5.054458 5.091318 5.113392 5.056769 4.999436 5.110106 5.070160 5.305183
+[121] 5.148242 5.163269 5.116071 5.209866 5.295613 5.295760 5.642222 5.797642
+[129] 5.800138 5.454873 5.221126 5.037245 5.077385 5.216140 5.121762 4.768109
+[137] 4.833714 5.100003 5.221173 5.314504 5.166415 4.883192 4.762374 4.661057
+[145] 4.620171 4.638887 4.789642 4.625148 4.791990 5.013448 4.746997 5.084247
+[153] 4.989471 4.899552 4.728081 4.728852 4.656302 4.596832 4.789755 4.571342
+[161] 4.750549 4.828835 4.946644 4.904696 4.951820 4.962249 4.952014 5.015733
+[169] 4.920095 4.695109 4.624958 4.687815 5.038474 5.314062 5.471601 5.659262
+[177] 5.667469 5.904322 5.968823 6.073087 5.663232 5.407968 5.177870 5.237016
+[185] 5.445955 5.679831 5.614257 5.233444 5.227926 5.097925 5.119121 4.940067
+[193] 4.803742 4.593282 4.749424 5.008870 4.902099 5.014811 5.048332 5.111487
+[201] 5.059727 4.972699 4.866232 4.952064 4.924344 5.077133 5.166955 5.172722
+[209] 5.304330 5.370433 5.299762 5.238768 5.450415 5.399515 5.197358 5.101200
+[217] 5.005289 5.243733 5.194603 5.205039 5.192346 5.082026 5.030877 5.072784
+[225] 5.032299 4.637538 4.781121 4.812846 4.758887 4.541770 4.712547 4.636478
+[233] 4.876790 5.177345 4.831910 4.870811 5.106333 5.162062 4.990127 5.058875
+[241] 4.603333 4.441803 4.618171 4.585108 4.444892 4.505732 4.827083 4.840013
+[249] 5.098275 5.081742</code></pre>
+</div>
+</div>
+<p>Notice that when we call <code>test_pad1</code> we get a vector with several NA values appended to the front. And when we look at the length of each of these vectors, we can see that they’re length 250</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(test_pad1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 250</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(test_pad2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 250</code></pre>
+</div>
+</div>
+</section>
+<section id="step-4-use-functions-to-add-columns-to-data" class="level1">
+<h1>Step 4: Use Functions to Add Columns to Data</h1>
+<p>Now that we have a function that reliably outputs a vector the same length as the columns in our dataframe, we can use it in conjunction with other tidyverse operations to add columns to our dataframe.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>df <span class="sc">%&gt;%</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">roll_avg =</span> <span class="fu">ee_roll_func_padded</span>(val, <span class="at">window =</span> <span class="dv">8</span>, <span class="at">fn =</span> mean))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 250 × 3
+     day   val roll_avg
+   &lt;int&gt; &lt;dbl&gt;    &lt;dbl&gt;
+ 1     1  2.64    NA   
+ 2     2  5.30    NA   
+ 3     3  4.29    NA   
+ 4     4  5.76    NA   
+ 5     5  3.75    NA   
+ 6     6  4.89    NA   
+ 7     7  4.50    NA   
+ 8     8  3.84     4.37
+ 9     9  4.74     4.63
+10    10  6.41     4.77
+# … with 240 more rows</code></pre>
+</div>
+</div>
+<p>Finally, what if we wanted to get the rolling mean, standard deviation, min, and max all as new columns in our dataframe using the function we created. Our function allows us to pass in whichever aggregation function we want to use (well, probably not <em>any</em> function), so we can use <code>pmap()</code> from <code>{purrr}</code> to iterate over multiple functions and, in combination with the <code>{glue}</code> package, also set meaningful names for the new variables.</p>
+<p>I’ll set up a dataframe called params that has the names of the new variables and the corresponding functions, then I’ll loop over these names and functions to create new columns in our original dataframe. I’m not going to go over all of the code here, but if you’re curious, it might be helpful to look at the documentation for <code>{glue}</code>, <code>{purrr}</code>, and possibly <code>{rlang}</code> (for the := operator).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(glue)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>params <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">names =</span> <span class="fu">c</span>(<span class="st">"roll_avg"</span>, <span class="st">"roll_sd"</span>, <span class="st">"roll_min"</span>, <span class="st">"roll_max"</span>),</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">fn =</span> <span class="fu">lst</span>(mean, sd, min, max)</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>params <span class="sc">%&gt;%</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pmap_dfc</span>(<span class="sc">~</span>df <span class="sc">%&gt;%</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>             <span class="fu">transmute</span>(<span class="st">"{.x}"</span> <span class="sc">:</span><span class="er">=</span> <span class="fu">ee_roll_func_padded</span>(val, <span class="at">window =</span> <span class="dv">8</span>, <span class="at">fn =</span> .y))) <span class="sc">%&gt;%</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(df, .)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 250 × 6
+     day   val roll_avg roll_sd roll_min roll_max
+   &lt;int&gt; &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+ 1     1  2.64    NA     NA        NA       NA   
+ 2     2  5.30    NA     NA        NA       NA   
+ 3     3  4.29    NA     NA        NA       NA   
+ 4     4  5.76    NA     NA        NA       NA   
+ 5     5  3.75    NA     NA        NA       NA   
+ 6     6  4.89    NA     NA        NA       NA   
+ 7     7  4.50    NA     NA        NA       NA   
+ 8     8  3.84     4.37   0.982     2.64     5.76
+ 9     9  4.74     4.63   0.691     3.75     5.76
+10    10  6.41     4.77   0.918     3.75     6.41
+# … with 240 more rows</code></pre>
+</div>
+</div>
+<p>This gives us, for each 8-day window (e.g.&nbsp;day 1-8, day 2-9, etc) an average, standard deviation, minimum, and maximum of the val column.</p>
+</section>
+<section id="wrapping-up" class="level1">
+<h1>Wrapping Up</h1>
+<p>As sort of a final note, this activity was meant to be both an exercise for me in working through some programming using window functions as well as a walkthrough/tutorial for others interested in writing functions. That said, when I dive back into the Kaggle data I mentioned earlier, I’ll use the functions from the <code>{RcppRoll}</code> package rather than my own. These are optimized to run quickly because they use C++ code and they’re going to be more efficient than anything I just wrote. This doesn’t matter much when we use a little 250 observation dataframe for demonstration, but it will make a difference working with several thousand observations at once.</p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">https://creativecommons.org/licenses/by-nc/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{ekholm2020,
+  author = {Eric Ekholm},
+  title = {Writing {Window} {Functions}},
+  date = {2020-05-06},
+  url = {https://www.ericekholm.com/posts/writing-window-functions},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-ekholm2020" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
+Eric Ekholm. 2020. <span>“Writing Window Functions.”</span> May 6, 2020.
+<a href="https://www.ericekholm.com/posts/writing-window-functions">https://www.ericekholm.com/posts/writing-window-functions</a>.
+</div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
