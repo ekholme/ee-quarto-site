@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.449">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2021-05-03">
+<meta name="description" content="A workaround for people in organizations that use Google Sites">
+
+<title>Eric Ekholm - Publishing Rmarkdown to Google Sites</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Eric Ekholm</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About Me</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html">Blog</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Publishing Rmarkdown to Google Sites</h1>
+                  <div>
+        <div class="description">
+          <p>A workaround for people in organizations that use Google Sites</p>
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">R</div>
+                <div class="quarto-category">tutorial</div>
+                <div class="quarto-category">Rmarkdown</div>
+                <div class="quarto-category">Google Sites</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">May 3, 2021</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of Contents</h2>
+   
+  <ul>
+  <li><a href="#sharing-html-a-sticking-point" id="toc-sharing-html-a-sticking-point" class="nav-link active" data-scroll-target="#sharing-html-a-sticking-point">Sharing HTML: A Sticking Point</a></li>
+  <li><a href="#google-sites-to-the-rescue-sort-of" id="toc-google-sites-to-the-rescue-sort-of" class="nav-link" data-scroll-target="#google-sites-to-the-rescue-sort-of">Google Sites to the Rescue (Sort of)</a></li>
+  <li><a href="#rendering-rmd-content-to-google-sites" id="toc-rendering-rmd-content-to-google-sites" class="nav-link" data-scroll-target="#rendering-rmd-content-to-google-sites">Rendering Rmd Content to Google Sites</a>
+  <ul class="collapse">
+  <li><a href="#step-1-create-your-report" id="toc-step-1-create-your-report" class="nav-link" data-scroll-target="#step-1-create-your-report">Step 1: Create Your Report</a></li>
+  <li><a href="#step-2-create-a-google-site" id="toc-step-2-create-a-google-site" class="nav-link" data-scroll-target="#step-2-create-a-google-site">Step 2: Create A Google Site</a></li>
+  <li><a href="#step-3-create-a-page-in-google-sites-to-house-your-report" id="toc-step-3-create-a-page-in-google-sites-to-house-your-report" class="nav-link" data-scroll-target="#step-3-create-a-page-in-google-sites-to-house-your-report">Step 3: Create a Page in Google Sites to House Your Report</a></li>
+  <li><a href="#step-4-view-the-source-code-of-your-html-report" id="toc-step-4-view-the-source-code-of-your-html-report" class="nav-link" data-scroll-target="#step-4-view-the-source-code-of-your-html-report">Step 4: View the Source Code of Your HTML Report</a></li>
+  <li><a href="#step-5-embed-the-source-code-in-your-google-sites-page" id="toc-step-5-embed-the-source-code-in-your-google-sites-page" class="nav-link" data-scroll-target="#step-5-embed-the-source-code-in-your-google-sites-page">Step 5: Embed the Source Code in Your Google Sites Page</a></li>
+  <li><a href="#step-6-publish-your-site" id="toc-step-6-publish-your-site" class="nav-link" data-scroll-target="#step-6-publish-your-site">Step 6: Publish Your Site</a></li>
+  </ul></li>
+  <li><a href="#closing-thoughts" id="toc-closing-thoughts" class="nav-link" data-scroll-target="#closing-thoughts">Closing Thoughts</a></li>
+  </ul>
+</nav>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>This post – and the digging behind it – was inspired by <a href="https://twitter.com/allison_horst">Allison Horst</a> and <a href="https://twitter.com/skyetetra">Jacqueline Nolis’s</a> recent-ish <a href="https://jnolis.com/blog/training_ds_for_teams/">blog post</a> about conflicts between data scientists and the teams they’ may be’re joining/supporting. It’s a great post, and I’d recommend it to anyone, whether you’re looking for a job, new to a job, or relatively senior in your organization. When I read it, the post struck a chord with me and led me to do some introspection about how much change I should be initiating/pushing for as a new employee in my organization vs how much I should be adapting to established workflows.</p>
+<p>Basically, this was my response:</p>
+<p><img src="https://i.kym-cdn.com/entries/icons/facebook/000/029/191/cover6.jpg" class="img-fluid"></p>
+<section id="sharing-html-a-sticking-point" class="level1">
+<h1>Sharing HTML: A Sticking Point</h1>
+<p>One specific issue that came to mind was sharing html documents. In short, when I joined the organization I work for (Chesterfield County Public Schools; CCPS), I started producing reports/products as html documents – because I like the flexibility and richness of html – which was not common in the organization, and so we went around and around on how best to share these files. We threw around several different ideas, ranging from emailing them as attachments to saving them on the network to exploring RStudio Connect. And, for various reasons, nothing we tried or proposed felt like the right solution.</p>
+</section>
+<section id="google-sites-to-the-rescue-sort-of" class="level1">
+<h1>Google Sites to the Rescue (Sort of)</h1>
+<p>That said, CCPS widely uses Google Sites. The vast majority of the people who work in CCPS aren’t web developers or analysts; it is, after all, a school division and not a tech company. And Google Sites provides a platform for all sorts of people in the organization to create good-looking sites, so from that perspective, it makes sense that we use Google Sites widely so that teachers, principals, and other non-technical folks can create websites. Given that, I wanted to see if there was a way to take the html reports and products I was making and host them on Google Sites, which would make my work much more integrated into established practices.</p>
+<p>And so after a lot of Googling and my hopes being dashed by a dramatic change sometime in the past 3-4 years from “classic Google Sites” to “new Google Sites,” I finally arrived at a solution that, although not ideal, seems to do generally what I want it to, which is what I’ll share below.</p>
+</section>
+<section id="rendering-rmd-content-to-google-sites" class="level1">
+<h1>Rendering Rmd Content to Google Sites</h1>
+<p>The rest of this post will walk through how to create an html report using Rmarkdown and then “publish” it to Google Sites. To illustrate this, I’m going to use the README for Allison Horst’s <a href="https://allisonhorst.github.io/palmerpenguins/"><code>{palmerpenguins}</code> package</a> as the example report to publish.</p>
+<section id="step-1-create-your-report" class="level2">
+<h2 class="anchored" data-anchor-id="step-1-create-your-report">Step 1: Create Your Report</h2>
+<p>Maybe obviously, the first thing you want to do is write and knit your report as an html file. Again, this can be any content you want, but I’m using the <code>{palmerpenguins}</code> README here. Another note is that, since we’re using html, we can include features like <code>{reactable}</code> tables or <code>{leaflet}</code> maps if we want, although those aren’t included here. We could also knit this as a <code>{distill}</code> article or add whatever styling/css we want.</p>
+</section>
+<section id="step-2-create-a-google-site" class="level2">
+<h2 class="anchored" data-anchor-id="step-2-create-a-google-site">Step 2: Create A Google Site</h2>
+<p>Once you have your report created, you can create the Google Site in Google Drive, like so:</p>
+<p><img src="img/google_site_drop.png" class="img-fluid"></p>
+<p>Or you can navigate to a site you already own/can edit.</p>
+<p><em>n.b.&nbsp;that I’m not really going to get into the weeds of working in Google Sites because that’s not really the point of this post, plus I’m not an expert myself, although basic usage is fairly straightforward.</em></p>
+</section>
+<section id="step-3-create-a-page-in-google-sites-to-house-your-report" class="level2">
+<h2 class="anchored" data-anchor-id="step-3-create-a-page-in-google-sites-to-house-your-report">Step 3: Create a Page in Google Sites to House Your Report</h2>
+<p>The details of what this means will depend on the layout of your site, but essentially you want to create a page that can house the report you just knit. You might end up with something that looks like this – a basic banner and then a blank body:</p>
+<p><img src="img/google_page_blank.png" class="img-fluid"></p>
+</section>
+<section id="step-4-view-the-source-code-of-your-html-report" class="level2">
+<h2 class="anchored" data-anchor-id="step-4-view-the-source-code-of-your-html-report">Step 4: View the Source Code of Your HTML Report</h2>
+<p>Next, you want to get to the source code of the html file you created. You can do this by either opening the file with a browser and then inspecting the page source (the exact process for doing this will depend on which browser you use), or you can open the html file in RStudio (or another text editor).</p>
+<p>Once you’re there, <em>select and copy all of the source code</em></p>
+</section>
+<section id="step-5-embed-the-source-code-in-your-google-sites-page" class="level2">
+<h2 class="anchored" data-anchor-id="step-5-embed-the-source-code-in-your-google-sites-page">Step 5: Embed the Source Code in Your Google Sites Page</h2>
+<p>Returning to the page where we want this report to live on our Google Site, we want to select the “Embed” option from the “Insert” menu on the right-hand side. You can also double left-click a blank part of your web page to have options pop up (&amp; you can select “Embed” from there).</p>
+<p>Once we click the “Embed” button, a dialogue box pops up:</p>
+<p><img src="img/embed_box.png" class="img-fluid"></p>
+<p>And we want to select the “Embed code” option. Once we’re here, we want to <em>paste in all of the html source code from our report file.</em> Then, click “Next,” and “Insert”</p>
+<p><strong>Don’t stress if you see a box that says “trouble loading embed. Reload to try again.” (see below) The content should load once you publish your site.</strong></p>
+<p><img src="img/embed_trouble.jpg" class="img-fluid"></p>
+<p>You also probably want to resize &amp; reposition the embedded content at this point. As far as I can tell, this is only possible via dragging, and there aren’t parameters you can set anywhere in the site to ensure consistent alignment (although there are grid lines to guide you).</p>
+</section>
+<section id="step-6-publish-your-site" class="level2">
+<h2 class="anchored" data-anchor-id="step-6-publish-your-site">Step 6: Publish Your Site</h2>
+<p>Now we’re ready to publish our site. Click the “Publish” button in the upper-right of the screen and select the options you want in the popup box. If you’re publishing from a Google account that belongs to an organization, your options may be pre-specified. For instance, when I publish from my work account, the default option is to allow only internal users to see the site (which is what I want in most cases).</p>
+<p>Once you’ve published your site, you can navigate to it and see the following:</p>
+<p><img src="img/finished_site.png" class="img-fluid"></p>
+<p>If you want to navigate to the example site I just created, you can find it <a href="https://sites.google.com/view/ekholme-test-penguins/home">here.</a></p>
+</section>
+</section>
+<section id="closing-thoughts" class="level1">
+<h1>Closing Thoughts</h1>
+<p>I came to this process as a way to publish reports &amp; other data tools (e.g.&nbsp;<code>{crosstalk}</code> “dashboards”) I was creating through Google Sites, since that’s what my organization uses. The benefits of this approach are that I’m integrating my work into a tool that others in CCPS are familiar with, and I’m not being a nuisance and asking our technology department to stand up a new tool/platform that only 1 or 2 people would use to create content. And both of these feel like pretty big wins to me from an organizational perspective.</p>
+<p>That said, there are obviously some drawbacks and situations when I wouldn’t do this. Publishing (and updating) anything is a fairly manual process since you’re copy/pasting html code, and as far as I can tell, there’s no way to automate this. So if you have reports/products that need to be updated daily, this might not be the best approach for you. Similarly, if you’re writing a bunch of parameterized reports and need a place to publish all of them, this process could get tedious very quickly. Overall, I think this publishing to Google Sites works best if you’re publishing static reports that don’t need to be updated too often (e.g.&nbsp;annual/semi annual progress reports; one-off project reports/special requests).</p>
+<p>Anyway, hopefully this walkthrough/discussion helps someone who’s in a similar position, and thanks again to Allison Horst &amp; Jacqueline Nolis for the blog that inspired me to delve into this more.</p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">https://creativecommons.org/licenses/by-nc/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{ekholm2021,
+  author = {Eric Ekholm},
+  title = {Publishing {Rmarkdown} to {Google} {Sites}},
+  date = {2021-05-03},
+  url = {https://www.ericekholm.com/posts/publishing-rmarkdown-to-google-sites},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-ekholm2021" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
+Eric Ekholm. 2021. <span>“Publishing Rmarkdown to Google Sites.”</span>
+May 3, 2021. <a href="https://www.ericekholm.com/posts/publishing-rmarkdown-to-google-sites">https://www.ericekholm.com/posts/publishing-rmarkdown-to-google-sites</a>.
+</div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

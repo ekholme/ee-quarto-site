@@ -65,7 +65,8 @@ ul.task-list{list-style: none;}
 
     const options = {
       valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
+      page: 25,
+    pagination: { item: "<li class='page-item'><a class='page page-link' href='#'></a></li>" },
       searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
     };
 
@@ -140,7 +141,7 @@ ul.task-list{list-style: none;}
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(9)</span></div><div class="category" data-category="API">API <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Clustering">Clustering <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Coding Challenge">Coding Challenge <span class="quarto-category-count">(1)</span></div><div class="category" data-category="D&amp;D">D&amp;D <span class="quarto-category-count">(2)</span></div><div class="category" data-category="EDA">EDA <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Function Writing">Function Writing <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Geography">Geography <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Poisson Regression">Poisson Regression <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Puzzles">Puzzles <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R">R <span class="quarto-category-count">(9)</span></div><div class="category" data-category="RVA">RVA <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Text Analysis">Text Analysis <span class="quarto-category-count">(2)</span></div><div class="category" data-category="The Office">The Office <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Tutorial">Tutorial <span class="quarto-category-count">(4)</span></div><div class="category" data-category="glm">glm <span class="quarto-category-count">(1)</span></div><div class="category" data-category="splines">splines <span class="quarto-category-count">(1)</span></div><div class="category" data-category="stats">stats <span class="quarto-category-count">(2)</span></div><div class="category" data-category="tidymodels">tidymodels <span class="quarto-category-count">(1)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(26)</span></div><div class="category" data-category="API">API <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Clustering">Clustering <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Coding Challenge">Coding Challenge <span class="quarto-category-count">(1)</span></div><div class="category" data-category="D&amp;D">D&amp;D <span class="quarto-category-count">(4)</span></div><div class="category" data-category="EDA">EDA <span class="quarto-category-count">(5)</span></div><div class="category" data-category="Function Writing">Function Writing <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Geography">Geography <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Google Sites">Google Sites <span class="quarto-category-count">(1)</span></div><div class="category" data-category="LPA">LPA <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Mario Kart">Mario Kart <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Poisson Regression">Poisson Regression <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Puzzles">Puzzles <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R">R <span class="quarto-category-count">(26)</span></div><div class="category" data-category="RVA">RVA <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Rmarkdown">Rmarkdown <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Scooby Doo">Scooby Doo <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Text Analysis">Text Analysis <span class="quarto-category-count">(2)</span></div><div class="category" data-category="The Office">The Office <span class="quarto-category-count">(3)</span></div><div class="category" data-category="Tutorial">Tutorial <span class="quarto-category-count">(4)</span></div><div class="category" data-category="VA datathon">VA datathon <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Your Mom's House">Your Mom's House <span class="quarto-category-count">(2)</span></div><div class="category" data-category="clustering">clustering <span class="quarto-category-count">(1)</span></div><div class="category" data-category="data viz">data viz <span class="quarto-category-count">(2)</span></div><div class="category" data-category="distill">distill <span class="quarto-category-count">(1)</span></div><div class="category" data-category="errors">errors <span class="quarto-category-count">(1)</span></div><div class="category" data-category="geography">geography <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ggplot">ggplot <span class="quarto-category-count">(1)</span></div><div class="category" data-category="glm">glm <span class="quarto-category-count">(1)</span></div><div class="category" data-category="gt">gt <span class="quarto-category-count">(1)</span></div><div class="category" data-category="logistic regression">logistic regression <span class="quarto-category-count">(1)</span></div><div class="category" data-category="metacognition">metacognition <span class="quarto-category-count">(1)</span></div><div class="category" data-category="programming">programming <span class="quarto-category-count">(4)</span></div><div class="category" data-category="purrr">purrr <span class="quarto-category-count">(1)</span></div><div class="category" data-category="puzzle">puzzle <span class="quarto-category-count">(1)</span></div><div class="category" data-category="regression">regression <span class="quarto-category-count">(4)</span></div><div class="category" data-category="shiny">shiny <span class="quarto-category-count">(1)</span></div><div class="category" data-category="simulation">simulation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="splines">splines <span class="quarto-category-count">(1)</span></div><div class="category" data-category="stats">stats <span class="quarto-category-count">(2)</span></div><div class="category" data-category="tables">tables <span class="quarto-category-count">(1)</span></div><div class="category" data-category="text analysis">text analysis <span class="quarto-category-count">(1)</span></div><div class="category" data-category="tidymodels">tidymodels <span class="quarto-category-count">(2)</span></div><div class="category" data-category="torch">torch <span class="quarto-category-count">(1)</span></div><div class="category" data-category="tutorial">tutorial <span class="quarto-category-count">(8)</span></div></div></div>
 <!-- main -->
 <main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
 
@@ -153,7 +154,547 @@ ul.task-list{list-style: none;}
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="R,Tutorial,API,D&amp;D,EDA" data-listing-date-sort="1609131600000" data-listing-file-modified-sort="1655490604699" data-listing-reading-time-sort="10.86">
+<div class="quarto-post image-right" data-index="0" data-categories="R,programming,metacognition" data-listing-date-sort="1653969600000" data-listing-file-modified-sort="1656102612024" data-listing-reading-time-sort="6.69">
+<div class="thumbnail">
+<a href="./posts/function-writing-metacognition/index.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/function-writing-metacognition/index.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/function-writing-metacognition/index.html">
+<h3 class="no-anchor listing-title">
+Function Writing Metacognition
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('programming'); return false;">
+programming
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('metacognition'); return false;">
+metacognition
+</div>
+</div>
+<a href="./posts/function-writing-metacognition/index.html">
+<div class="listing-description">
+<p>Metacognition about writing a simple function to convert percentages to strings</p>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/function-writing-metacognition/index.html">
+<div class="listing-date">
+May 31, 2022
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-categories="R,programming,purrr" data-listing-date-sort="1647316800000" data-listing-file-modified-sort="1656102468234" data-listing-reading-time-sort="9.045">
+<div class="thumbnail">
+<a href="./posts/combining-pmap-and-docall/index.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/combining-pmap-and-docall/index.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/combining-pmap-and-docall/index.html">
+<h3 class="no-anchor listing-title">
+Combining pmap and do.call
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('programming'); return false;">
+programming
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('purrr'); return false;">
+purrr
+</div>
+</div>
+<a href="./posts/combining-pmap-and-docall/index.html">
+<div class="listing-description">
+<p>A pattern to create flexible analysis workflows</p>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/combining-pmap-and-docall/index.html">
+<div class="listing-date">
+Mar 15, 2022
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="2" data-categories="R,torch,regression" data-listing-date-sort="1637384400000" data-listing-file-modified-sort="1656102306504" data-listing-reading-time-sort="9.625">
+<div class="thumbnail">
+<a href="./posts/fitting-a-multiple-regression-with-torch/index.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/fitting-a-multiple-regression-with-torch/index.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/fitting-a-multiple-regression-with-torch/index.html">
+<h3 class="no-anchor listing-title">
+Fitting a Multiple Regression with Torch
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('torch'); return false;">
+torch
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('regression'); return false;">
+regression
+</div>
+</div>
+<a href="./posts/fitting-a-multiple-regression-with-torch/index.html">
+<div class="listing-description">
+<p>Learning torch by fitting a multiple regression model</p>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/fitting-a-multiple-regression-with-torch/index.html">
+<div class="listing-date">
+Nov 20, 2021
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="3" data-categories="R,shiny,VA datathon,geography" data-listing-date-sort="1634097600000" data-listing-file-modified-sort="1656101641529" data-listing-reading-time-sort="3.495">
+<div class="thumbnail">
+<a href="./posts/virginia-datathon-recap/index.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/virginia-datathon-recap/index.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/virginia-datathon-recap/index.html">
+<h3 class="no-anchor listing-title">
+2021 Virginia Datathon Recap
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('shiny'); return false;">
+shiny
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('VA datathon'); return false;">
+VA datathon
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('geography'); return false;">
+geography
+</div>
+</div>
+<a href="./posts/virginia-datathon-recap/index.html">
+<div class="listing-description">
+<p>Lessons learned and takeaways from the 2021 VA Datathon</p>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/virginia-datathon-recap/index.html">
+<div class="listing-date">
+Oct 13, 2021
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="4" data-categories="R,EDA,Scooby Doo,regression" data-listing-date-sort="1626753600000" data-listing-file-modified-sort="1656101343895" data-listing-reading-time-sort="6.605">
+<div class="thumbnail">
+<a href="./posts/scooby-doo-eda/index.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/scooby-doo-eda/index.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/scooby-doo-eda/index.html">
+<h3 class="no-anchor listing-title">
+Scooby Doo EDA
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('EDA'); return false;">
+EDA
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Scooby Doo'); return false;">
+Scooby Doo
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('regression'); return false;">
+regression
+</div>
+</div>
+<a href="./posts/scooby-doo-eda/index.html">
+<div class="listing-description">
+<p>Stream-of-consciousness exploration and modeling</p>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/scooby-doo-eda/index.html">
+<div class="listing-date">
+Jul 20, 2021
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="5" data-categories="R,tutorial,errors,programming" data-listing-date-sort="1625198400000" data-listing-file-modified-sort="1656101110863" data-listing-reading-time-sort="7.035">
+<div class="thumbnail">
+<p><a href="./posts/robustly-create-parameterized-reports/index.html"> <img src="https://media1.tenor.com/images/dfbd2101a59e39cfa42938026e9ef19b/tenor.gif?itemid=9281985" class="thumnail-image"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/robustly-create-parameterized-reports/index.html">
+<h3 class="no-anchor listing-title">
+Robustly Create Parameterized Reports
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('tutorial'); return false;">
+tutorial
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('errors'); return false;">
+errors
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('programming'); return false;">
+programming
+</div>
+</div>
+<a href="./posts/robustly-create-parameterized-reports/index.html">
+<div class="listing-description">
+<p>Wrapping functions to safeguard against errors</p>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/robustly-create-parameterized-reports/index.html">
+<div class="listing-date">
+Jul 2, 2021
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="6" data-categories="R,tutorial,regression,Mario Kart" data-listing-date-sort="1622347200000" data-listing-file-modified-sort="1656100908161" data-listing-reading-time-sort="9.355">
+<div class="thumbnail">
+<a href="./posts/its-a-me-linear-regression/index.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/its-a-me-linear-regression/index.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/its-a-me-linear-regression/index.html">
+<h3 class="no-anchor listing-title">
+It’s-a Me, Linear Regression
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('tutorial'); return false;">
+tutorial
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('regression'); return false;">
+regression
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Mario Kart'); return false;">
+Mario Kart
+</div>
+</div>
+<a href="./posts/its-a-me-linear-regression/index.html">
+<div class="listing-description">
+<p>Using feature engineering and linear regression to predict Mario Kart world records</p>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/its-a-me-linear-regression/index.html">
+<div class="listing-date">
+May 30, 2021
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="7" data-categories="R,tutorial,Rmarkdown,Google Sites" data-listing-date-sort="1620014400000" data-listing-file-modified-sort="1656100680043" data-listing-reading-time-sort="6.205">
+<div class="thumbnail">
+<p><a href="./posts/publishing-rmarkdown-to-google-sites/index.html"> <img src="https://i.kym-cdn.com/entries/icons/facebook/000/029/191/cover6.jpg" class="thumnail-image"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/publishing-rmarkdown-to-google-sites/index.html">
+<h3 class="no-anchor listing-title">
+Publishing Rmarkdown to Google Sites
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('tutorial'); return false;">
+tutorial
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Rmarkdown'); return false;">
+Rmarkdown
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Google Sites'); return false;">
+Google Sites
+</div>
+</div>
+<a href="./posts/publishing-rmarkdown-to-google-sites/index.html">
+<div class="listing-description">
+<p>A workaround for people in organizations that use Google Sites</p>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/publishing-rmarkdown-to-google-sites/index.html">
+<div class="listing-date">
+May 3, 2021
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="8" data-categories="R,tutorial,Your Mom" s="" house,programming'="" data-listing-date-sort="1619323200000" data-listing-file-modified-sort="1656100435232" data-listing-reading-time-sort="1.38">
+<div class="thumbnail">
+<a href="./posts/this-code-is-bigtime/index.html">
+<div class="thumbnail-image"></div>
+</a>
+</div>
+<div class="body"><a href="./posts/this-code-is-bigtime/index.html">
+<h3 class="no-anchor listing-title">This Code is Big Time</h3>
+<div class="listing-subtitle"></div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">R</div>
+<div class="listing-category" onclick="window.quartoListingCategory('tutorial'); return false;">tutorial</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Your Mom's House'); return false;">Your Mom's House</div>
+<div class="listing-category" onclick="window.quartoListingCategory('programming'); return false;">programming</div>
+</div>
+<a href="./posts/this-code-is-bigtime/index.html">
+<div class="delink listing-description">
+Wrap your R code in Your Mom's House audio drops
+</div>
+</a></div>
+<div class="metadata"><a href="./posts/this-code-is-bigtime/index.html">
+<div class="listing-date">Apr 25, 2021</div>
+</a></div>
+</div>
+<div class="quarto-post image-right" data-index="9" data-categories="R,tutorial,distill" data-listing-date-sort="1617595200000" data-listing-file-modified-sort="1656100273426" data-listing-reading-time-sort="5.635">
+<div class="thumbnail">
+<p><a href="./posts/personalizing-the-distill-template/index.html"> <img src="./posts/personalizing-the-distill-template/img/default_distill.PNG" class="thumnail-image"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/personalizing-the-distill-template/index.html">
+<h3 class="no-anchor listing-title">
+Personalizing the Distill Template
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('tutorial'); return false;">
+tutorial
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('distill'); return false;">
+distill
+</div>
+</div>
+<a href="./posts/personalizing-the-distill-template/index.html">
+<div class="listing-description">
+<p>How to modify the distill template to fit your preferences</p>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/personalizing-the-distill-template/index.html">
+<div class="listing-date">
+Apr 5, 2021
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="10" data-categories="R,tutorial,data viz,ggplot" data-listing-date-sort="1616558400000" data-listing-file-modified-sort="1656099891303" data-listing-reading-time-sort="7.265">
+<div class="thumbnail">
+<p><a href="./posts/improving-ggplots-with-text-color/index.html"> <img src="https://github.com/ekholme/TidyTuesday/blob/master/2021%20-%2011%20-%20bechdel%20test/bechdel.png?raw=true" class="thumnail-image"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/improving-ggplots-with-text-color/index.html">
+<h3 class="no-anchor listing-title">
+Improving ggplots with Text Color
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('tutorial'); return false;">
+tutorial
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('data viz'); return false;">
+data viz
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('ggplot'); return false;">
+ggplot
+</div>
+</div>
+<a href="./posts/improving-ggplots-with-text-color/index.html">
+<div class="listing-description">
+<p>A walkthrough of how – and when – to replace your legend with colored text</p>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/improving-ggplots-with-text-color/index.html">
+<div class="listing-date">
+Mar 24, 2021
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="11" data-categories="R,tutorial,D&amp;D,regression" data-listing-date-sort="1615352400000" data-listing-file-modified-sort="1656099241494" data-listing-reading-time-sort="10.755">
+<div class="thumbnail">
+<a href="./posts/dungeons-and-dragons-part-4/index.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/dungeons-and-dragons-part-4/index.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/dungeons-and-dragons-part-4/index.html">
+<h3 class="no-anchor listing-title">
+Dungeons and Dragons - Part 4
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('tutorial'); return false;">
+tutorial
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('D&amp;D'); return false;">
+D&amp;D
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('regression'); return false;">
+regression
+</div>
+</div>
+<a href="./posts/dungeons-and-dragons-part-4/index.html">
+<div class="listing-description">
+<p>Predicting monster challenge ratings &amp; examining regression diagnostics</p>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/dungeons-and-dragons-part-4/index.html">
+<div class="listing-date">
+Mar 10, 2021
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="12" data-categories="R,tutorial,D&amp;D,LPA,clustering" data-listing-date-sort="1612328400000" data-listing-file-modified-sort="1656016102765" data-listing-reading-time-sort="11.925">
+<div class="thumbnail">
+<a href="./posts/dungeons-and-dragons-part-3/index.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/dungeons-and-dragons-part-3/index.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/dungeons-and-dragons-part-3/index.html">
+<h3 class="no-anchor listing-title">
+Dungeons and Dragons - Part 3
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('tutorial'); return false;">
+tutorial
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('D&amp;D'); return false;">
+D&amp;D
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('LPA'); return false;">
+LPA
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('clustering'); return false;">
+clustering
+</div>
+</div>
+<a href="./posts/dungeons-and-dragons-part-3/index.html">
+<div class="listing-description">
+<p>Grouping D&amp;D monsters using latent profile analysis</p>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/dungeons-and-dragons-part-3/index.html">
+<div class="listing-date">
+Feb 3, 2021
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="13" data-categories="R,Tutorial,API,D&amp;D,EDA" data-listing-date-sort="1609131600000" data-listing-file-modified-sort="1655490604699" data-listing-reading-time-sort="10.86">
 <div class="thumbnail">
 <p><a href="./posts/dungeons-and-dragons-part-2/index.html"> <img src="https://media-waterdeep.cursecdn.com/avatars/thumbnails/0/121/1000/1000/636252748079664097.jpeg" class="thumnail-image"> </a></p>
 </div>
@@ -197,7 +738,7 @@ Dec 28, 2020
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="R,Tutorial,API,D&amp;D" data-listing-date-sort="1608267600000" data-listing-file-modified-sort="1655490171373" data-listing-reading-time-sort="5.035">
+<div class="quarto-post image-right" data-index="14" data-categories="R,Tutorial,API,D&amp;D" data-listing-date-sort="1608267600000" data-listing-file-modified-sort="1655490171373" data-listing-reading-time-sort="5.035">
 <div class="thumbnail">
 <a href="./posts/dungeons-and-dragons-part-1/index.html">
 <div class="thumbnail-image">
@@ -242,7 +783,7 @@ Dec 18, 2020
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="R,tidymodels,stats,splines" data-listing-date-sort="1605675600000" data-listing-file-modified-sort="1655491118008" data-listing-reading-time-sort="7.5">
+<div class="quarto-post image-right" data-index="15" data-categories="R,tidymodels,stats,splines" data-listing-date-sort="1605675600000" data-listing-file-modified-sort="1655491193321" data-listing-reading-time-sort="7.5">
 <div class="thumbnail">
 <a href="./posts/predicting-mobile-phone-subscription-growth/index.html">
 <div class="thumbnail-image">
@@ -287,7 +828,160 @@ Nov 18, 2020
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-categories="R,Tutorial,glm,Poisson Regression,stats" data-listing-date-sort="1588737600000" data-listing-file-modified-sort="1655488731021" data-listing-reading-time-sort="9.595">
+<div class="quarto-post image-right" data-index="16" data-categories="R,gt,tables,data viz" data-listing-date-sort="1603684800000" data-listing-file-modified-sort="1655893571136" data-listing-reading-time-sort="7.59">
+<div class="thumbnail">
+<a href="./posts/rstudio-table-contest-submission/index.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/rstudio-table-contest-submission/index.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/rstudio-table-contest-submission/index.html">
+<h3 class="no-anchor listing-title">
+RStudio Table Contest Submission
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('gt'); return false;">
+gt
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('tables'); return false;">
+tables
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('data viz'); return false;">
+data viz
+</div>
+</div>
+<a href="./posts/rstudio-table-contest-submission/index.html">
+<div class="listing-description">
+<p>And impressions of the {gt} package</p>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/rstudio-table-contest-submission/index.html">
+<div class="listing-date">
+Oct 26, 2020
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="17" data-categories="R,simulation,puzzle" data-listing-date-sort="1602993600000" data-listing-file-modified-sort="1655933404538" data-listing-reading-time-sort="5.005">
+<div class="thumbnail">
+<a href="./posts/simulating-triangles/index.html">
+<div class="thumbnail-image">
+
+</div>
+</a><p><a href="./posts/simulating-triangles/index.html"></a></p>
+</div>
+<div class="body">
+<a href="./posts/simulating-triangles/index.html">
+<h3 class="no-anchor listing-title">
+Simulating Triangles?
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('simulation'); return false;">
+simulation
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('puzzle'); return false;">
+puzzle
+</div>
+</div>
+<a href="./posts/simulating-triangles/index.html">
+<div class="listing-description">
+<p>Determining whether random numbers can form a triangle using a simulation</p>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/simulating-triangles/index.html">
+<div class="listing-date">
+Oct 18, 2020
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="18" data-categories="R,text analysis,Your Mom" s="" house,eda'="" data-listing-date-sort="1600574400000" data-listing-file-modified-sort="1655934602349" data-listing-reading-time-sort="12.295">
+<div class="thumbnail">
+<a href="./posts/your-moms-house-analysis/index.html">
+<div class="thumbnail-image"></div>
+</a>
+</div>
+<div class="body"><a href="./posts/your-moms-house-analysis/index.html">
+<h3 class="no-anchor listing-title">Your Mom's House Analysis</h3>
+<div class="listing-subtitle"></div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">R</div>
+<div class="listing-category" onclick="window.quartoListingCategory('text analysis'); return false;">text analysis</div>
+<div class="listing-category" onclick="window.quartoListingCategory('Your Mom's House'); return false;">Your Mom's House</div>
+<div class="listing-category" onclick="window.quartoListingCategory('EDA'); return false;">EDA</div>
+</div>
+<a href="./posts/your-moms-house-analysis/index.html">
+<div class="delink listing-description">
+An exploratory analysis of transcripts from the YMH podcast.
+</div>
+</a></div>
+<div class="metadata"><a href="./posts/your-moms-house-analysis/index.html">
+<div class="listing-date">Sep 20, 2020</div>
+</a></div>
+</div>
+<div class="quarto-post image-right" data-index="19" data-categories="R,tidymodels,The Office,logistic regression" data-listing-date-sort="1598673600000" data-listing-file-modified-sort="1655894259183" data-listing-reading-time-sort="14.375">
+<div class="thumbnail">
+<p><a href="./posts/scrantonicity-part-3/index.html"> <img src="https://media.giphy.com/media/2PzAbPcFBdNgk/giphy.gif" class="thumnail-image"> </a></p>
+</div>
+<div class="body">
+<a href="./posts/scrantonicity-part-3/index.html">
+<h3 class="no-anchor listing-title">
+Scrantonicity - Part 3
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('R'); return false;">
+R
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('tidymodels'); return false;">
+tidymodels
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('The Office'); return false;">
+The Office
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('logistic regression'); return false;">
+logistic regression
+</div>
+</div>
+<a href="./posts/scrantonicity-part-3/index.html">
+<div class="listing-description">
+<p>Predicting the speaker of dialogue from The Office</p>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./posts/scrantonicity-part-3/index.html">
+<div class="listing-date">
+Aug 29, 2020
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="20" data-categories="R,Tutorial,glm,Poisson Regression,stats" data-listing-date-sort="1588737600000" data-listing-file-modified-sort="1655488731021" data-listing-reading-time-sort="9.595">
 <div class="thumbnail">
 <a href="./posts/unconsciousness-in-the-xmen/index.html">
 <div class="thumbnail-image">
@@ -335,7 +1029,7 @@ May 6, 2020
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="4" data-categories="R,Tutorial,Function Writing" data-listing-date-sort="1588737600000" data-listing-file-modified-sort="1655487549024" data-listing-reading-time-sort="7.145">
+<div class="quarto-post image-right" data-index="21" data-categories="R,Tutorial,Function Writing" data-listing-date-sort="1588737600000" data-listing-file-modified-sort="1655487549024" data-listing-reading-time-sort="7.145">
 <div class="thumbnail">
 <a href="./posts/writing-window-functions/index.html">
 <div class="thumbnail-image">
@@ -377,7 +1071,7 @@ May 6, 2020
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="5" data-categories="R,RVA,Geography,EDA" data-listing-date-sort="1587614400000" data-listing-file-modified-sort="1655472003687" data-listing-reading-time-sort="6.175">
+<div class="quarto-post image-right" data-index="22" data-categories="R,RVA,Geography,EDA" data-listing-date-sort="1587614400000" data-listing-file-modified-sort="1655472003687" data-listing-reading-time-sort="6.175">
 <div class="thumbnail">
 <p><a href="./posts/rva-pets/index.html"> <img src="https://github.com/ekholme/viz_portfolio/blob/master/RVA-VA%20Data/rva_pets_map.png?raw=true" class="thumnail-image"> </a></p>
 </div>
@@ -418,7 +1112,7 @@ Apr 23, 2020
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="6" data-categories="R,The Office,Text Analysis,Clustering" data-listing-date-sort="1587009600000" data-listing-file-modified-sort="1655472498825" data-listing-reading-time-sort="7.64">
+<div class="quarto-post image-right" data-index="23" data-categories="R,The Office,Text Analysis,Clustering" data-listing-date-sort="1587009600000" data-listing-file-modified-sort="1655472498825" data-listing-reading-time-sort="7.64">
 <div class="thumbnail">
 <a href="./posts/scrantonicity-part-2/index.html">
 <div class="thumbnail-image">
@@ -463,7 +1157,7 @@ Apr 16, 2020
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="7" data-categories="R,Puzzles,Coding Challenge" data-listing-date-sort="1585627200000" data-listing-file-modified-sort="1655471979168" data-listing-reading-time-sort="4.47">
+<div class="quarto-post image-right" data-index="24" data-categories="R,Puzzles,Coding Challenge" data-listing-date-sort="1585627200000" data-listing-file-modified-sort="1655471979168" data-listing-reading-time-sort="4.47">
 <div class="thumbnail">
 <a href="./posts/riddler-express-march-20-2020/index.html">
 <div class="thumbnail-image">
@@ -505,9 +1199,9 @@ Mar 31, 2020
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="8" data-categories="R,The Office,EDA,Text Analysis" data-listing-date-sort="1584158400000" data-listing-file-modified-sort="1655471935251" data-listing-reading-time-sort="11.485">
+<div class="quarto-post image-right" data-index="25" data-categories="R,The Office,EDA,Text Analysis" data-listing-date-sort="1584158400000" data-listing-file-modified-sort="1655471935251" data-listing-reading-time-sort="11.485">
 <div class="thumbnail">
-<p><a href="./posts/scrantonicity-part-1/index.html"> <img src="https://github.com/ekholme/TidyTuesday/blob/master/53%20-%20the%20office/jim_pam_sentiments.jpg?raw=true" class="thumnail-image"> </a></p>
+<p><a href="./posts/scrantonicity-part-1/index.html"> <img data-src="https://github.com/ekholme/TidyTuesday/blob/master/53%20-%20the%20office/jim_pam_sentiments.jpg?raw=true" class="thumnail-image"> </a></p>
 </div>
 <div class="body">
 <a href="./posts/scrantonicity-part-1/index.html">
@@ -550,6 +1244,9 @@ Mar 14, 2020
 <div class="listing-no-matching d-none">
 No matching items
 </div>
+<nav id="listing-pagination" class="listing-pagination" aria-label="Page Navigation">
+  <ul class="pagination"></ul>
+</nav>
 </div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {

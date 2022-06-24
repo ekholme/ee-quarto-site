@@ -1,0 +1,296 @@
+---
+title: "Combining pmap and do.call"
+description: |
+  A pattern to create flexible analysis workflows
+date: "2022-03-15"
+categories: [R, programming, purrr]
+preview: img/purrr_hex.png
+---
+
+
+The point of this blog post is to walk through a pattern I've started using in some of my analyses that combines `do.call()`, `purrr::pmap()`, and some wrapper functions to customize how a given analysis gets run. I'll start by demonstrating `do.call()` and `pmap()` separately, then showing how you can use them together to do some cool things. I'm not going to go super in-depth on either `do.call()` or `pmap()`, so it might be worthwhile to look into some of the documentation for those functions separately.
+
+Also -- I'm going to use the [`{palmerpenguins}`](https://allisonhorst.github.io/palmerpenguins/) data here to illustrate this workflow. And, like, as is typically the case with toy data, the point here isn't to run a suite of analyses that answer meaningful questions about this data, but rather to demonstrate how to combine these functions in a way that could help you answer meaningful questions for your own data.
+
+With all of that said, onward and upward!
+
+# Setup
+
+To start, let's load the packages we'll need.
+
+```{r setup, echo = TRUE, results = "hide", warning = FALSE, message = FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+
+library(tidyverse)
+library(palmerpenguins)
+
+```
+
+
+Let's also take a quick peeksie at the penguins data, although the content of the data isn't terrible important here.
+```{r}
+glimpse(penguins)
+```
+
+
+Cool cool. Now, let's assume we want to analyze this penguins data. Let's say we want to estimate a mean, a correlation coefficient, and fit a linear regression, and that this is our workflow (n.b. again that this probably shouldn't be your *actual* workflow when you analyze data).
+
+Let's say we want to get the mean body mass -- this is easy for us.
+```{r}
+mean(penguins$body_mass_g, na.rm = TRUE)
+```
+
+
+Another way we can do the exact same thing is with `do.call()`. `do.call()` has a "what" argument, to which you provide the function you want to call (or the character string name of the function), and an "args" argument, where you list the arguments to pass to "what". It has some other arguments, too, but I'm going to ignore those here. So, the call below does the exact same thing we did previously:
+
+```{r}
+do.call(what = "mean", args = list(penguins$body_mass_g, na.rm = TRUE))
+```
+
+
+The nice thing about do.call is that it's very flexible. Say we wanted to run a correlation between body mass and bill depth. We can do this by directly calling the `cor()` function:
+
+```{r}
+# option 1:
+cor(
+    x = penguins$body_mass_g,
+    y = penguins$bill_depth_mm, 
+    use = "pairwise.complete.obs"
+)
+```
+
+
+Or we can do the exact same thing via `do.call()`:
+
+```{r}
+# option 2
+do.call("cor",
+    args = list(
+        x = penguins$body_mass_g,
+        y = penguins$bill_depth_mm, 
+        use = "pairwise.complete.obs"
+    )
+)
+```
+
+
+Or say we wanted to run a linear regression with body mass regressed on bill depth and sex. Again, we can call `lm()` directly:
+
+```{r}
+# option 1:
+res1 <- lm(body_mass_g ~ bill_depth_mm + sex, data = penguins, na.action = "na.omit")
+
+broom::glance(res1)
+```
+
+
+Or via `do.call()`:
+
+```{r}
+#option 2
+res2 <- do.call("lm", args = list(
+    formula = body_mass_g ~ bill_depth_mm + sex,
+    data = penguins,
+    na.action = "na.omit"
+))
+
+broom::glance(res2)
+```
+
+
+## Combining with purrr::pmap ()
+
+Just based on the above, `do.call()` isn't really doing anything useful for us. It's just a slightly more verbose way to call a function. But where `do.call()` really shines is when you pair it with some iteration -- which we'll do now, via `purrr::pmap()` -- and/or some conditional logic (which we'll add later via a wrapper function). Basically it shines with you program with it, is what I'm trying to say.
+
+For those that don't know, `purrr::pmap()` extends `purrr::map()` to allow for an arbitrary number of arguments to map over in parallel. If you're not familiar with `purrr::map()`, [Hadley's R for Data Science book](https://r4ds.had.co.nz/iteration.html) has a good chapter on it.  But anyway, let's illustrate `pmap()` by running a handful of correlations on some sample data
+
+```{r}
+#generate data
+a <- rnorm(100)
+b <- rnorm(100)
+d <- rnorm(100)
+
+#put data into a list
+sample_args <- list(
+    x = list(a, b, d),
+    y = list(b, d, a)
+)
+```
+
+
+This gives us a list of x and y values, where the first element of `x` is `a`, the first element of `y` is `b`, etc etc. We can run a bunch of correlations -- `x[[1]]` with `y[[1]]`, `x[[2]]` with `y[[2]]` etc -- by using `pmap()` and `cor()`:
+
+```{r}
+pmap(sample_args, ~cor(..1, ..2, use = "pairwise.complete.obs"))
+```
+
+
+Which can be a helpful pattern. 
+
+What's potentially more interesting, though, is that we can also use `pmap()` in conjunction with `do.call()` to not only iterate through arguments passed to a given function (like we do with `cor()` above), but to also iterate over various functions:
+
+```{r}
+#create a vector of function names
+funs <- c("mean", "cor", "lm")
+
+#create a list of function arguments, where each element of the list is a list of args
+fun_args <- list(
+    list(penguins$body_mass_g, na.rm = TRUE),
+    list(
+        penguins$body_mass_g, 
+        penguins$bill_depth_mm, 
+        use = "pairwise.complete.obs"
+        ),
+    list(
+        formula = body_mass_g ~ bill_depth_mm + sex,
+        data = penguins,
+        na.action = "na.omit"
+    )
+)
+
+#combine the function names and args into a tibble
+fun_iterator <- tibble(
+    f = funs,
+    fa = fun_args
+)
+
+#take a look at the tibble
+glimpse(fun_iterator)
+```
+
+
+What we're doing in the above code is:
+
+- creating a list of function names;
+- creating a list of function arguments (where each element of the list is a list of args);
+- binding these lists together in a tibble.
+
+Then, we can then execute all of these functions with their corresponding arguments with `do.call()`:
+
+```{r}
+res <- pmap(fun_iterator, ~ do.call(..1, ..2))
+
+```
+
+Within `do.call()`, we're passing the first column of our `fun_iterator` table to the first argument of `do.call()` (as denoted by ..1), and the second column of the tibble to the second argument of `do.call()` (as denoted by ..2). This will give us a list, `res`, where each element is the result of the function/argument combination in our `fun_iterator` tibble.
+
+To prove it worked, let's look at the results:
+
+```{r}
+#mean
+res[[1]]
+```
+
+```{r}
+#cor
+res[[2]]
+```
+
+```{r}
+#lm
+broom::glance(res[[3]])
+```
+
+
+In theory, you can specify an entire set of analyses ahead of time and then execute them using `pmap()` + `do.call()` if you wanted to. So let's at one way we might do that via a wrapper function.
+
+## Wrap Your Analyses
+
+The real power of this is to write a function that wraps all of these components and allows you to run just a subset of them. And this is how I actually use this pattern in my own work. But I'll touch on some real-world applications after we go through the code below.
+
+Let's start by writing a wrapper function that has 1 argument, `include`, where `include` is a character vector of function names. 
+
+```{r, eval = FALSE}
+analyze_penguins <- function(include = c("mean", "cor", "lm")) {
+  #some code here
+}
+```
+
+
+Then let's drop all of the code that we just ran into the function:
+
+```{r, eval = FALSE}
+analyze_penguins <- function(include = c("mean", "cor", "lm")) {
+    #we already ran all of this
+    funs <- c("mean", "cor", "lm")
+
+    fun_args <- list(
+        list(penguins$body_mass_g, na.rm = TRUE),
+        list(
+            penguins$body_mass_g,
+            penguins$bill_depth_mm,
+            use = "pairwise.complete.obs"
+        ),
+        list(
+            formula = body_mass_g ~ bill_depth_mm + sex,
+            data = penguins,
+            na.action = "na.omit"
+        )
+    )
+
+    fun_iterator <- tibble(
+        f = funs,
+        fa = fun_args
+    )
+}
+```
+
+
+And then we subset the `fun_iterator` tibble to only include the functions we include in the `include` argument of our wrapper function, and executed only those functions via `pmap()` + `do.call()`:
+
+```{r}
+analyze_penguins <- function(include = c("mean", "cor", "lm")) {
+    #this is all the same as previously
+    funs <- c("mean", "cor", "lm")
+
+    fun_args <- list(
+        list(penguins$body_mass_g, na.rm = TRUE),
+        list(
+            penguins$body_mass_g,
+            penguins$bill_depth_mm,
+            use = "pairwise.complete.obs"
+        ),
+        list(
+            formula = body_mass_g ~ bill_depth_mm + sex,
+            data = penguins,
+            na.action = "na.omit"
+        )
+    )
+
+    fun_iterator <- tibble(
+        f = funs,
+        fa = fun_args
+    )
+
+    # filter to only a subset of these functions that we've asked for in the wrapper args
+    fun_iterator <- fun_iterator[fun_iterator$f %in% include, ]
+    
+    #execute these functions
+    pmap(fun_iterator, ~do.call(..1, ..2))
+}
+```
+
+
+So, say we just wanted the mean:
+
+```{r}
+analyze_penguins("mean")
+```
+
+
+Or just the mean and the correlation:
+
+```{r}
+analyze_penguins(c("mean", "cor"))
+```
+
+
+Or just the linear model:
+
+```{r}
+broom::glance(analyze_penguins("lm")[[1]])
+```
+
+
+I really like this pattern for data cleaning. I have a handful of demographic variables that I regularly work with that need to be cleaned and/or recoded, and I have some helper functions I've written to clean/recode each of them individually. But I also have a "meta" `recode_demographics()` function that can execute any combination of my helper functions depending on what I need for a given project. You can obviously also write your wrapper function to give you more control over the arguments to each constituent function (like by allowing you to pass in a formula to `lm()`, for instance, rather than hardcoding your formula), which can make this whole approach very flexible! It can be a bit time-consuming to write a wrapper that gives you the right level of flexibility, but if you have a set of related tasks you do frequently, I think it's worth the time to figure out.
+  

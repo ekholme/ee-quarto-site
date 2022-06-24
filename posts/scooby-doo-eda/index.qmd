@@ -1,0 +1,341 @@
+---
+title: "Scooby Doo EDA"
+description: |
+  Stream-of-consciousness exploration and modeling
+date: "2021-07-20"
+categories: [R, EDA, Scooby Doo, regression]
+---
+
+
+For this week's (well, really last week's) #TidyTuesday, I wanted to do a sort of stream-of-consciousness type EDA and modeling that I'll put up as a blog post. One motivation for this is that I'm considering doing some data science streaming in the future, and so I want to get a feel for whether this is an approach I might be interested in taking with streaming. So, the narrative here might be a bit lacking.
+
+I'm going to shoot for spending an hour-ish on this, but I might end up doing more or less.
+
+```{r setup, echo = TRUE, results = "hide", warning = FALSE, message = FALSE}
+
+library(tidyverse)
+library(eemisc)
+library(harrypotter)
+library(lubridate)
+
+herm <- harrypotter::hp(n = 1, option = "HermioneGranger")
+
+opts <- options(
+  ggplot2.discrete.fill = list(
+    harrypotter::hp(n = 2, option = "HermioneGranger"),
+    harrypotter::hp(n = 3, option = "HermioneGranger"),
+    harrypotter::hp(n = 7, option = "Always")
+  )
+)
+
+theme_set(theme_ee())
+
+scooby_raw <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-07-13/scoobydoo.csv', na = c("", "NA", "NULL"))
+```
+
+
+What does the data look like?
+
+```{r}
+glimpse(scooby_raw)
+```
+
+
+What's the range of dates we're looking at here?
+
+```{r}
+range(scooby_raw$date_aired)
+```
+
+And how many episodes are we seeing each year?
+
+```{r}
+scooby_raw %>%
+  count(year(date_aired)) %>%
+  rename(year = 1) %>%
+  ggplot(aes(x = year, y = n)) +
+  geom_col(fill = herm)
+```
+
+What about episodes by decade?
+
+```{r}
+scooby_raw%>%
+  count(10*year(date_aired) %/% 10) %>%
+  rename(decade = 1) %>%
+  ggplot(aes(x = decade, y = n)) +
+  geom_col(fill = herm)
+```
+
+
+Next, let's look at what ratings look like over time: 
+
+```{r}
+scooby_raw %>%
+  ggplot(aes(x = index, y = imdb)) +
+  geom_point() +
+  geom_line() +
+  geom_smooth()
+```
+
+
+And what if we color the points by series -- I'd imagine series might have different ratings:
+
+```{r}
+scooby_raw %>%
+  ggplot(aes(x = index, y = imdb)) +
+  geom_point(aes(color = series_name)) +
+  geom_line(color = "grey70") +
+  theme(legend.position = "none")
+```
+
+
+Next, I'm interested in looking at some comparisons across characters for different actions they take, like unmasking baddies, getting caught, etc. There are a bunch of these logical columns (e.g. `unmask_fred`), and so I'll write a little helper function to summarize them and then pivot them into a shape that'll be easier to plot later.
+
+```{r}
+summarize_pivot <- function(df, str) {
+  
+  df %>%
+    summarize(across(starts_with(str), ~sum(.x, na.rm = TRUE))) %>%
+    pivot_longer(
+      cols = everything(),
+      names_to = "key",
+      values_to = "value"
+    ) %>%
+    extract(col = key, into = c("key", "char"), regex = "^(.*)_(.*)$") %>%
+    arrange(desc(value))
+}
+```
+
+
+An example of what this does:
+
+```{r}
+scooby_raw %>%
+  summarize_pivot("unmask")
+```
+
+
+Aaaand another example:
+
+```{r}
+scooby_raw %>%
+  summarize_pivot("caught")
+```
+
+
+Next, let's use `purrr::map()` to do this a few times, combine the results into a df, and then make a plot
+
+```{r}
+iter_strs <- c("caught", "captured", "unmask", "snack")
+
+actions_df <- map_dfr(iter_strs, ~summarize_pivot(scooby_raw, .x))
+
+glimpse(actions_df)
+```
+
+
+```{r}
+actions_df %>%
+  ggplot(aes(x = value, y = char, fill = key)) +
+  geom_col() +
+  facet_wrap(vars(key), scales = "free_y") +
+  theme(
+    legend.position = "none"
+  )
+```
+
+
+Right, so we see that all of the characters get captured more or less the same amount, Fred and Scooby tend to catch monsters the most, Daphnie and Shaggy eat the most snacks, and Velma and Fred do the most unmasking.
+
+
+Switching up a bit, what if we want to look at monster's motives? First let's take a look at all of the unique motives.
+
+```{r}
+unique(scooby_raw$motive)
+```
+
+
+And it's probably useful to count these:
+
+```{r}
+scooby_raw %>% 
+  count(motive, sort = TRUE)
+```
+
+
+So, "Competition" is far and away the most common motive. I'm not sure I really understand what this means? But it's also been a while since I've watched Scooby Doo.
+
+I'm also interested in how often we see "zoinks" in episodes, bc I feel like this is the defining line of the show (along with the meddling kids, which I'll look at next).
+
+```{r}
+scooby_raw %>%
+  ggplot(aes(x = zoinks)) +
+  geom_histogram(bins = 20, fill = herm)
+```
+
+
+This feels weird to me. Most often, we get 0 or 1, but then there are episodes with more than 10? I'd imagine these are probably movies?
+
+```{r}
+scooby_raw %>%
+  ggplot(aes(x = zoinks)) +
+  geom_histogram(bins = 10, fill = herm) +
+  facet_wrap(vars(format), scales = "free_y")
+```
+
+
+Well, so, there are still some TV shows that have a ton of zoinks's. But also our biggest outlier is a movie, which makes sense to me since there's more time for zoinking.
+
+And what about our "if it wasn't for those meddling kids" data?
+
+```{r}
+length(unique(scooby_raw$if_it_wasnt_for))
+```
+
+Ok, wow, so that's a lot of different values for "if it wasn't for..."
+
+First, let's just see how many episodes have the "if it wasn't for..." catchphrase
+
+```{r}
+scooby_raw %>%
+  mutate(has_catchphrase =  if_else(!is.na(if_it_wasnt_for), TRUE, FALSE)) %>%
+  count(has_catchphrase)
+```
+
+
+Cool, so, 189 of our 603 episodes have the "if it wasn't for..." catchphrase.
+
+And now which of these also use the term "meddling?"
+
+```{r}
+scooby_raw %>%
+  filter(!is.na(if_it_wasnt_for)) %>%
+  mutate(meddling = if_else(str_detect(if_it_wasnt_for, "meddling"), TRUE, FALSE)) %>%
+  count(meddling) %>%
+  ggplot(aes(x = n, y = meddling)) +
+  geom_col(fill = herm) +
+  geom_text(aes(label = n, x = n - 1), hjust = 1, color = "white")
+```
+
+
+Alright, so, of the 189 episodes that have the "if it wasn't for..." catchphrase, most of those also include the word "meddling!"
+
+
+The last little bit here -- because I'm trying to keep my time to about an hour (again, to test out the feel for if this is a viable approach to streaming or making videos), is going to be to fit a quick linear model predicting the imdb rating of an episode.
+
+```{r}
+library(tidymodels)
+```
+
+Let's just use numeric/logical columns in our model, mostly because preprocessing them is pretty straightforward (although note that this doesn't mean what I'm doing below is anywhere near the best approach). Then let's look at how much missing data we have for each of these columns.
+
+```{r}
+mod_df <- scooby_raw %>%
+  select(where(is.numeric) | where(is.logical)) %>%
+  filter(!is.na(imdb))
+
+miss_df <- mod_df %>%
+  summarize(across(everything(), ~(sum(is.na(.x))/length(.x))))
+
+miss_df
+```
+
+
+So, some of these columns have a ton of missing data. Just to keep moving forward on this, I'm going to chuck any columns with more than 20% missing data, then median impute cases with missing data in the remaining columns (which we'll do in the recipes step below).
+
+```{r}
+keep_vars <- miss_df %>%
+  pivot_longer(cols = everything(),
+               names_to = "nms",
+               values_to = "vals") %>%
+  filter(vals < .2) %>%
+  pull(1)
+
+mod_df <- mod_df %>%
+  select(all_of(keep_vars)) %>%
+  mutate(across(where(is.logical), as.numeric))
+```
+
+
+Now we'll set up some bootstrap resamples. I'm using bootstrap resamples here rather than k-fold because it's a relatively small dataset.
+
+```{r}
+set.seed(0408)
+booties <- bootstraps(mod_df, times = 10)
+```
+
+
+And then let's define some very basic preprocessing using a recipe:
+
+```{r}
+rec <- recipe(imdb ~ ., data = mod_df) %>%
+  step_impute_median(all_numeric_predictors()) %>%
+  step_normalize(all_numeric_predictors()) 
+
+```
+
+
+And let's do a lasso regression, just using a small and kinda of arbitrary penalty value (we could tune this, but I'm not going to).
+
+```{r}
+lasso_spec <- linear_reg(mixture = 1, penalty = .001) %>%
+  set_engine("glmnet")
+
+#combining everything into a workflow
+lasso_wf <- workflow() %>%
+  add_recipe(rec) %>%
+  add_model(lasso_spec)
+```
+
+
+And now let's fit!
+
+```{r}
+lasso_res <- fit_resamples(
+  lasso_wf,
+  resamples = booties
+)
+```
+
+
+The main reason for fitting on these resamples is to check our model performance, so let's do that.
+
+```{r}
+collect_metrics(lasso_res)
+```
+
+
+Our R-squared is .29, which isn't great, but it's also not terrible considering we really didn't put much effort into our preprocessing here, and we discarded a bunch of data.
+
+Let's fit one final time on the full dataset to look at the importance of our predictor variables:
+
+```{r}
+prepped_df <- rec %>%
+  prep() %>%
+  bake(new_data = NULL)
+
+mod_fit <- lasso_spec %>%
+  fit(imdb ~ ., data = prepped_df)
+```
+
+
+And then finally we can look at our coefficients.
+
+```{r}
+mod_fit %>%
+  tidy() %>%
+  filter(term != "(Intercept)") %>%
+  arrange(desc(abs(estimate))) %>%
+  ggplot(aes(x = estimate, y = fct_reorder(term, abs(estimate)), fill = estimate >= 0)) +
+  geom_col() +
+  labs(
+    y = NULL
+  )
+```
+
+
+And there we go. That was a bit more than an hour, but it was worth it to get to a reasonable stopping point!
+
+  
+

@@ -1,0 +1,14 @@
+{
+  "hash": "31450568d3d6c11c3157ddf668f75cdd",
+  "result": {
+    "markdown": "---\ntitle: \"This Code is Big Time\"\ndescription: |\n  Wrap your R code in Your Mom's House audio drops\ndate: \"2021-04-25\"\ncategories: [R, tutorial, Your Mom's House, programming]\n---\n\n\n\nWhat's up, Jeans. This short post is targeting the *very* niche crowd of R users who also happen to love Tim and Christine, the main mommies of Your Mom's House. Basically, I discovered the [`{beepr}` package](https://github.com/rasmusab/beepr) a few days ago, which makes it easier you play short sound files through R, and so naturally my first thought was to \"try it out\" with a YMH drop. The result was 2 functions added to my personal/miscellaneous package, [{`eemisc}`](https://github.com/ekholme/eemisc):\n\n- `big_time()`, which will play the \"THIS SHIT IS BIG TIME\" drop from the [YMH intro](https://www.youtube.com/watch?v=r-6LamuOl8I), and\n- `big_time_operator()`, which lets you wrap a function and play the \"THIS SHIT IS BIG TIME\" drop whenever you call that function.\n\nI'll demonstrate these below.\n\n# Setup\n\nTo use these functions, you'll need my personal package, `{eemisc}`, installed. You can install it via Github via the following command:\n\n\n::: {.cell}\n\n```{.r .cell-code}\nremotes::install_github(\"ekholme/eemisc\")\n```\n:::\n\n\n\nEventually, I might put these functions into their own package, but for now they live in my odds-and-ends package.\n\n# Big Time\n\nTo play the \"THIS SHIT IS BIG TIME\" drop, you just need to call the function `big_time()`:\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(eemisc)\n\nbig_time()\n```\n:::\n\n\n\nThat's it. That will play the drop.\n\n# Big Time Operator\n\nBut I took it a step further for all of my kings and queens above 18. The `big_time_operator()` takes a function of your choosing and produces as its output a new function that wraps the input function with the \"big time\" drop. Want to let everyone know that taking the mean is big time?\n\n\n::: {.cell}\n\n```{.r .cell-code}\nbig_time_mean <- big_time_operator(mean)\n\nx <- 1:10\n\nbig_time_mean(x)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n[1] 5.5\n```\n:::\n:::\n\n\n\nYou can pass any function you want into `big_time_operator()` to get the same effect.\n\nAnyway, that's all for now. Keep it high and tight, Jeans, and you bet I'm coming up in May.",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": null
+  }
+}

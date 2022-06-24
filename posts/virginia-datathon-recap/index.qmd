@@ -1,0 +1,30 @@
+---
+title: "2021 Virginia Datathon Recap"
+description: |
+  Lessons learned and takeaways from the 2021 VA Datathon
+date: "2021-10-13"
+categories: [R, shiny, VA datathon, geography]
+preview: img/datathon_logo.jpg
+---
+
+
+# Overview
+
+This past Thursday and Friday, a couple of friends ([Morgan DeBusk-Lane](https://www.mldebusklane.com/) and [Mike Broda](https://soe.vcu.edu/directory/full-directory/first--last-name-301679-en.html)) and I had the opportunity to participate in the [2021 Virtual Virginia Datathon](https://www.cdo.virginia.gov/datathon/). This is an annual hackathon that I've participated in for the past few years in which Virginia's state agencies curate a bunch of datasets relating to a particular theme and ask participating teams to develop some sort of solution. Which I imagine is how hackathons typically work, but I haven't participated in any others.
+
+Anyway, the theme for this year's datathon was "Addressing Hunger with Bits and Bytes," and most of the data had to do with food insecurity, SNAP participation, free and reduced school meals, and the like. We focused in on one dataset provided -- [sites participating in the CACFP afterschool meals program](https://data.virginia.gov/Education/VDOE-Afterschool-Meal-Sites/q9n6-eddu). From this dataset, we created a Shiny app that allows users to enter their address and identify the closest site (in Virginia) participating in the afterschool meals program. Although we've un-deployed our app, you can find the Github repo with all of the code (and a lightly cleaned dataset) [here](https://github.com/debusklaneml/datathon_2021_vcusoe).
+
+# Lessons Learned
+
+One thing I appreciated about our approach to this year's datathon is that it gave me the opportunity to practice with some skills/tools I've used before but certainly wouldn't consider myself super proficient in. More specifically, I got to practice a bit with Shiny and with working with geographical data. Some things I learned/took away are:
+
+- **The `{leaflet}` package is awesome, but I probably need to learn some Javascript.** I've dabbled with leaflet before, but using it in this instance just reaffirmed how amazing it is. Creating a great-looking, interactive map requires like three lines of R code and a dataframe with some geometry in it. That's it. And the map we created suited our purposes just fine (or at least it worked as a prototype). That said, when I dug into some of the functions, I think I really need to learn some JS if I want to fully take advantage of the features `{leaflet}` offers. I've also been working with  the `{reactable}` package quite a bit lately, so between these two tools, that might be enough of a push to pick up some JS.
+
+- **The `{nngeo}` package is also awesome.** I've done a fair amount of geocoding and working with Census data as part of my job, so I'm reasonably familiar with tools like `{tidycensus}` and `{tidygeocoder}`. But I've only really had to do nearest neighbors with lat/long data once before, and although I figured it out, my code wasn't super clean and I felt like I kind of stumbled my way through it. Fortunately, while we were working on this project, Mike found the `{nngeo}` package and its `st_nn()` function, which finds the nearest neighbor(s) to each row in X from a comparison dataset Y. So all I had to do was write a little wrapper around this function to tweak the inputs and outputs a little bit (you can see this in the `get_closest_ind()` function in the functions file in the Github repo).
+
+- **I ought to learn more about proxy functions in Shiny.** I'll begin this by saying that my understanding of proxy functions in Shiny is pretty minimal, but my general understanding is that they allow you to modify a specific aspect of a widget (a leaflet map, in this case) without recreating the entire output of the widget. So like you could change the colors of some markers or something. I think the filter functionality we included (allowing users to select all sites, school sites, or non-school sites) could be a candidate for using the `leafletProxy()` function, but I'm not sure. And given that we had a limited time to make a (very) rough prototype of an app, I didn't feel like I had had enough time to play around with it on the fly. But it's definitely something I want to dig into more when I have more time.
+
+Overall, I really enjoyed participating in the VA datathon this year because I felt like I got to expand my toolkit a little bit and work with tools that I don't always use as part of my day job.
+
+  
+

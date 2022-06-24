@@ -1,0 +1,284 @@
+---
+title: "Scrantonicity - Part 3"
+description: |
+  Predicting the speaker of dialogue from The Office
+date: "2020-08-29"
+categories: [R, tidymodels, The Office, logistic regression]
+---
+
+**TL;DR::** In this blog, I use LASSO logistic regression and multilevel logistic regression to predict the speaker of lines of dialogue from The Office.
+
+What feels like forever ago, I wrote two blog posts analyzing transcripts from The Office. [The first](https://eric-ekholm.netlify.app/blog/office-part1/) was a basic EDA of the dialogue, and [the second](https://eric-ekholm.netlify.app/blog/office-part2/) used k-means clustering to determine types of Office episodes based on who speaks to whom. At the end of that second blog, I mentioned that I might do some predictive analysis with that data in the future. Well, it's four months later, and I'm declaring that the future is now!
+
+![](https://media.giphy.com/media/2PzAbPcFBdNgk/giphy.gif)
+
+Basically, the goal here is going to be, for a given line of dialogue from the show, to predict whether it's Michael talking or someone else. At first blush, this *seems* like it shouldn't be too hard. Many of Michael's lines are iconic (e.g. see the above gif), but I feel like this might be more a function of the delivery than the actual words themselves, and I'm curious to see how well a model (or multiple models) could predict this just from the text.
+
+In doing this, there are a couple of things I'm interested in doing here:
+
+- Generally getting more practice with `{tidymodels}`
+- Learning to use the `{textrecipes}` package
+- Trying the `{glmmTMB}` package (not part of the `{tidymodels}` ecosystem)
+
+Also, before getting too much further, I want to acknowledge that I looked at [this blog](https://juliasilge.com/blog/last-airbender/) by Julia Silge and [this blog](https://www.hvitfeldt.me/blog/tidytuesday-pos-textrecipes-the-office/) by Emil Hvitfeldt for some background on `{textrecipes}`. Both are really great for people interested in text analysis.
+
+Anyway, without much further ado, let's get into it. As has been the case in all of my "Scrantonicity" posts, the data I'm using here comes from the `{schrute}` package. First, I'll load in libraries and set some defaults/options. I'm also going to read in the data, limiting the dialogue to the first seven seasons of the show (the Michael Scott era).
+
+## Setup
+
+```{r setup, results = "hide", message = FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+library(tidyverse)
+library(eemisc)
+library(tidymodels)
+library(schrute)
+library(textrecipes)
+library(themis)
+library(vip)
+library(glmmTMB)
+herm <- harrypotter::hp(n = 1, option = "HermioneGranger")
+opts <- options(
+  ggplot2.discrete.fill = list(
+    harrypotter::hp(n = 3, option = "HermioneGranger"),
+    harrypotter::hp(n = 5, option = "Always")
+  )
+)
+theme_set(theme_ee())
+office <- schrute::theoffice %>%
+  filter(as.numeric(season) <= 7) %>%
+  mutate(is_mike = if_else(character == "Michael", "Yes", "No"))
+```
+
+## Brief EDA and Data Preprocessing
+
+Before modeling data, I would typically do a more thorough EDA. But I've already explored this data pretty closely (albeit months ago) in two previous blog posts, so rather than re-doing that EDA, I'm just going to look at those posts. One thing I will include here, though, is a quick look at the number of lines spoken by Michael Scott vs other characters, since this is the outcome I'm interested in predicting here.
+
+```{r}
+office %>%
+  count(character) %>%
+  top_n(10) %>%
+  ggplot(aes(x = n, y = fct_reorder(character, n))) +
+  geom_col(fill = herm) +
+  labs(
+    title = "Lines by Character",
+    subtitle = "First seven seasons",
+    y = NULL,
+    x = "Number of Lines"
+  )
+```
+
+
+So, Michael has far and away the most lines of any character. But it'll also be useful to look at Michael vs all of the others lumped together (since this is what I'm actually predicting).
+
+```{r}
+office %>%
+  count(is_mike) %>%
+  ggplot(aes(x = n, y = fct_reorder(is_mike, n))) +
+  geom_col(fill = herm) +
+  labs(
+    title = "Mike vs Not Mike",
+    y = "Is Michael?",
+    x = "Number of Lines"
+  )
+```
+
+
+Even though Michael speaks more than any other given character, he speaks about a third as many lines as all of the other characters combined. This is relevant here because it means I'll want to downsample when I train my model to ensure the number of observations in each class are similar, which will help the model fit.
+
+### Data Splitting & Preprocessing
+
+Next, I'm going to split my data into a training a testing set.
+
+```{r}
+set.seed(0408)
+office_split <- initial_split(office, strata = is_mike)
+tr <- training(office_split)
+te <- testing(office_split)
+```
+
+
+Now that I've split my data, I'm going to preprocess the data using `{recipes}`, `{textrecipes}`, and `{themis}` (to handle class imbalance). One thing to clarify here: I'm building a model to predict whether the speaker of a given line of dialogue is Michael. In this analysis, I want to build this model using *only* the text data, although there are plenty of other text-based features I could include. More specifically, I am going to handle the preprocessing such that the model I end up fitting is a bag-of-words model. This means that I want my data to include a variable for each word* (not really each word, but I'll show later) in the transcript, each row to represent a line of dialogue, and the value in each cell to represent the tf-idf of that word. From this data structure, I can build a model where each word has an individual effect on the odds that the line is spoken by Michael, although note that this model will have no sense of word order. 
+
+I'll specify this recipe and then walk through each step afterward.
+
+```{r}
+office_recipe <- recipe(is_mike ~ text + episode_name, data = tr) %>%
+  themis::step_downsample(is_mike) %>%
+  step_tokenize(text) %>%
+  step_stopwords(text) %>%
+  step_tokenfilter(text, max_tokens = 200) %>%
+  step_tfidf(text) %>%
+  prep()
+tr_prepped <- juice(office_recipe)
+tr_prepped_noep <- tr_prepped %>%
+  select(-episode_name)
+te_prepped <- bake(office_recipe, te)
+te_prepped_noep <- te_prepped %>%
+  select(-episode_name)
+```
+
+
+Let's unpack this step-by-step:
+
+- `step_downsample()` will balance the data so that the number of cases where Michael is the speaker is equal to the number of cases where Michael is not the speaker. This is done by randomly dropping rows.
+- `step_tokenize()` will take the text column in the data and create a isolate each word per line.
+- `step_stopwords()` will remove stop words (e.g. "the", "it", "a") that likely won't contain much useful information.
+- `step_tokenfilter()`, as I'm using it here, will retain only the 200 most frequently used words. This is a pretty large number, but I'm going to fit a LASSO regression later, which can select out some of these if necessary.
+- `step_tfidf()` calculates the term frequency-inverse document frequency, which provides a metric for how important a word is to a given document (e.g. a line in this case).
+
+Another thing to note here is that I'm creating two versions of this preprocessed data for the training and test sets. The differences between "tr_prepped" and "tr_prepped_noep" (as well as their "te" counterparts) is that the "noep" versions do not have a variable identifying which line the episode came from (but are otherwise identical). This is because I don't want to include the episode identifier in my single-level LASSO model but do want to include it in the multilevel model. I could also accomplish this by specifying the formula and having it not include the episode_number variable rather than creating two datasets.
+
+Moving along! Next, I'm going to specify my model. Since I have a binary outcomes (yes/no if the speaker is Michael), I'm going to run a logistic regression. I'm going to run this as a LASSO model, which will provide some feature selection and generally shrink coefficients. I'm going to tune the model to choose the best amount of penalty as well.
+
+```{r}
+reg_spec <- logistic_reg(mixture = 1, penalty = tune()) %>%
+  set_engine("glmnet")
+reg_spec
+```
+
+
+Here, I'm creating some resamples of my training data to help with the tuning. I'm creating 10 bootstrap samples here.
+
+```{r}
+set.seed(0408)
+booties <- bootstraps(tr_prepped_noep, strata = is_mike, times = 10)
+```
+
+## LASSO Model Fitting & Examination
+
+Now it's time to fit the LASSO model. I'm going to add the logistic regression specification that I just created to a workflow. Along with that model specification, I'm also going to add a formula where `is_mike` is regressed on all of the word features I just created. Then, I'm going to tune the model across 10 candidate values of the penalty parameter (i.e. how much regularization I'm adding).
+
+```{r}
+office_wf <- workflow() %>%
+  add_model(reg_spec) %>%
+  add_formula(is_mike ~ .)
+set.seed(0408)
+logreg_fit <- tune_grid(
+  office_wf,
+  resamples = booties,
+  grid = 10
+)
+```
+
+
+Great. Now that the models have been fit with various penalty values across the bootstrap resamples, I can check to see what the best penalty value is to move forward with & finalize a model. I'm going to choose the best by one standard error (which, in this case, happens also to be the best model). The one standard error rule will let me choose the most parsimonious model (in this case, the one with the most penalty) that is within one standard error of the best model. And once I choose the best penalty value, I'll go ahead and finalize the model and refit on the training set.
+
+```{r}
+logreg_fit %>%
+  show_best("accuracy")
+best_params <- logreg_fit %>%
+  select_by_one_std_err(metric = "accuracy", desc(penalty))
+final_logreg <- office_wf %>%
+  finalize_workflow(best_params) %>%
+  fit(data = tr_prepped_noep)
+```
+
+
+So, the best model here has an accuracy of ~58%. Not great, but better than just straight-up guessing. Remember that this is on the training set. Now, I'll take a look at what the accuracy is on the test set.
+
+```{r}
+bind_cols(
+  predict(final_logreg, te_prepped_noep), te_prepped_noep
+) %>%
+  accuracy(is_mike, .pred_class)
+```
+
+
+61% -- not bad! It's actually better than the training set accuracy, which means our training process didn't lead to overfitting, which is great.
+
+Now, I'm going to take a look at which words are the most important to predicting whether the speaker of a line of dialogue is Michael or not.
+
+```{r}
+final_logreg %>%
+  pull_workflow_fit() %>%
+  vi() %>%
+  slice_max(order_by = abs(Importance), n = 10) %>%
+  ggplot(aes(x = abs(Importance), y = fct_reorder(Variable %>% str_remove("tfidf_text_"), abs(Importance)), fill = Sign)) +
+  geom_col() +
+  labs(
+    title = "Most Important Words Identifying Michael Scott",
+    subtitle = "Positive values more representative of MS, negative values more representative of others",
+    y = NULL
+  )
+```
+
+
+Not surprisingly, the word "Michael" is the strongest predictor, and has a negative effect -- if a line has the word "Michael" in it, it is less likely to be spoken by Michael. Intuitively, this makes sense. Other people use Michael's name when speaking to or about him. The rest of the effects in this chart make sense to me as well (except for "mifflin" and "dunder," which I don't really get). But Michael is certainly more likely to talk about Jan and David than are other characters, and "everybody" feels right to me as well...
+
+![](https://i.redd.it/8fom420fmns11.jpg)
+
+
+And the final thing I'm going to do with this logistic regression is to pull out names of the non-zero coefficients. Recall that the lasso penalty can (but doesn't always) shrink coefficients to zero. These variables will have no effect on the outcome. The reason I'm doing this is because I want to fit a multilevel model next, but I'm not going to regularize that model. Instead, I'll just specify a formula that doesn't include the variables that got shrunk to zero in this model.
+
+```{r}
+keep_vars <- final_logreg %>%
+  pull_workflow_fit() %>%
+  vi() %>%
+  filter(Importance != 0) %>%
+  pull(Variable)
+```
+
+## Multilevel Model Fitting
+
+Now, I'm going to dive into fitting a multilevel model. To give a very brief overview of multilevel models, they are models that can take into account dependencies (nesting) within data. Recall that one of the assumptions of a linear regression is that each observation is independent. We often violate that assumption in the real world. In my work, for instance, students are often nested within classrooms (i.e. a common effect -- their teacher -- influences them & introduces a dependency). Another common case of nesting is when you have multiple observations over time from the same set of people. In the case of this current data, we can consider that each line is nested within an episode (terminology note: episode would be the "clustering variable" or "grouping variable" here). We could also go a step further and nest episodes within seasons to get a 3-level model rather than a 2-level model, but I'm not going to do that here.
+
+Fitting multilevel models allows for *random effects*, where the coefficient of a given term differs based on the clustering variable. Any term in the model can have a random effect, but the simplest form of a multilevel model -- and the one I'm going to fit here -- is a random intercept model, where the value of the intercept changes depending on the clustering variable. In the current dataset, this would mean that Michael might be more (or less) likely to speak *overall* in a given episode (when compared to all other episodes), and so the intercept value will change to reflect that. It's also possible to fit random slopes, where the effect of a given non-intercept term differs from episode to episode. Contextualizing that in the current data, it might mean that the word "Jan" is more (or less) associated with being spoken by Michael depending on the episode. Usually, you want a pretty clear theoretical rationale for specifying random slopes, and I don't really have that here. Plus, it would be unreasonable to try to estimate random slopes for all of the words in the dataset (even though I only have a subset of ~190).
+
+If you're interested in learning more about multilevel models, [Raudenbush & Bryk (2002)](https://www.amazon.com/Hierarchical-Linear-Models-Applications-Quantitative/dp/076191904X) is a classic, and John Fox's [Applied Regression Analysis](https://www.amazon.com/Applied-Regression-Analysis-Generalized-Linear-dp-1452205663/dp/1452205663/ref=dp_ob_title_bk) is just generally a really good book that has a chapter on MLMs.
+
+Anyway -- onward and upward. First, I want to specify the formula of the model. I'm going to include all of the variables that had non-zero coefficients in the lasso model earlier, and I'm also going to add a term at the end to specify the random intercept for each episode -- (1 | episode_name).
+
+```{r}
+glmm_formula <- as.formula(paste("is_mike ~ ", paste(keep_vars, collapse = " + "), " + (1 | episode_name)"))
+```
+
+
+I'm going to fit this model using the `{glmmTMB}` package, which provides an interface for fitting all sort of generalized linear mixed models. I haven't used this specific package before, but I have used `{lme4}`, which has similar syntax and is essentially the same thing for fitting linear models. I'm going to fit the model using the training data -- note that I'm not tuning anything here -- and I'm specifying the binomial family because this is a logistic regression.
+
+```{r}
+glmm_fit <- glmmTMB(glmm_formula, data = tr_prepped, family = binomial)
+```
+
+
+I'm going to show the summary of the model here, but it's going to be a biiig printout since we have so many terms in the model, so feel free to scroll on by. One thing you might want to check out, though, is the summary of the variance of the intercept, which summarizes the amount of randomness in that effect.
+
+```{r}
+summary(glmm_fit)
+```
+
+
+Right, so, the next logical step in my mind is to take a closer look at the random intercepts. We see some variance in the intercept (.23), which suggests that there are meaningful between-episode differences in the number of times Michael Scott speaks. Rather than looking at all of these, let's take a look at the largest 10 effects (as a benchmark, recall that the mean intercept is -.3)
+
+```{r}
+ranef(glmm_fit) %>%
+  as.data.frame() %>%
+  select(grp, condval) %>%
+  slice_max(order_by = abs(condval), n = 10) %>%
+  ggplot(aes(x = abs(condval), y = fct_reorder(grp, abs(condval)), fill = if_else(condval > 0, "Pos", "Neg"))) +
+  geom_col() +
+  scale_fill_discrete(name = "Sign") +
+  labs(
+    y = NULL,
+    title = "Top Random Intercepts"
+  )
+  
+```
+
+
+This plot shows the largest (in absolute value) intercepts. The way to interpret this is that, in these episodes, Michael is more or less likely to speak. The effects of each of the words remains the same across episodes (since I didn't specify random slopes), but these change the assumed "base rate" that Michael speaks. What we see here makes sense, because Michael actually isn't in the three episodes that have the highest values here (I should have addressed this in data cleaning -- whoops!).
+
+Finally, I'll take a look at the accuracy of the predictions from the multilevel model.
+
+```{r}
+glmm_preds_response <- predict(glmm_fit, te_prepped, type = "response")
+glmm_preds <- ifelse(glmm_preds_response < .5, "No", "Yes") %>% as_factor() %>%
+  fct_relevel("No", "Yes")
+bind_cols(te_prepped$is_mike, glmm_preds) %>%
+  repair_names() %>%
+  accuracy(truth = ...1, estimate = ...2)
+```
+
+
+It's a little bit disappointing that the multilevel model isn't more accurate than the single-level model I ran previously, but one thing to keep in mind is that the single level model was regularized, whereas the multilevel model wasn't (beyond omitting the variables that got completely omitted from the single level model). So, even though our intercept seems to have a decent amount of variance -- meaning random effects are probably warranted -- the gains in predictive accuracy we'd get from that are more than offset by the regularization in the first model. There's probably a way to regularize a multilevel model, but I might save that one for another day. I could also play around with changing the probability threshold for classifying a line as Michael by setting it to something higher than 50% (e.g. a line needs to have a 70% probability before being classified as spoken by Michael), but I'm also not going to go down that rabbit hole here.
+
+So, I'm going to wrap it up for now. And who knows, maybe I'll revisit this dataset in another 4 months.
