@@ -8,6 +8,7 @@ website:
     right:
       - about.qmd
       - blog.qmd
+      - pubs.qmd
       - icon: github
         href: https://github.com/
       - icon: twitter
