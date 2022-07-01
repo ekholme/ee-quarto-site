@@ -10,9 +10,9 @@ website:
       - blog.qmd
       - pubs.qmd
       - icon: github
-        href: https://github.com/
+        href: https://github.com/ekholme
       - icon: twitter
-        href: https://twitter.com
+        href: https://twitter.com/ekholm_e
 format:
   html:
     theme: litera
