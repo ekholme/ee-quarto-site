@@ -2,6 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/posts/demo-quarto-site/index.html",
       "/posts/function-writing-metacognition/index.html",
       "/posts/combining-pmap-and-docall/index.html",
       "/posts/fitting-a-multiple-regression-with-torch/index.html",
