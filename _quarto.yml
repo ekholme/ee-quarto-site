@@ -9,6 +9,8 @@ website:
       - about.qmd
       - blog.qmd
       - pubs.qmd
+      - text: "Resume"
+        href: resume.html
       - icon: github
         href: https://github.com/ekholme
       - icon: twitter
