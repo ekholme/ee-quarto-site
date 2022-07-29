@@ -1,18 +1,21 @@
 ---
 title: "Eric Ekholm"
-image: img/prof_pic.jpg
 about: 
+  image: img/prof_pic.jpg
   template: jolla
   links:
-    - icon: twitter
-      text: Twitter
+    - icon: "twitter"
+      text: '<i class="fab fa-twitter"></i> Twitter'
       href: https://twitter.com/ekholm_e
-    - icon: linkedin
-      text: LinkedIn
-      href: https://www.linkedin.com/in/eric-ekholm-8a481022/
     - icon: github
-      text: Github
+      text: '<i class="fab fa-github"></i> GitHub'
       href: https://github.com/ekholme/
+    - icon: linkedin
+      text: '<i class="fab fa-linkedin"></i> LinkedIn'
+      href: https://www.linkedin.com/in/eric-ekholm-8a481022/
+    - icon: envelope
+      text: '<i class="fas fa-envelope"></i> Email'
+      href: mailto:eric.ekholm@gmail.com
 
 ---
 
