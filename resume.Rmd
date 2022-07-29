@@ -26,7 +26,7 @@ Contact Info {#contact}
 Skills {#skills}
 --------------------------------------------------------------------------------
 
-- Statistical modeling, including machine learning, longitudinal modeling, and latent variable modeling, among others
+- Statistical modeling
 
 - Data visualization and data dashboarding
 
@@ -232,6 +232,16 @@ N/A
 
 Selected Talks and Presentations {data-icon=users}
 --------------------------------------------------------------------------------
+
+### Who we are and what we do: A conversation of the intersecting identities of early career educational psychologists and their engagement with community partners
+
+N/A
+
+N/A
+
+2022
+
+- Panelist at the American Psychological Association (APA) Annual Meeting.
 
 ### [Data Viz Tips & Tricks](https://github.com/ekholme/data_viz_tips)
 
