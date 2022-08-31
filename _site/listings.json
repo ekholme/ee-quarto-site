@@ -2,6 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/posts/mle-learning-julia/index.html",
       "/posts/crossfit-games-2022/index.html",
       "/posts/demo-quarto-site/index.html",
       "/posts/function-writing-metacognition/index.html",

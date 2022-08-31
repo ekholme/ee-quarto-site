@@ -1,0 +1,365 @@
+---
+title: "MLE Learning Out Loud"
+description: |
+    Learning maximum likelihood estimation by fitting models 'by hand' (in Julia!)
+author: "EE"
+date: "2022-08-31"
+format:
+    html:
+        code-fold: false
+jupyter: julia-1.7
+---
+
+*Disclaimer! The whole point of these "learning out loud" blog posts is to give myself a venue in which to practice/learn various statistics and programming concepts. I'm deciding to post these on my website both to normalize this notion of learning in public and also to invite people who know more than me to provide feedback. If I get something wrong, I'd love for you to tell me!*
+
+# Maury Povich as a metaphor for maximum likelihood estimation
+
+So this obviously isn't 100% mathematically rigorous, but based on my understanding of maximum likelihood estimation (MLE), I think it's kind of like the Maury Povich show...
+
+Back when I was in high school, some of my friends and I used to eat lunch in our track coach's classroom and watch the Maury Povich show. For those of you that haven't every watched *Maury*, it's an...interesting study of human behavior...and worth checking out. But basically it's like Jerry Springer or any of these other daytime drama-fests, covering everything from infidelity to obesity to insane behavior and everything in between. But Maury's specialty was paternity tests.
+
+Although the details of the paternity test episodes differed slightly, a common pattern was that a pregnant woman along with multiple men would come on the show, and each of the men would take a paternity test. Maury would ask the men and the women to describe how confident they were in the results of the test, and the men would usually offer up something like: 
+
+*"I am a thousand percent sure I am not the father."*
+
+Which would then elicit the next man to say:
+
+*"Well I am one million percent sure I'm not the father!"*
+
+Which would in turn elicit animated reactions from the audience, the mother, and the other potential father(s) on the stage.
+
+**So how's this like maximum likelihood estimation?**
+
+So my understanding of the logic of maximum likelihood estimation (MLE) is that, given a set of data, we can estimate the likelihood of a distribution parameterized by a given set of parameters. Imagine we have a bunch of measures of adult heights, and we assume that height is normally distributed. We know that a normal distribution is defined by its mean and its standard deviation. And so using our set of data, we can estimate the likelihood of any combination of mean and standard deviation (i.e. any set of parameters) given this data. And the parameters with the maximum likelihood are the "best" given our set of data. We'll walk through this with examples later.
+
+What matters here though is that the actual number describing the likelihood (or the log-likelihood, more likely) doesn't really matter. It's not arbitrary, but it'll differ depending upon how many observations are in your dataset, the distribution you're using, etc. The values of the (log)likelihood relative to one another are what matters. And in this respect I'm reminded of Maury's paternity tests.
+
+It doesn't matter if a guest on the show says he's 100% sure the baby isn't his. If the guy next to him says he's 110% sure the baby's not his, then he's more certain than the first guy. Likewise, if the first guy says he's one million percent sure the baby isn't his, he still "loses" if the guy next to him says he's 2 million percent sure. The actual number doesn't matter -- what matters is the estimate relative to the other estimates.
+
+# Some Examples
+
+I'm not 100% sure the Maury analogy actually holds up, but whatever, let's work through some examples
+
+First we'll load some necessary packages.
+
+```{julia}
+using Distributions
+using CairoMakie
+using Random
+using Optim
+using GLM
+using DataFrames
+```
+
+# Case 1: Fitting a Normal Distribution
+
+This is the simplest case. First, we're going to generate some sample data, s, from a normal distribution with $\mu = 0$ and $\sigma = 1$
+
+```{julia}
+Random.seed!(0408)
+s = rand(Normal(), 10000)
+
+```
+
+Then we'll generate a bunch of normal distributions with various means and standard deviations
+
+```{julia}
+μs = collect(-2.0:2.0)
+σs = [0.5:0.5:2;]
+
+ds = []
+
+for i = μs, j = σs
+    d = Normal(i, j)
+    push!(ds, d)
+end
+
+```
+
+So our task now is going to be to determine the likelihood of each distribution (defined with a given set a parameters) given our data, *s*, that we've drawn from a normal distribution with $\mu = 0$ and $\sigma = 1$
+
+To do this, we use the probability density function (pdf) of our normal distribution to determine the likelihood of the parameters for any given observation. Fortunately, Julia (and other languages) have tools that can help us do this without having to write out the entire equation by hand. That said, here's the equation -- even though I'm not going to call it directly, it's probably useful to see it.
+
+$$f(x) = \frac{1}{\sqrt{2\pi\sigma}} \exp[-\frac{(x - \mu)^2}{2\sigma^2}]$$
+
+
+Let's take a look at the first observation and the first distribution we defined:
+
+The first value in our sample is:
+```{julia}
+s[1]
+```
+
+And the first distribution we'll look at is
+
+```{julia}
+ds[1]
+```
+
+And if we look at the pdf of this, we get:
+
+```{julia}
+pdf(ds[1], s[1])
+```
+
+I'm not a statistician (hence these learning posts), but my understanding of this is that it generally represents the "fit" of the distribution (and its parameters) to the given sample/data point. These values will be bound between 0 and 1, since they're likelihoods, with higher values indicating better fit/higher likelihood.
+
+The next step is to convert this to a log scale, since logging allows us to sum things rather than multiply them (which we're gonna do soon).
+
+```{julia}
+logpdf(ds[1], s[1])
+#same as log(pdf(ds[1], s[]1))
+```
+
+So this gives us the log likelihood of a given data point. But now we need to do this for all of the data points in our sample to determine the "fit"/likelihood of the distribution to our whole sample.
+
+```{julia}
+sum(logpdf.(ds[1], s))
+```
+
+Apparently `Distributions.jl` gives us a helper for this via `loglikelihood`, so the above is the same as:
+
+```{julia}
+loglikelihood(ds[1], s)
+```
+
+So this gives us the (log)likelihood of a distribution (normal, in this case, defined by parameters $\mu$ and $\sigma$) given our sample. That is, the relatively plausibility of the parameters given our data. The goal then is to pick the *best* distribution/parameters, which we can do by *maximizing the likelihood*. In Maury terms, we want to find guy who's most sure that the baby isn't his.
+
+Or, apparently, it's more common to minimize the negative loglikelihood, which is the same thing (and called logloss, I guess).
+
+So let's do this for all of the distributions we specified earlier
+
+```{julia}
+lls = []
+
+for i in ds
+    res = -loglikelihood(i, s)
+    push!(lls, res)
+end
+
+lls = Float64.(lls)
+```
+
+
+And then we can plot the loglikelihoods we get:
+
+```{julia}
+ind = collect(1.0:length(ds))
+
+lines(ind, lls)
+```
+
+Notice that our negative log likelihood is minimized in the 10th distribution, so let's take a look at what that is
+
+```{julia}
+ds[10]
+```
+
+This makes sense! This was the distribution that we drew our samples from!
+
+If we want to do this without looking at a plot, we can apparently do this:
+
+```{julia}
+#get the index of the minimum value in lls
+min_ll = findall(lls .== minimum(lls))
+
+#get the distribution at this index
+ds[min_ll]
+
+```
+
+So this tells us that -- of the distributions we tested! -- the most likely distribution given our data is a normal distribution with mean of 0 and standard deviation of 1. This doesn't necessarily mean that this $\mu = 0$ and $\sigma = 1$ are the *optimal* parameters. There could be better parameters that we didn't test, and so in the future we'd want to probably use some sort of optimizing functions that can do all of the math for us.
+
+# Case 2: Simple Linear Regression
+
+So now let's move on a bit and try a simple linear regression. First we'll just generate some fake data and a "ground truth" function
+
+```{julia}
+#generate some x values
+x = collect(0:.1:10)
+
+#generate error
+ϵ = rand(Normal(0, 1), length(x))
+
+#define a function relating x to y
+f(x) = 0.5 + 2*x
+
+#generate y as f(x) plus error
+y = f.(x) .+ ϵ
+```
+
+And then we can plot the x and y values we just created:
+
+```{julia}
+CairoMakie.scatter(x, y)
+```
+
+Another way to think about the above is that we expect a linear relationship between x and y in the form of
+
+$y = \alpha + \beta x + \epsilon$
+
+We need to estimate alpha and beta in a way that optimally fits this line, and we can do this with maximum likelihood. We can take advantage of the fact that linear regression assumes that residuals are normally distributed with an expected value (mean) of 0, since this will provide as with a distribution we can try to parameterize optimally. Since the residuals are dependent upon the predicted values of y, and since the predicted values of y are dependent on the intercept ($\alpha$) and the coefficient ($\beta$), this will give us a way to estimate the terms in the regression line.
+
+$\sigma$ is not super important to us, but we still need to estimate it. We can estimate the loglikelihood of a given set of parameters using the function below.
+
+```{julia}
+function max_ll_reg(x, y, params)
+
+    α = params[1]
+    β = params[2]
+    σ = params[3]
+
+    ŷ = α .+ x.*β
+
+    resids = y .- ŷ
+
+    d = Normal(0, σ)
+
+    ll = -loglikelihood(d, resids)
+    
+    return ll
+
+end
+```
+
+And let's see how this works by passing in some generic values -- .5 as the intercept, 2 as the beta coefficient, and 1 as the error variance.
+
+```{julia}
+yy = max_ll_reg(x, y, [.5, 2, 1])
+```
+
+The next step then is to optimize this. We pass some starting values and our `max_ll_reg` function into an optimizer, tell it to find the optimal values for the parameters ($\alpha$, $\beta$, and $\sigma$), and then the magical optimizing algorithm written by people much smarter than me will give us our coefficients.
+
+```{julia}
+res = optimize(params -> max_ll_reg(x, y, params), [0.0, 1.0, 1.0])
+```
+
+And then this will give us the maximum likelihood solution for our regression equation.
+
+```{julia}
+Optim.minimizer(res)
+```
+
+We can check this by fitting the model with the `GLM` package
+
+```{julia}
+data = DataFrame(X = x, Y = y)
+
+ols_res = lm(@formula(Y ~ X), data)
+```
+
+et voila, we get the same $\alpha$ and $\beta$! The coefficients aren't exactly the same as the ones we specified when generating the data, but that's because of the error we introduced.
+
+It's maybe also worth nothing that Julia lets us solve the equation via the `\` operator, which apparently provides a shorthand for solving systems of linear equations:
+
+```{julia}
+#we have to include a column of 1s in the matrix to get the intercept
+xmat = hcat(ones(length(x)), x)
+
+xmat \ y
+```
+
+# Case 3: Multiple Regression
+
+And I think we can extend the same logic above to multiple regression. The first step is to generate some data:
+
+```{julia}
+#make a 100x3 matrix of random numbers
+tmp = randn(100, 3)
+
+#append a leading column of 1s (so we can get the intercept)
+𝐗 = hcat(ones(100), tmp)
+
+#provide 'ground truth' coefficients
+𝚩 = [.5, 1, 2, 3]
+
+#define a function to multiply X by B
+f₂(X) = X*𝚩
+
+#create some error
+ϵ = rand(Normal(0, .5), size(𝐗)[1])
+
+#make outcome values that comprise our generating function plus error
+𝐘 = f₂(𝐗) + ϵ
+```
+
+Then we can define another function to return the maximum likelihood. This is the same as the simple regression function above, except it's generalized to allow for more than 1 slope coefficient. Julia provides some neat functionality via the `begin` and `end` keywords that let us access the first and last elements of a vector, and we can even do things like `end-1` to get the second-to-last element, which is pretty nifty.
+
+```{julia}
+function max_ll_mreg(x, y, params)
+    𝚩 = params[begin:end-1]
+    σ = params[end]
+
+    ŷ = x*𝚩
+
+    resids = y .- ŷ
+
+    d = Normal(0, σ)
+
+    ll = -loglikelihood(d, resids)
+
+    return ll
+end
+```
+
+
+Then we can do the same thing as before -- provide some starting parameters (coefficients), and tell our super-smart optimizer function to give us the parameters that maximize the likelihood.
+
+```{julia}
+start_params = [.4, .5, 1.5, 4.0, 1.0]
+
+mreg_res = optimize(params -> max_ll_mreg(𝐗, 𝐘, params), start_params)
+```
+
+And then we can show the results:
+
+```{julia}
+Optim.minimizer(mreg_res)
+```
+
+And we can check that these are returning the correct values
+
+```{julia}
+𝐗 \ 𝐘
+```
+
+Alternatively, we could have written out the joint pdf for the normal distribution by hand, like below.
+
+First we can define this function: 
+```{julia}
+function alt_mle_mlr(x, y, params)
+    𝚩 = params[begin:end-1]
+    σ = params[end]
+
+    ŷ = x*𝚩
+
+    n = length(ŷ)
+
+    ll = -n/2*log(2π) - n/2* log(σ^2) - (sum((y .- ŷ).^2) / (2σ^2))
+    
+    ll = -ll
+
+    return ll
+end
+```
+
+Then see what the loglikelihood is given our starting parameters:
+
+```{julia}
+alt_mle_mlr(𝐗, 𝐘, start_params)
+```
+
+Then optimize the function:
+
+```{julia}
+mreg_res2 = optimize(params -> alt_mle_mlr(𝐗, 𝐘, params), start_params)
+
+```
+
+And check the results:
+
+```{julia}
+Optim.minimizer(mreg_res2)
+```
+
+And there we go. Hopefully that was helpful for some others. I'll probably do some more of these "learning out loud" posts as I dig into some more math, Julia, or other topics.
