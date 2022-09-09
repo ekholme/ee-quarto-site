@@ -10,6 +10,7 @@ format:
     html:
         fig-height: 8
         fig-width: 8
+categories: [R, Crossfit, EDA]
 ---
 
 For me, the Crossfit Games is one of the most exciting weekends of the year. And between the shift in programming and the closeness of the competition on both the mens and womens sides, this year was probably the best Games we've seen in a while.

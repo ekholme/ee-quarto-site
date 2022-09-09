@@ -8,6 +8,7 @@ format:
     html:
         code-fold: false
 jupyter: julia-1.7
+categories: [Julia, Learning Out Loud, Maximum Likelihood]
 ---
 
 *Disclaimer! The whole point of these "learning out loud" blog posts is to give myself a venue in which to practice/learn various statistics and programming concepts. I'm deciding to post these on my website both to normalize this notion of learning in public and also to invite people who know more than me to provide feedback. If I get something wrong, I'd love for you to tell me!*

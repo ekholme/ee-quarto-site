@@ -6,7 +6,7 @@
   </url>
   <url>
     <loc>https://www.ericekholm.com/blog.html</loc>
-    <lastmod>2022-08-31T11:19:52.971Z</lastmod>
+    <lastmod>2022-09-09T01:00:39.451Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/index.html</loc>
@@ -135,5 +135,9 @@
   <url>
     <loc>https://www.ericekholm.com/resume.html</loc>
     <lastmod>2022-08-31T11:20:34.328Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.ericekholm.com/posts/cor-generate-data/index.html</loc>
+    <lastmod>2022-09-09T01:00:33.028Z</lastmod>
   </url>
 </urlset>
