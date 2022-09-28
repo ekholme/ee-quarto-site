@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.449">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2022-09-28">
+<meta name="description" content="Learning maximum likelihood estimation by fitting logistic regression ‘by hand’ (sort of)">
+
+<title>Eric Ekholm - MLE Learning Out Loud 2: Logistic Regression</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Eric Ekholm</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About Me</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html">Blog</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../pubs.html">Publications</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resume.html">Resume</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/ekholme"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/ekholm_e"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">MLE Learning Out Loud 2: Logistic Regression</h1>
+                  <div>
+        <div class="description">
+          <p>Learning maximum likelihood estimation by fitting logistic regression ‘by hand’ (sort of)</p>
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Julia</div>
+                <div class="quarto-category">Learning Out Loud</div>
+                <div class="quarto-category">Maximum Likelihood</div>
+                <div class="quarto-category">Logistic Regression</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">September 28, 2022</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of Contents</h2>
+   
+  <ul>
+  <li><a href="#stating-the-problem" id="toc-stating-the-problem" class="nav-link active" data-scroll-target="#stating-the-problem">Stating the Problem</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a></li>
+  <li><a href="#load-and-preprocess-data" id="toc-load-and-preprocess-data" class="nav-link" data-scroll-target="#load-and-preprocess-data">Load and Preprocess Data</a></li>
+  <li><a href="#define-a-logistic-function" id="toc-define-a-logistic-function" class="nav-link" data-scroll-target="#define-a-logistic-function">Define a Logistic Function</a></li>
+  <li><a href="#define-a-maximum-likelihood-estimator" id="toc-define-a-maximum-likelihood-estimator" class="nav-link" data-scroll-target="#define-a-maximum-likelihood-estimator">Define a Maximum Likelihood Estimator</a></li>
+  <li><a href="#optimize-beta" id="toc-optimize-beta" class="nav-link" data-scroll-target="#optimize-beta">Optimize <span class="math inline">\(\beta\)</span></a></li>
+  </ul>
+</nav>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>In a previous post (INSERT LINK), I did some “learning out loud” by practicing estimating a few models via maximum likelihood by hand. In this short blog, I figured I could extend this learning by applying what I learned previously to logistic regression.</p>
+<p>As a reminder, the point of these “learning out loud” posts is to give myself a medium to work through concepts. Hopefully these metacognitive exercises will benefits others, too. The concepts I’m covering here are things that I’m either learning anew or brushing back up on after not using for a while. But either way, I’m not trying to portray myself as an expert. If you are an expert and you notice I’m doing something wrong, I’d love to hear from you!</p>
+<section id="stating-the-problem" class="level1">
+<h1>Stating the Problem</h1>
+<p>So, what I want to do here is get point estimates for the coefficients in a logistic regression model “by hand” (or mostly by hand). I’m going to be doing this in Julia, because I’m also interested in getting better at Julia stuff, but obviously the concepts are the same across any programming language.</p>
+</section>
+<section id="setup" class="level1">
+<h1>Setup</h1>
+<p>First, we’ll load the libraries we’re using here and set a seed:</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">GLM </span><span class="co">#to check my work against</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Distributions </span><span class="co">#for the Bernoulli distribution</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Random </span><span class="co">#to set a seed</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Optim </span><span class="co">#to do the acutal optimizing</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Statistics </span><span class="co">#mean and std</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">RDatasets </span><span class="co">#to get data</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="bu">Random</span>.<span class="fu">seed!</span>(<span class="fl">0408</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<pre><code>TaskLocalRNG()</code></pre>
+</div>
+</div>
+</section>
+<section id="load-and-preprocess-data" class="level1">
+<h1>Load and Preprocess Data</h1>
+<p>Next, we’ll load in some data and do some light preprocessing. We’ll use the <code>Default</code> data from the <code>RDatasets</code> package, which presents features describing a given person as well as a binary indicator of whether they defaulted on a credit card payment.</p>
+<p>After loading the data, we’ll pull out the default variable, dummy code it, and then assign it to a vector called <code>y</code>. We’ll also select just the “balance” and “income” columns of the data and assign those to <code>X</code>. There are other columns we could use as predictors, but that’s not really the point here.</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> RDatasets.<span class="fu">dataset</span>(<span class="st">"ISLR"</span>, <span class="st">"Default"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> [r.Default <span class="op">==</span> <span class="st">"Yes"</span> ? <span class="fl">1</span> <span class="op">:</span> <span class="fl">0</span> for r <span class="kw">in</span> <span class="fu">eachrow</span>(data)]</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> data[<span class="op">:</span>, [<span class="op">:</span>Balance, <span class="op">:</span>Income]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+
+<div class="data-frame"><p>10,000 rows × 2 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>Balance</th><th>Income</th></tr><tr><th></th><th title="Float64">Float64</th><th title="Float64">Float64</th></tr></thead><tbody><tr><th>1</th><td>729.526</td><td>44361.6</td></tr><tr><th>2</th><td>817.18</td><td>12106.1</td></tr><tr><th>3</th><td>1073.55</td><td>31767.1</td></tr><tr><th>4</th><td>529.251</td><td>35704.5</td></tr><tr><th>5</th><td>785.656</td><td>38463.5</td></tr><tr><th>6</th><td>919.589</td><td>7491.56</td></tr><tr><th>7</th><td>825.513</td><td>24905.2</td></tr><tr><th>8</th><td>808.668</td><td>17600.5</td></tr><tr><th>9</th><td>1161.06</td><td>37468.5</td></tr><tr><th>10</th><td>0.0</td><td>29275.3</td></tr><tr><th>11</th><td>0.0</td><td>21871.1</td></tr><tr><th>12</th><td>1220.58</td><td>13268.6</td></tr><tr><th>13</th><td>237.045</td><td>28251.7</td></tr><tr><th>14</th><td>606.742</td><td>44994.6</td></tr><tr><th>15</th><td>1112.97</td><td>23810.2</td></tr><tr><th>16</th><td>286.233</td><td>45042.4</td></tr><tr><th>17</th><td>0.0</td><td>50265.3</td></tr><tr><th>18</th><td>527.54</td><td>17636.5</td></tr><tr><th>19</th><td>485.937</td><td>61566.1</td></tr><tr><th>20</th><td>1095.07</td><td>26464.6</td></tr><tr><th>21</th><td>228.953</td><td>50500.2</td></tr><tr><th>22</th><td>954.262</td><td>32457.5</td></tr><tr><th>23</th><td>1055.96</td><td>51317.9</td></tr><tr><th>24</th><td>641.984</td><td>30466.1</td></tr><tr><th>25</th><td>773.212</td><td>34353.3</td></tr><tr><th>26</th><td>855.009</td><td>25211.3</td></tr><tr><th>27</th><td>643.0</td><td>41473.5</td></tr><tr><th>28</th><td>1454.86</td><td>32189.1</td></tr><tr><th>29</th><td>615.704</td><td>39376.4</td></tr><tr><th>30</th><td>1119.57</td><td>16556.1</td></tr><tr><th>⋮</th><td>⋮</td><td>⋮</td></tr></tbody></table></div>
+</div>
+</div>
+<p>Next, we’ll z_score the predictor variables, convert them to a matrix, and append a column vector of ones to the matrix (so we can estimate the intercept). The <code>mapcols()</code> function from <code>DataFrames.jl</code> will apply the z_score function to all of the columns in X, which is actually only 2 in this case.</p>
+<p>First we’ll define a z-score function</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">z_score</span>(x)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    u <span class="op">=</span> <span class="fu">mean</span>(x)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> <span class="fu">std</span>(x)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    res <span class="op">=</span> <span class="dt">Float64</span>[]</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu">lastindex</span>(x)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        tmp <span class="op">=</span> (x[i] <span class="op">-</span> u) <span class="op">/</span> s</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        <span class="fu">push!</span>(res, tmp)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> res</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>z_score (generic function with 1 method)</code></pre>
+</div>
+</div>
+<p>And then we’ll actually apply it.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>Xz <span class="op">=</span> <span class="fu">hcat</span>(<span class="fu">ones</span>(<span class="fu">length</span>(y)), <span class="fu">Matrix</span>(<span class="fu">mapcols</span>(z_score, X)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>10000×3 Matrix{Float64}:
+ 1.0  -0.218824    0.813147
+ 1.0  -0.037614   -1.60542
+ 1.0   0.492386   -0.131206
+ 1.0  -0.632861    0.164023
+ 1.0  -0.102786    0.370897
+ 1.0   0.174098   -1.95142
+ 1.0  -0.0203871  -0.645722
+ 1.0  -0.0552131  -1.19344
+ 1.0   0.673295    0.296293
+ 1.0  -1.727      -0.31805
+ 1.0  -1.727      -0.873227
+ 1.0   0.796355   -1.51825
+ 1.0  -1.23695    -0.394799
+ ⋮                
+ 1.0  -1.727       0.616625
+ 1.0   0.338849   -1.01252
+ 1.0  -0.957166   -0.610505
+ 1.0  -0.36504     1.59599
+ 1.0   0.571147    0.897805
+ 1.0   0.213889    1.73331
+ 1.0  -1.37056    -1.39173
+ 1.0  -0.255977    1.46029
+ 1.0  -0.160036   -1.03896
+ 1.0   0.02075     1.88347
+ 1.0   1.51667     0.236351
+ 1.0  -1.31163    -1.24874</code></pre>
+</div>
+</div>
+</section>
+<section id="define-a-logistic-function" class="level1">
+<h1>Define a Logistic Function</h1>
+<p>Next, we’ll write a logistic function that will implement the logistic transformation. This is built into the <code>StatsFuns.jl</code> package, but I want to write it out by hand to reinforce what it is. We’ll use this to predict y values with a given input (which will actually be X*<span class="math inline">\(\beta\)</span>)</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">my_logistic</span>(x) <span class="op">=</span> <span class="fu">exp</span>(x) <span class="op">/</span> (<span class="fl">1</span> <span class="op">+</span> <span class="fu">exp</span>(x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>my_logistic (generic function with 1 method)</code></pre>
+</div>
+</div>
+</section>
+<section id="define-a-maximum-likelihood-estimator" class="level1">
+<h1>Define a Maximum Likelihood Estimator</h1>
+<p>Now that we have some data, we can write a function that uses maximum likelihood estimation to give us the best <span class="math inline">\(\beta\)</span> parameters for our given <strong>X</strong> and y. If you want to brush up on maximum likelihood, you can read my previous “learning out loud” post (INSERT LINK), or you can probably find materials written by someone who knows way more than I do. Either way, I’m not going to recap what MLE is here.</p>
+<p>Let’s define our function that we’ll use to estimate <span class="math inline">\(\beta\)</span>. The important thing to keep in mind is that the return value of this function isn’t the <span class="math inline">\(\beta\)</span> values, but rather the negative log likelihood, since this is what we we want to optimize.</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">ml_logreg</span>(x, y, b)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    ŷ <span class="op">=</span> <span class="fu">my_logistic</span>.(x<span class="op">*</span>b)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    res <span class="op">=</span> <span class="dt">Float64</span>[]</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu">lastindex</span>(y)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">push!</span>(res, <span class="fu">logpdf</span>(<span class="fu">Bernoulli</span>(ŷ[i]), y[i]))</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    ret <span class="op">=</span> <span class="fu">-sum</span>(res)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ret</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>ml_logreg (generic function with 1 method)</code></pre>
+</div>
+</div>
+<p>So what’s going on in this code?</p>
+<ol type="1">
+<li>We’re getting <span class="math inline">\(ŷ\)</span> estimates for a given x and b by running them through the <code>my_logistic()</code> function. This will give us a 10000x1 vector</li>
+<li>We’re instantiating an empty vector that will (eventually) contain Float64 values.</li>
+<li>For each index in <span class="math inline">\(ŷ\)</span> (i.e.&nbsp;1 through 10000), we’re getting the log-likelihood of the true outcome (y[i]) given a Bernoulli distribution parameterized by success rate <span class="math inline">\(ŷ\)</span>[i].</li>
+</ol>
+<p>I think this is the trickiest part of the whole problem, so I want to put it into words to make sure I understand it. In our problem, our y values are either 0 or 1. And the output of the <code>my_logistic()</code> function is going to be, for each y, a predicted probability that <span class="math inline">\(y = 1\)</span>, i.e.&nbsp;a predicted success rate. Since a Bernoulli distribution is parameterized by a given success rate and models the outcome of a single yes/no (1/0) trial, it makes sense to use this to generate the likelihoods we want to maximize.</p>
+<p>More concretely, the likelihoods we get will be dependent on:</p>
+<ol type="1">
+<li>the provided success rate <em>p</em>, and</li>
+<li>the actual outcome</li>
+</ol>
+<p>Where values of <em>p</em> that are closer to the actual outcome will be larger:</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">logpdf</span>(<span class="fu">Bernoulli</span>(<span class="fl">.5</span>), <span class="fl">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>-0.6931471805599453</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#will be larger than the previous</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">logpdf</span>(<span class="fu">Bernoulli</span>(<span class="fl">.8</span>), <span class="fl">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>-0.2231435513142097</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#will be even larger</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">logpdf</span>(<span class="fu">Bernoulli</span>(<span class="fl">.99</span>), <span class="fl">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>-0.01005033585350145</code></pre>
+</div>
+</div>
+<p>And inversely, you can imagine that if the outcome were 0, we’d want our predicted success rate to be very low.</p>
+<p>Returning to our <code>ml_logreg()</code> function, what we’re doing then is applying this logic to all of our <span class="math inline">\(ŷ\)</span> and corresponding <em>y</em> values (i.e.&nbsp;we’re getting the likelihood of <em>y</em> for a given <span class="math inline">\(ŷ\)</span>), and then we’re creating a vector with all of these likelihoods – that’s what the <code>push!(...)</code> notation is doing – pushing these likelihoods to the empty float vector we created.</p>
+<p>Finally, we’re summing all of our likelihoods and then multiplying the result by negative one, since the optimizer we’re using actually wants to <em>minimize</em> a loss function rather than <em>maximize</em> a loss function.</p>
+<p>We can run this function by providing any X, y, and <span class="math inline">\(\beta\)</span>, and it’ll give us back a negative loglikelihood – the negative sum of all of the individual likelihoods.</p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#just some arbitrary numbers to test the function with</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>start_vals <span class="op">=</span> [<span class="fl">.1</span>, <span class="fl">.1</span>, <span class="fl">.1</span>]</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ml_logreg</span>(Xz, y, start_vals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<pre><code>7372.506385031871</code></pre>
+</div>
+</div>
+</section>
+<section id="optimize-beta" class="level1">
+<h1>Optimize <span class="math inline">\(\beta\)</span></h1>
+<p>So the above gives us the likelihood for a starting value of <span class="math inline">\(\beta\)</span>, but we want to find the <em>best</em> values of <span class="math inline">\(\beta\)</span>. To do that, we can optimize the function. Like I said in my previous post, the optimizers are written by people much smarter than I am, so I’m just going to use that package rather than futz around with doing any, like, calculus by hand – although maybe that’s a topic for a later learning out loud post.</p>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>res <span class="op">=</span> <span class="fu">optimize</span>(b <span class="op">-&gt;</span> <span class="fu">ml_logreg</span>(Xz, y, b), start_vals)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<pre><code> * Status: success
+
+ * Candidate solution
+    Final objective value:     7.894831e+02
+
+ * Found with
+    Algorithm:     Nelder-Mead
+
+ * Convergence measures
+    √(Σ(yᵢ-ȳ)²)/n ≤ 1.0e-08
+
+ * Work counters
+    Seconds run:   0  (vs limit Inf)
+    Iterations:    103
+    f(x) calls:    190</code></pre>
+</div>
+</div>
+<p>And then we can get the <span class="math inline">\(\beta\)</span> coefficients that minimize the loss function (i.e.&nbsp;that maximize the likelihood)</p>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>Optim.<span class="fu">minimizer</span>(res)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<pre><code>3-element Vector{Float64}:
+ -6.125561839584853
+  2.731586594783831
+  0.2775242967112382</code></pre>
+</div>
+</div>
+<p>And just to confirm that we did this correctly, we can check our point estimates against what we’d get if we fit the model using the <code>GLM</code> package.</p>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>logreg_res <span class="op">=</span> <span class="fu">glm</span>(Xz, y, <span class="fu">Binomial</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<pre><code>GeneralizedLinearModel{GLM.GlmResp{Vector{Float64}, Binomial{Float64}, LogitLink}, GLM.DensePredChol{Float64, LinearAlgebra.Cholesky{Float64, Matrix{Float64}}}}:
+
+Coefficients:
+─────────────────────────────────────────────────────────────────
+        Coef.  Std. Error       z  Pr(&gt;|z|)  Lower 95%  Upper 95%
+─────────────────────────────────────────────────────────────────
+x1  -6.12557    0.187562   -32.66    &lt;1e-99  -6.49318   -5.75795
+x2   2.73159    0.109984    24.84    &lt;1e-99   2.51602    2.94715
+x3   0.277522   0.0664854    4.17    &lt;1e-04   0.147213   0.407831
+─────────────────────────────────────────────────────────────────</code></pre>
+</div>
+</div>
+<p>Cool beans!</p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">https://creativecommons.org/licenses/by-nc/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{ekholm2022,
+  author = {Eric Ekholm},
+  title = {MLE {Learning} {Out} {Loud} 2: {Logistic} {Regression}},
+  date = {2022-09-28},
+  url = {https://www.ericekholm.com/posts/mle-logreg-julia},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-ekholm2022" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
+Eric Ekholm. 2022. <span>“MLE Learning Out Loud 2: Logistic
+Regression.”</span> September 28, 2022. <a href="https://www.ericekholm.com/posts/mle-logreg-julia">https://www.ericekholm.com/posts/mle-logreg-julia</a>.
+</div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
