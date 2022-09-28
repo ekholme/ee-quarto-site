@@ -10,7 +10,7 @@ jupyter: julia-1.7
 categories: [Julia, Learning Out Loud, Maximum Likelihood, Logistic Regression]
 ---
 
-In a previous post (INSERT LINK), I did some "learning out loud" by practicing estimating a few models via maximum likelihood by hand. In this short blog, I figured I could extend this learning by applying what I learned previously to logistic regression.
+In a [previous post](https://www.ericekholm.com/posts/mle-learning-julia/), I did some "learning out loud" by practicing estimating a few models via maximum likelihood by hand. In this short blog, I figured I could extend this learning by applying what I learned previously to logistic regression.
 
 As a reminder, the point of these "learning out loud" posts is to give myself a medium to work through concepts. Hopefully these metacognitive exercises will benefits others, too. The concepts I'm covering here are things that I'm either learning anew or brushing back up on after not using for a while. But either way, I'm not trying to portray myself as an expert. If you are an expert and you notice I'm doing something wrong, I'd love to hear from you!
 
@@ -82,7 +82,7 @@ my_logistic(x) = exp(x) / (1 + exp(x))
 
 # Define a Maximum Likelihood Estimator
 
-Now that we have some data, we can write a function that uses maximum likelihood estimation to give us the best $\beta$ parameters for our given **X** and y. If you want to brush up on maximum likelihood, you can read my previous "learning out loud" post (INSERT LINK), or you can probably find materials written by someone who knows way more than I do. Either way, I'm not going to recap what MLE is here.
+Now that we have some data, we can write a function that uses maximum likelihood estimation to give us the best $\beta$ parameters for our given **X** and y. If you want to brush up on maximum likelihood, you can read [my previous "learning out loud" post](https://www.ericekholm.com/posts/mle-learning-julia/), or you can probably find materials written by someone who knows way more than I do. Either way, I'm not going to recap what MLE is here.
 
 Let's define our function that we'll use to estimate $\beta$. The important thing to keep in mind is that the return value of this function isn't the $\beta$ values, but rather the negative log likelihood, since this is what we we want to optimize.
 

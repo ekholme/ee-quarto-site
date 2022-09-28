@@ -226,7 +226,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<p>In a previous post (INSERT LINK), I did some “learning out loud” by practicing estimating a few models via maximum likelihood by hand. In this short blog, I figured I could extend this learning by applying what I learned previously to logistic regression.</p>
+<p>In a <a href="https://www.ericekholm.com/posts/mle-learning-julia/">previous post</a>, I did some “learning out loud” by practicing estimating a few models via maximum likelihood by hand. In this short blog, I figured I could extend this learning by applying what I learned previously to logistic regression.</p>
 <p>As a reminder, the point of these “learning out loud” posts is to give myself a medium to work through concepts. Hopefully these metacognitive exercises will benefits others, too. The concepts I’m covering here are things that I’m either learning anew or brushing back up on after not using for a while. But either way, I’m not trying to portray myself as an expert. If you are an expert and you notice I’m doing something wrong, I’d love to hear from you!</p>
 <section id="stating-the-problem" class="level1">
 <h1>Stating the Problem</h1>
@@ -329,7 +329,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="define-a-maximum-likelihood-estimator" class="level1">
 <h1>Define a Maximum Likelihood Estimator</h1>
-<p>Now that we have some data, we can write a function that uses maximum likelihood estimation to give us the best <span class="math inline">\(\beta\)</span> parameters for our given <strong>X</strong> and y. If you want to brush up on maximum likelihood, you can read my previous “learning out loud” post (INSERT LINK), or you can probably find materials written by someone who knows way more than I do. Either way, I’m not going to recap what MLE is here.</p>
+<p>Now that we have some data, we can write a function that uses maximum likelihood estimation to give us the best <span class="math inline">\(\beta\)</span> parameters for our given <strong>X</strong> and y. If you want to brush up on maximum likelihood, you can read <a href="https://www.ericekholm.com/posts/mle-learning-julia/">my previous “learning out loud” post</a>, or you can probably find materials written by someone who knows way more than I do. Either way, I’m not going to recap what MLE is here.</p>
 <p>Let’s define our function that we’ll use to estimate <span class="math inline">\(\beta\)</span>. The important thing to keep in mind is that the return value of this function isn’t the <span class="math inline">\(\beta\)</span> values, but rather the negative log likelihood, since this is what we we want to optimize.</p>
 <div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">ml_logreg</span>(x, y, b)</span>
