@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.449">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2022-10-26">
+<meta name="description" content="Tokenizing and counting Stranger Things dialogue using Julia">
+
+<title>Eric Ekholm - Stranger Strings</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link id="quarto-text-highlighting-styles" href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Eric Ekholm</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About Me</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html">Blog</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../pubs.html">Publications</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../resume.html">Resume</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/ekholme"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/ekholm_e"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Stranger Strings</h1>
+                  <div>
+        <div class="description">
+          <p>Tokenizing and counting Stranger Things dialogue using Julia</p>
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Julia</div>
+                <div class="quarto-category">Text Analysis</div>
+                <div class="quarto-category">TidyTuesday</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">October 26, 2022</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of Contents</h2>
+   
+  <ul>
+  <li><a href="#setup-and-examine-data" id="toc-setup-and-examine-data" class="nav-link active" data-scroll-target="#setup-and-examine-data">Setup and Examine Data</a></li>
+  <li><a href="#reshape-data" id="toc-reshape-data" class="nav-link" data-scroll-target="#reshape-data">Reshape Data</a></li>
+  <li><a href="#clean-text" id="toc-clean-text" class="nav-link" data-scroll-target="#clean-text">Clean Text</a></li>
+  <li><a href="#remove-stop-words" id="toc-remove-stop-words" class="nav-link" data-scroll-target="#remove-stop-words">Remove Stop Words</a></li>
+  <li><a href="#getting-the-top-20-words" id="toc-getting-the-top-20-words" class="nav-link" data-scroll-target="#getting-the-top-20-words">Getting the Top 20 Words</a></li>
+  <li><a href="#plotting" id="toc-plotting" class="nav-link" data-scroll-target="#plotting">Plotting</a></li>
+  </ul>
+</nav>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>In my quest to continue learning how to do things in Julia, I wanted to play around with last week’s <a href="https://github.com/rfordatascience/tidytuesday/tree/master/data/2022/2022-10-18">#TidyTuesday dataset</a>, which was the dialogue from every episode of Stranger Things. In data-analysis-dabbling in Julia so far, I’ve more or less avoided strings. This has mostly been because I’ve been focusing on numerical topics (like maximum likelihood estimation), but also because working with strings can be a pain. That said, it felt like time to explore strings in Julia, and this dataset provided a good opportunity to practice.</p>
+<p>The goal of this analysis is going to be do something fairly straightforward – I’m going to count the most-frequently used words in the series. But this will require learning some fundamental tools like tokenizing, pivoting/reshaping data, and cleaning text data, among others.</p>
+<p>As always, the point of this is to work through my own learning process. I’m certainly not claiming to be an expert, and if you are an expert and can recommend better approaches, I’d love to hear them!</p>
+<p>So let’s get to it.</p>
+<section id="setup-and-examine-data" class="level1">
+<h1>Setup and Examine Data</h1>
+<p>First, let’s load the packages we’ll use and read the data in:</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CSV </span><span class="co">#for reading CSVs</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">DataFrames </span><span class="co">#dataframe utilities</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Chain </span><span class="co">#chain macro, similar to R's pipe</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Languages </span><span class="co">#for stopwords</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">CairoMakie </span><span class="co">#plotting</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Statistics </span><span class="co">#for median</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>st_things_dialogue <span class="op">=</span> CSV.<span class="fu">read</span>(<span class="fu">download</span>(<span class="st">"https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-10-18/stranger_things_all_dialogue.csv"</span>), DataFrame);</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And then we can look at the size of the dataframe:</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">size</span>(st_things_dialogue)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<pre><code>(32519, 8)</code></pre>
+</div>
+</div>
+<p>As well as see the first few rows:</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">first</span>(st_things_dialogue, <span class="fl">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+
+<div class="data-frame"><p>3 rows × 8 columns (omitted printing of 1 columns)</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>season</th><th>episode</th><th>line</th><th>raw_text</th><th>stage_direction</th><th>dialogue</th><th>start_time</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="String">String</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, String}">String?</th><th title="Dates.Time">Time</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td>1</td><td>[crickets chirping]</td><td>[crickets chirping]</td><td><em>missing</em></td><td>00:00:07</td></tr><tr><th>2</th><td>1</td><td>1</td><td>2</td><td>[alarm blaring]</td><td>[alarm blaring]</td><td><em>missing</em></td><td>00:00:49</td></tr><tr><th>3</th><td>1</td><td>1</td><td>3</td><td>[panting]</td><td>[panting]</td><td><em>missing</em></td><td>00:00:52</td></tr></tbody></table></div>
+</div>
+</div>
+<p>So we can see that dialogue might be <code>missing</code> if the line is just stage directions. For our purposes here, let’s just use the lines with dialogue. To do this, we can use the <code>dropmissing()</code> function and then pass in the Dataframe and the column we want to only keep complete cases of, which is <code>:dialogue</code> in this case. Note that Julia uses <code>:</code> to denote symbols.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dialogue_complete <span class="op">=</span> <span class="fu">dropmissing</span>(st_things_dialogue, <span class="op">:</span>dialogue)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
+
+<div class="data-frame"><p>26,435 rows × 8 columns (omitted printing of 4 columns)</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>season</th><th>episode</th><th>line</th><th>raw_text</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="String">String</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td>9</td><td>[Mike] Something is coming. Something hungry for blood.</td></tr><tr><th>2</th><td>1</td><td>1</td><td>10</td><td>A shadow grows on the wall behind you, swallowing you in darkness.</td></tr><tr><th>3</th><td>1</td><td>1</td><td>11</td><td>-It is almost here. -What is it?</td></tr><tr><th>4</th><td>1</td><td>1</td><td>12</td><td>What if it's the Demogorgon?</td></tr><tr><th>5</th><td>1</td><td>1</td><td>13</td><td>Oh, Jesus, we're so screwed if it's the Demogorgon.</td></tr><tr><th>6</th><td>1</td><td>1</td><td>14</td><td>It's not the Demogorgon.</td></tr><tr><th>7</th><td>1</td><td>1</td><td>15</td><td>An army of troglodytes charge into the chamber!</td></tr><tr><th>8</th><td>1</td><td>1</td><td>16</td><td>-Troglodytes? -Told ya. [chuckling]</td></tr><tr><th>9</th><td>1</td><td>1</td><td>17</td><td>-[snorts] -[all chuckling]</td></tr><tr><th>10</th><td>1</td><td>1</td><td>18</td><td>[softly] Wait a minute.</td></tr><tr><th>11</th><td>1</td><td>1</td><td>19</td><td>Did you hear that?</td></tr><tr><th>12</th><td>1</td><td>1</td><td>20</td><td>That... that sound?</td></tr><tr><th>13</th><td>1</td><td>1</td><td>21</td><td>Boom... boom...</td></tr><tr><th>14</th><td>1</td><td>1</td><td>22</td><td>-[yells] Boom! -[slams table]</td></tr><tr><th>15</th><td>1</td><td>1</td><td>23</td><td>That didn't come from the troglodytes. No, that...</td></tr><tr><th>16</th><td>1</td><td>1</td><td>24</td><td>That came from something else.</td></tr><tr><th>17</th><td>1</td><td>1</td><td>25</td><td>-The Demogorgon! -[all groaning]</td></tr><tr><th>18</th><td>1</td><td>1</td><td>26</td><td>-We're in deep shit. -Will, your action!</td></tr><tr><th>19</th><td>1</td><td>1</td><td>27</td><td>-I don't know! -Fireball him!</td></tr><tr><th>20</th><td>1</td><td>1</td><td>28</td><td>I'd have to roll a 13 or higher!</td></tr><tr><th>21</th><td>1</td><td>1</td><td>29</td><td>Too risky. Cast a protection spell.</td></tr><tr><th>22</th><td>1</td><td>1</td><td>30</td><td>-Don't be a pussy. Fireball him! -Cast Protection.</td></tr><tr><th>23</th><td>1</td><td>1</td><td>31</td><td>The Demogorgon is tired of your silly human bickering!</td></tr><tr><th>24</th><td>1</td><td>1</td><td>32</td><td>It stomps towards you.</td></tr><tr><th>25</th><td>1</td><td>1</td><td>33</td><td>-Boom! -Fireball him!</td></tr><tr><th>26</th><td>1</td><td>1</td><td>34</td><td>-Another stomp, boom! -Cast Protection.</td></tr><tr><th>27</th><td>1</td><td>1</td><td>35</td><td>-He roars in anger! -[all clamoring]</td></tr><tr><th>28</th><td>1</td><td>1</td><td>36</td><td>-Fireball! -[die clattering]</td></tr><tr><th>29</th><td>1</td><td>1</td><td>37</td><td>-Oh, shit! -[Lucas] Where'd it go?</td></tr><tr><th>30</th><td>1</td><td>1</td><td>38</td><td>[Lucas] Where is it? [Will] I don't know!</td></tr><tr><th>⋮</th><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr></tbody></table></div>
+</div>
+</div>
+</section>
+<section id="reshape-data" class="level1">
+<h1>Reshape Data</h1>
+<p>Cool, so this will get us just rows that actually have dialogue. But what we can see is that each row is a <em>line</em> of dialogue, whereas we actually want to tokenize this so that each row is a word.</p>
+<p>To do this, we can use the <code>split</code> function, which lets us split a string at whatever delimiter we provide. In this case, that’s a space. For example:</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">split</span>(<span class="st">"a man a plan a canal panama"</span>, <span class="st">" "</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>7-element Vector{SubString{String}}:
+ "a"
+ "man"
+ "a"
+ "plan"
+ "a"
+ "canal"
+ "panama"</code></pre>
+</div>
+</div>
+<p>Or, using our actual data:</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">split</span>(dialogue_complete.dialogue[<span class="fl">1</span>], <span class="st">" "</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>7-element Vector{SubString{String}}:
+ "Something"
+ "is"
+ "coming."
+ "Something"
+ "hungry"
+ "for"
+ "blood."</code></pre>
+</div>
+</div>
+<p>It’s worth noting that, by default, <code>split()</code> will split on spaces, so we can just call the default function without the final argument as well:</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">split</span>(dialogue_complete.dialogue[<span class="fl">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>7-element Vector{SubString{String}}:
+ "Something"
+ "is"
+ "coming."
+ "Something"
+ "hungry"
+ "for"
+ "blood."</code></pre>
+</div>
+</div>
+<p>So this gives us the first step of what we want to do in tokenizing the dialogue.</p>
+<p>Let’s start putting this into a <code>chain</code>, which is similar to R’s pipe concept. And apparently there are several different chains/pipes in Julia, but the <code>Chain.jl</code> package seems reasonable to me so let’s just use that one.</p>
+<p>We can begin a chain operation with the <code>@chain</code> macro, then pass the dataframe name and a <code>begin</code> keyword. We then do all of our operations, then pass the <code>end</code> keyword. Like <code>tidyverse</code> functions in R, most of Julia’s <code>DataFrame</code> functions expect a dataframe as the first argument, which makes them work well with chains.</p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>df_split <span class="op">=</span> <span class="pp">@chain</span> dialogue_complete <span class="cf">begin</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>        <span class="op">:</span>season,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>        <span class="op">:</span>episode,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">:</span>line,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">:</span>dialogue <span class="op">=&gt;</span> <span class="fu">ByRow</span>(split) <span class="op">=&gt;</span> <span class="op">:</span>dialogue_split</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+
+<div class="data-frame"><p>26,435 rows × 4 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>season</th><th>episode</th><th>line</th><th>dialogue_split</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Vector{SubString{String}}">Array…</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td>9</td><td>["Something", "is", "coming.", "Something", "hungry", "for", "blood."]</td></tr><tr><th>2</th><td>1</td><td>1</td><td>10</td><td>["A", "shadow", "grows", "on", "the", "wall", "behind", "you,", "swallowing", "you", "in", "darkness."]</td></tr><tr><th>3</th><td>1</td><td>1</td><td>11</td><td>["It", "is", "almost", "here.", "What", "is", "it?"]</td></tr><tr><th>4</th><td>1</td><td>1</td><td>12</td><td>["What", "if", "it's", "the", "Demogorgon?"]</td></tr><tr><th>5</th><td>1</td><td>1</td><td>13</td><td>["Oh,", "Jesus,", "we're", "so", "screwed", "if", "it's", "the", "Demogorgon."]</td></tr><tr><th>6</th><td>1</td><td>1</td><td>14</td><td>["It's", "not", "the", "Demogorgon."]</td></tr><tr><th>7</th><td>1</td><td>1</td><td>15</td><td>["An", "army", "of", "troglodytes", "charge", "into", "the", "chamber!"]</td></tr><tr><th>8</th><td>1</td><td>1</td><td>16</td><td>["Troglodytes?", "Told", "ya."]</td></tr><tr><th>9</th><td>1</td><td>1</td><td>17</td><td>[]</td></tr><tr><th>10</th><td>1</td><td>1</td><td>18</td><td>["Wait", "a", "minute."]</td></tr><tr><th>11</th><td>1</td><td>1</td><td>19</td><td>["Did", "you", "hear", "that?"]</td></tr><tr><th>12</th><td>1</td><td>1</td><td>20</td><td>["That...", "that", "sound?"]</td></tr><tr><th>13</th><td>1</td><td>1</td><td>21</td><td>["Boom...", "boom..."]</td></tr><tr><th>14</th><td>1</td><td>1</td><td>22</td><td>["Boom!"]</td></tr><tr><th>15</th><td>1</td><td>1</td><td>23</td><td>["That", "didn't", "come", "from", "the", "troglodytes.", "No,", "that..."]</td></tr><tr><th>16</th><td>1</td><td>1</td><td>24</td><td>["That", "came", "from", "something", "else."]</td></tr><tr><th>17</th><td>1</td><td>1</td><td>25</td><td>["The", "Demogorgon!"]</td></tr><tr><th>18</th><td>1</td><td>1</td><td>26</td><td>["We're", "in", "deep", "shit.", "Will,", "your", "action!"]</td></tr><tr><th>19</th><td>1</td><td>1</td><td>27</td><td>["I", "don't", "know!", "Fireball", "him!"]</td></tr><tr><th>20</th><td>1</td><td>1</td><td>28</td><td>["I'd", "have", "to", "roll", "a", "13", "or", "higher!"]</td></tr><tr><th>21</th><td>1</td><td>1</td><td>29</td><td>["Too", "risky.", "Cast", "a", "protection", "spell."]</td></tr><tr><th>22</th><td>1</td><td>1</td><td>30</td><td>["Don't", "be", "a", "pussy.", "Fireball", "him!", "Cast", "Protection."]</td></tr><tr><th>23</th><td>1</td><td>1</td><td>31</td><td>["The", "Demogorgon", "is", "tired", "of", "your", "silly", "human", "bickering!"]</td></tr><tr><th>24</th><td>1</td><td>1</td><td>32</td><td>["It", "stomps", "towards", "you."]</td></tr><tr><th>25</th><td>1</td><td>1</td><td>33</td><td>["Boom!", "Fireball", "him!"]</td></tr><tr><th>26</th><td>1</td><td>1</td><td>34</td><td>["Another", "stomp,", "boom!", "Cast", "Protection."]</td></tr><tr><th>27</th><td>1</td><td>1</td><td>35</td><td>["He", "roars", "in", "anger!"]</td></tr><tr><th>28</th><td>1</td><td>1</td><td>36</td><td>["Fireball!"]</td></tr><tr><th>29</th><td>1</td><td>1</td><td>37</td><td>["Oh,", "shit!", "Where'd", "it", "go?"]</td></tr><tr><th>30</th><td>1</td><td>1</td><td>38</td><td>["Where", "is", "it?", "I", "don't", "know!"]</td></tr><tr><th>⋮</th><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr></tbody></table></div>
+</div>
+</div>
+<p>Technically we don’t <em>need</em> to chain anything above since we’re just doing one operation (<code>select()</code>) right now, but we’ll add more soon.</p>
+<p>One thing you might notice in the final line within <code>select()</code> is Julia’s notation for “doing things” is <code>input_col =&gt; function =&gt; output_col</code>. In the case above, we’re supplying an anonymous function (which is that x -&gt; fun(x, …)) syntax, and wrapping that in a special <code>ByRow()</code> function that facilitates broadcasting in dataframe operations.</p>
+<p>All that said, the above doesn’t quite give us what we want if we look at the first two rows of output:</p>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">first</span>(df_split, <span class="fl">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+
+<div class="data-frame"><p>2 rows × 4 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>season</th><th>episode</th><th>line</th><th>dialogue_split</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Vector{SubString{String}}">Array…</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td>9</td><td>["Something", "is", "coming.", "Something", "hungry", "for", "blood."]</td></tr><tr><th>2</th><td>1</td><td>1</td><td>10</td><td>["A", "shadow", "grows", "on", "the", "wall", "behind", "you,", "swallowing", "you", "in", "darkness."]</td></tr></tbody></table></div>
+</div>
+</div>
+<p>Our <code>dialogue_split</code> column is a vector of vectors. To get around this, we want to flatten the column so that each row contains a single word. The nice thing about our chain operation above is that we can just plunk the <code>flatten()</code> function right on the end to do this:</p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df_split <span class="op">=</span> <span class="pp">@chain</span> dialogue_complete <span class="cf">begin</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>        <span class="op">:</span>season,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>        <span class="op">:</span>episode,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">:</span>line,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">:</span>dialogue <span class="op">=&gt;</span> <span class="fu">ByRow</span>(split) <span class="op">=&gt;</span> <span class="op">:</span>dialogue_split</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">flatten</span>(<span class="op">:</span>dialogue_split)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+
+<div class="data-frame"><p>145,243 rows × 4 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>season</th><th>episode</th><th>line</th><th>dialogue_split</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="SubString{String}">SubStrin…</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td>9</td><td>Something</td></tr><tr><th>2</th><td>1</td><td>1</td><td>9</td><td>is</td></tr><tr><th>3</th><td>1</td><td>1</td><td>9</td><td>coming.</td></tr><tr><th>4</th><td>1</td><td>1</td><td>9</td><td>Something</td></tr><tr><th>5</th><td>1</td><td>1</td><td>9</td><td>hungry</td></tr><tr><th>6</th><td>1</td><td>1</td><td>9</td><td>for</td></tr><tr><th>7</th><td>1</td><td>1</td><td>9</td><td>blood.</td></tr><tr><th>8</th><td>1</td><td>1</td><td>10</td><td>A</td></tr><tr><th>9</th><td>1</td><td>1</td><td>10</td><td>shadow</td></tr><tr><th>10</th><td>1</td><td>1</td><td>10</td><td>grows</td></tr><tr><th>11</th><td>1</td><td>1</td><td>10</td><td>on</td></tr><tr><th>12</th><td>1</td><td>1</td><td>10</td><td>the</td></tr><tr><th>13</th><td>1</td><td>1</td><td>10</td><td>wall</td></tr><tr><th>14</th><td>1</td><td>1</td><td>10</td><td>behind</td></tr><tr><th>15</th><td>1</td><td>1</td><td>10</td><td>you,</td></tr><tr><th>16</th><td>1</td><td>1</td><td>10</td><td>swallowing</td></tr><tr><th>17</th><td>1</td><td>1</td><td>10</td><td>you</td></tr><tr><th>18</th><td>1</td><td>1</td><td>10</td><td>in</td></tr><tr><th>19</th><td>1</td><td>1</td><td>10</td><td>darkness.</td></tr><tr><th>20</th><td>1</td><td>1</td><td>11</td><td>It</td></tr><tr><th>21</th><td>1</td><td>1</td><td>11</td><td>is</td></tr><tr><th>22</th><td>1</td><td>1</td><td>11</td><td>almost</td></tr><tr><th>23</th><td>1</td><td>1</td><td>11</td><td>here.</td></tr><tr><th>24</th><td>1</td><td>1</td><td>11</td><td>What</td></tr><tr><th>25</th><td>1</td><td>1</td><td>11</td><td>is</td></tr><tr><th>26</th><td>1</td><td>1</td><td>11</td><td>it?</td></tr><tr><th>27</th><td>1</td><td>1</td><td>12</td><td>What</td></tr><tr><th>28</th><td>1</td><td>1</td><td>12</td><td>if</td></tr><tr><th>29</th><td>1</td><td>1</td><td>12</td><td>it's</td></tr><tr><th>30</th><td>1</td><td>1</td><td>12</td><td>the</td></tr><tr><th>⋮</th><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr></tbody></table></div>
+</div>
+</div>
+<p>Better! Now let’s check out the first 10 elements of our dialogue split column:</p>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show</span>(<span class="fu">first</span>(df_split.<span class="op">:</span>dialogue_split, <span class="fl">10</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>SubString{String}["Something", "is", "coming.", "Something", "hungry", "for", "blood.", "A", "shadow", "grows"]</code></pre>
+</div>
+</div>
+</section>
+<section id="clean-text" class="level1">
+<h1>Clean Text</h1>
+<p>So, it’s not ideal that we have punctuation in here. We don’t want, for instance “blood” to be considered a different word than “blood.” when we count words later. Same deal for uppercase and lowercase letters – we want “something” to be the same as “Something”. So we need to strip punctuation and lowercase everything.</p>
+<p>First, we can write a small little function to strip punctuation.</p>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">strip_punc</span>(x)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">strip</span>(x, [<span class="ch">','</span>, <span class="ch">';'</span>, <span class="ch">'.'</span>, <span class="ch">'?'</span>, <span class="ch">'!'</span>])</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<pre><code>strip_punc (generic function with 1 method)</code></pre>
+</div>
+</div>
+<p>And Julia already has a <code>lowercase()</code> function built in. Now, let’s jam these on the end of the chain we already have:</p>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>df_split <span class="op">=</span> <span class="pp">@chain</span> dialogue_complete <span class="cf">begin</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>        <span class="op">:</span>season,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>        <span class="op">:</span>episode,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">:</span>line,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">:</span>dialogue <span class="op">=&gt;</span> <span class="fu">ByRow</span>(split) <span class="op">=&gt;</span> <span class="op">:</span>dialogue_split</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">flatten</span>(<span class="op">:</span>dialogue_split)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">transform</span>(<span class="op">:</span>dialogue_split <span class="op">=&gt;</span> <span class="fu">ByRow</span>(lowercase) <span class="op">=&gt;</span> <span class="op">:</span>dialogue_split)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">transform</span>(<span class="op">:</span>dialogue_split <span class="op">=&gt;</span> <span class="fu">ByRow</span>(strip_punc) <span class="op">=&gt;</span> <span class="op">:</span>dialogue_stripped)</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+
+<div class="data-frame"><p>145,243 rows × 5 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>season</th><th>episode</th><th>line</th><th>dialogue_split</th><th>dialogue_stripped</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="String">String</th><th title="SubString{String}">SubStrin…</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td>9</td><td>something</td><td>something</td></tr><tr><th>2</th><td>1</td><td>1</td><td>9</td><td>is</td><td>is</td></tr><tr><th>3</th><td>1</td><td>1</td><td>9</td><td>coming.</td><td>coming</td></tr><tr><th>4</th><td>1</td><td>1</td><td>9</td><td>something</td><td>something</td></tr><tr><th>5</th><td>1</td><td>1</td><td>9</td><td>hungry</td><td>hungry</td></tr><tr><th>6</th><td>1</td><td>1</td><td>9</td><td>for</td><td>for</td></tr><tr><th>7</th><td>1</td><td>1</td><td>9</td><td>blood.</td><td>blood</td></tr><tr><th>8</th><td>1</td><td>1</td><td>10</td><td>a</td><td>a</td></tr><tr><th>9</th><td>1</td><td>1</td><td>10</td><td>shadow</td><td>shadow</td></tr><tr><th>10</th><td>1</td><td>1</td><td>10</td><td>grows</td><td>grows</td></tr><tr><th>11</th><td>1</td><td>1</td><td>10</td><td>on</td><td>on</td></tr><tr><th>12</th><td>1</td><td>1</td><td>10</td><td>the</td><td>the</td></tr><tr><th>13</th><td>1</td><td>1</td><td>10</td><td>wall</td><td>wall</td></tr><tr><th>14</th><td>1</td><td>1</td><td>10</td><td>behind</td><td>behind</td></tr><tr><th>15</th><td>1</td><td>1</td><td>10</td><td>you,</td><td>you</td></tr><tr><th>16</th><td>1</td><td>1</td><td>10</td><td>swallowing</td><td>swallowing</td></tr><tr><th>17</th><td>1</td><td>1</td><td>10</td><td>you</td><td>you</td></tr><tr><th>18</th><td>1</td><td>1</td><td>10</td><td>in</td><td>in</td></tr><tr><th>19</th><td>1</td><td>1</td><td>10</td><td>darkness.</td><td>darkness</td></tr><tr><th>20</th><td>1</td><td>1</td><td>11</td><td>it</td><td>it</td></tr><tr><th>21</th><td>1</td><td>1</td><td>11</td><td>is</td><td>is</td></tr><tr><th>22</th><td>1</td><td>1</td><td>11</td><td>almost</td><td>almost</td></tr><tr><th>23</th><td>1</td><td>1</td><td>11</td><td>here.</td><td>here</td></tr><tr><th>24</th><td>1</td><td>1</td><td>11</td><td>what</td><td>what</td></tr><tr><th>25</th><td>1</td><td>1</td><td>11</td><td>is</td><td>is</td></tr><tr><th>26</th><td>1</td><td>1</td><td>11</td><td>it?</td><td>it</td></tr><tr><th>27</th><td>1</td><td>1</td><td>12</td><td>what</td><td>what</td></tr><tr><th>28</th><td>1</td><td>1</td><td>12</td><td>if</td><td>if</td></tr><tr><th>29</th><td>1</td><td>1</td><td>12</td><td>it's</td><td>it's</td></tr><tr><th>30</th><td>1</td><td>1</td><td>12</td><td>the</td><td>the</td></tr><tr><th>⋮</th><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr></tbody></table></div>
+</div>
+</div>
+<p>Confirming that this worked:</p>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show</span>(df_split.<span class="op">:</span>dialogue_stripped[<span class="fl">1</span><span class="op">:</span><span class="fl">10</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>SubString{String}["something", "is", "coming", "something", "hungry", "for", "blood", "a", "shadow", "grows"]</code></pre>
+</div>
+</div>
+<p>Splendid.</p>
+</section>
+<section id="remove-stop-words" class="level1">
+<h1>Remove Stop Words</h1>
+<p>The next step is to get rid of stop words, because we don’t really care about counting those. There’s a list of stopwords in the <code>Languages.jl</code> package that we’ll use</p>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>stops <span class="op">=</span> <span class="fu">stopwords</span>(Languages.<span class="fu">English</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<pre><code>488-element Vector{String}:
+ "a"
+ "about"
+ "above"
+ "across"
+ "after"
+ "again"
+ "against"
+ "all"
+ "almost"
+ "alone"
+ "along"
+ "already"
+ "also"
+ ⋮
+ "you'd"
+ "you'll"
+ "young"
+ "younger"
+ "youngest"
+ "your"
+ "you're"
+ "yours"
+ "yourself"
+ "yourselves"
+ "you've"
+ "z"</code></pre>
+</div>
+</div>
+<p>Swell. Now that we have this, we can subset (filter in R terms) our dataset to include only rows with words not in the list of stop words.</p>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>dialogue_no_stops <span class="op">=</span> <span class="fu">subset</span>(</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    df_split,</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>dialogue_stripped <span class="op">=&gt;</span> x <span class="op">-&gt;</span> .!<span class="fu">in</span>.(x, <span class="fu">Ref</span>(stops))</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
+
+<div class="data-frame"><p>50,812 rows × 5 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>season</th><th>episode</th><th>line</th><th>dialogue_split</th><th>dialogue_stripped</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="String">String</th><th title="SubString{String}">SubStrin…</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td>9</td><td>coming.</td><td>coming</td></tr><tr><th>2</th><td>1</td><td>1</td><td>9</td><td>hungry</td><td>hungry</td></tr><tr><th>3</th><td>1</td><td>1</td><td>9</td><td>blood.</td><td>blood</td></tr><tr><th>4</th><td>1</td><td>1</td><td>10</td><td>shadow</td><td>shadow</td></tr><tr><th>5</th><td>1</td><td>1</td><td>10</td><td>grows</td><td>grows</td></tr><tr><th>6</th><td>1</td><td>1</td><td>10</td><td>wall</td><td>wall</td></tr><tr><th>7</th><td>1</td><td>1</td><td>10</td><td>swallowing</td><td>swallowing</td></tr><tr><th>8</th><td>1</td><td>1</td><td>10</td><td>darkness.</td><td>darkness</td></tr><tr><th>9</th><td>1</td><td>1</td><td>12</td><td>demogorgon?</td><td>demogorgon</td></tr><tr><th>10</th><td>1</td><td>1</td><td>13</td><td>oh,</td><td>oh</td></tr><tr><th>11</th><td>1</td><td>1</td><td>13</td><td>jesus,</td><td>jesus</td></tr><tr><th>12</th><td>1</td><td>1</td><td>13</td><td>screwed</td><td>screwed</td></tr><tr><th>13</th><td>1</td><td>1</td><td>13</td><td>demogorgon.</td><td>demogorgon</td></tr><tr><th>14</th><td>1</td><td>1</td><td>14</td><td>demogorgon.</td><td>demogorgon</td></tr><tr><th>15</th><td>1</td><td>1</td><td>15</td><td>army</td><td>army</td></tr><tr><th>16</th><td>1</td><td>1</td><td>15</td><td>troglodytes</td><td>troglodytes</td></tr><tr><th>17</th><td>1</td><td>1</td><td>15</td><td>charge</td><td>charge</td></tr><tr><th>18</th><td>1</td><td>1</td><td>15</td><td>chamber!</td><td>chamber</td></tr><tr><th>19</th><td>1</td><td>1</td><td>16</td><td>troglodytes?</td><td>troglodytes</td></tr><tr><th>20</th><td>1</td><td>1</td><td>16</td><td>told</td><td>told</td></tr><tr><th>21</th><td>1</td><td>1</td><td>16</td><td>ya.</td><td>ya</td></tr><tr><th>22</th><td>1</td><td>1</td><td>18</td><td>wait</td><td>wait</td></tr><tr><th>23</th><td>1</td><td>1</td><td>18</td><td>minute.</td><td>minute</td></tr><tr><th>24</th><td>1</td><td>1</td><td>19</td><td>hear</td><td>hear</td></tr><tr><th>25</th><td>1</td><td>1</td><td>20</td><td>sound?</td><td>sound</td></tr><tr><th>26</th><td>1</td><td>1</td><td>21</td><td>boom...</td><td>boom</td></tr><tr><th>27</th><td>1</td><td>1</td><td>21</td><td>boom...</td><td>boom</td></tr><tr><th>28</th><td>1</td><td>1</td><td>22</td><td>boom!</td><td>boom</td></tr><tr><th>29</th><td>1</td><td>1</td><td>23</td><td>troglodytes.</td><td>troglodytes</td></tr><tr><th>30</th><td>1</td><td>1</td><td>24</td><td>else.</td><td>else</td></tr><tr><th>⋮</th><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr></tbody></table></div>
+</div>
+</div>
+<p>If you’re not familiar with Julia, the <code>.</code> is a way to broadcast/vectorize operations, which mostly aren’t vectorized by default. And to be completely honest, I’m not sure why I need to wrap our stopwords in <code>Ref()</code>, but the internet says I do and I assume this is some Julia equivalent of, like, tidyeval that I haven’t gotten around to understanding yet. But regardless, this does what we want!</p>
+</section>
+<section id="getting-the-top-20-words" class="level1">
+<h1>Getting the Top 20 Words</h1>
+<p>We’re almost there, fam. We’ve got a dataset in the format we want it in, and we’ve done some light cleaning. Now, let’s count how often each word is used and select the top 20 most common. Again, we’re going to chain some operations together.</p>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>top_20 <span class="op">=</span> <span class="pp">@chain</span> dialogue_no_stops <span class="cf">begin</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">groupby</span>(<span class="op">:</span>dialogue_stripped)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">combine</span>(nrow <span class="op">=&gt;</span> <span class="op">:</span>count)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">sort</span>(<span class="op">:</span>count, rev <span class="op">=</span> <span class="cn">true</span>)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">first</span>(<span class="fl">20</span>)</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+
+<div class="data-frame"><p>20 rows × 2 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>dialogue_stripped</th><th>count</th></tr><tr><th></th><th title="SubString{String}">SubStrin…</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>♪</td><td>1386</td></tr><tr><th>2</th><td>yeah</td><td>1106</td></tr><tr><th>3</th><td>okay</td><td>960</td></tr><tr><th>4</th><td>oh</td><td>670</td></tr><tr><th>5</th><td>hey</td><td>631</td></tr><tr><th>6</th><td>shit</td><td>456</td></tr><tr><th>7</th><td>gonna</td><td>427</td></tr><tr><th>8</th><td>uh</td><td>396</td></tr><tr><th>9</th><td>mean</td><td>310</td></tr><tr><th>10</th><td>time</td><td>284</td></tr><tr><th>11</th><td>sorry</td><td>281</td></tr><tr><th>12</th><td>look</td><td>242</td></tr><tr><th>13</th><td>tell</td><td>240</td></tr><tr><th>14</th><td>mike</td><td>234</td></tr><tr><th>15</th><td>stop</td><td>227</td></tr><tr><th>16</th><td>maybe</td><td>225</td></tr><tr><th>17</th><td>please</td><td>224</td></tr><tr><th>18</th><td>max</td><td>213</td></tr><tr><th>19</th><td>god</td><td>211</td></tr><tr><th>20</th><td>little</td><td>211</td></tr></tbody></table></div>
+</div>
+</div>
+<p>I’m actually not going to explain the above because I think it’s pretty intuitive if you’ve been following along so far and are familiar with either R or Python functions (the function names here are pretty descriptive, I think).</p>
+</section>
+<section id="plotting" class="level1">
+<h1>Plotting</h1>
+<p>Ok, so, as much as I like Julia so far, plotting does feel difficult. I’ve mostly used <code>Makie</code> and its counterparts, and I think I’m almost starting to get a handle on them, but they definitely don’t feel as intuitive to me as, say, <code>ggplot2</code>.</p>
+<p>Full transparency – making this little plot took me more time than I wanted it to, and it’s entirely due to labeling the y-axis ticks. So, uh, here’s the code to make the plot, and just know that I don’t fully understand why some options accept vectors while others want tuples.</p>
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>lbls <span class="op">=</span> <span class="st">"Rank "</span> <span class="op">.*</span> <span class="fu">reverse</span>(<span class="fu">string</span>.(<span class="fl">1</span><span class="op">:</span><span class="fl">20</span>))</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="fl">1</span><span class="op">:</span><span class="fu">nrow</span>(top_20),</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">reverse</span>(top_20.count),</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    direction <span class="op">=</span> <span class="op">:</span>x,</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    bar_labels <span class="op">=</span> <span class="fu">reverse</span>(top_20.<span class="op">:</span>dialogue_stripped),</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>    flip_labels_at <span class="op">=</span> <span class="fu">median</span>(top_20.count),</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>    axis <span class="op">=</span> (</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>        yticks <span class="op">=</span> (<span class="fl">1</span><span class="op">:</span><span class="fl">20</span>, lbls),</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>        title <span class="op">=</span> <span class="st">"Most Common Words in Stranger Things"</span>,</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>        xlabel <span class="op">=</span> <span class="st">"Times Said"</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<p><img src="index_files/figure-html/cell-19-output-1.svg" class="img-fluid"></p>
+</div>
+</div>
+<p>Et voila – we’ve taken a dataframe with dialogue, tokenized it, cleaned it a little bit, and found the top 20 most common words. We could modify our list of stop words a little if we wanted to get rid of things like “oh”, “okay”, “uh”, and whatnot, but I’m not going to bother with that here. I hope you learned as much from reading this as I did from writing it!</p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">https://creativecommons.org/licenses/by-nc/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{ekholm2022,
+  author = {Eric Ekholm},
+  title = {Stranger {Strings}},
+  date = {2022-10-26},
+  url = {https://www.ericekholm.com/posts/stranger-strings},
+  langid = {en}
+}
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-ekholm2022" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
+Eric Ekholm. 2022. <span>“Stranger Strings.”</span> October 26, 2022. <a href="https://www.ericekholm.com/posts/stranger-strings">https://www.ericekholm.com/posts/stranger-strings</a>.
+</div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

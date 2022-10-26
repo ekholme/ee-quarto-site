@@ -6,7 +6,7 @@
   </url>
   <url>
     <loc>https://www.ericekholm.com/blog.html</loc>
-    <lastmod>2022-09-28T14:58:09.671Z</lastmod>
+    <lastmod>2022-10-26T10:44:38.694Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/index.html</loc>
@@ -18,7 +18,7 @@
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/crossfit-games-2022/index.html</loc>
-    <lastmod>2022-08-31T11:19:57.676Z</lastmod>
+    <lastmod>2022-10-26T10:44:29.909Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/demo-quarto-site/index.html</loc>
@@ -58,7 +58,7 @@
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/mle-learning-julia/index.html</loc>
-    <lastmod>2022-08-31T11:20:11.164Z</lastmod>
+    <lastmod>2022-10-26T10:44:32.104Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/personalizing-the-distill-template/index.html</loc>
@@ -143,5 +143,9 @@
   <url>
     <loc>https://www.ericekholm.com/posts/mle-logreg-julia/index.html</loc>
     <lastmod>2022-09-28T14:58:02.526Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.ericekholm.com/posts/stranger-strings/index.html</loc>
+    <lastmod>2022-10-26T10:44:46.705Z</lastmod>
   </url>
 </urlset>
