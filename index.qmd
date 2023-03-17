@@ -3,20 +3,6 @@ title: "Eric Ekholm"
 about: 
   image: img/prof_pic.jpg
   template: jolla
-  links:
-    - icon: "twitter"
-      text: '<i class="fab fa-twitter"></i> Twitter'
-      href: https://twitter.com/ekholm_e
-    - icon: github
-      text: '<i class="fab fa-github"></i> GitHub'
-      href: https://github.com/ekholme/
-    - icon: linkedin
-      text: '<i class="fab fa-linkedin"></i> LinkedIn'
-      href: https://www.linkedin.com/in/eric-ekholm-8a481022/
-    - icon: envelope
-      text: '<i class="fas fa-envelope"></i> Email'
-      href: mailto:eric.ekholm@gmail.com
-
 ---
 
 I am an educator, researcher, data scientist, and writer. I am currently an Education Data Specialist for Chesterfield County Public Schools, where I use data to help guide decisions and improve students' educational experiences.

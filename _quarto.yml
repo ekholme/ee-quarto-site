@@ -4,17 +4,36 @@ project:
 website:
   title: "Eric Ekholm"
   site-url: "https://www.ericekholm.com"
+  repo-url: "https://github.com/ekholme/ee-quarto-site"
+  favicon: "/img/ee-logo.png"
+  
   navbar:
-    right:
+    pinned: true
+
+    left:
       - about.qmd
       - blog.qmd
       - pubs.qmd
       - text: "Resume"
         href: resume.html
+
+    right:
       - icon: github
+        aria-label: github
         href: https://github.com/ekholme
       - icon: twitter
+        aria-label: twitter
         href: https://twitter.com/ekholm_e
+      - icon: envelope
+        aria-label: email
+        href: "mailto:eric.ekholm@gmail.com"
+      - icon: mastodon
+        aria-label: mastodon
+        href: https://fosstodon.org/@ekholme
+      - icon: linkedin
+        aria-label: linkedin
+        href: https://www.linkedin.com/in/eric-ekholm-8a481022/
+
 format:
   html:
     theme: litera
