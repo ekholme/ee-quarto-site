@@ -30,11 +30,13 @@ Skills {#skills}
 
 - Data visualization and data dashboarding
 
-- Advanced proficiency in R
+- Advanced proficiency in `R`
 
-- Proficiency in Go and Julia
+- Proficiency in `Go`, `Julia`, `SQL`
 
 - Cloud computing via Google Cloud
+
+- Git, Docker, Bash
 
 
 Disclaimer {#disclaimer}
@@ -58,7 +60,7 @@ Richmond, VA
 
 2019
 
-Dissertation: Investigating Daily Writing Emotions, Attention Regulation, and Productivity: An Intensive Longitudinal Study
+Dissertation: [Investigating Daily Writing Emotions, Attention Regulation, and Productivity: An Intensive Longitudinal Study](https://scholarscompass.vcu.edu/etd/5977/)
 
 ### MT, English Education
 Virginia Commonwealth University
@@ -87,7 +89,7 @@ Midlothian, VA
 
 - Produce reports and visualizations that clearly communicate the results of statistical analyses to school division leadership and other nontechnical audiences.
 - Design and conduct program evaluations using rigorous statistical methods.
-- Develop and maintain internal R packages to streamline analytic workflows.
+- Develop and maintain internal software packages to streamline analytic workflows.
 - Create dashboards to help teachers, principals, and school division leadership extract actionable information from large datasets.
 - Develop predictive models and educate end-users on their appropriate use.
 

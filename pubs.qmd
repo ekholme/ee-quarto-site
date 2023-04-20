@@ -9,13 +9,15 @@ This page contains a list of my academic and non-academic publications, as well 
 
 Back when I was more actively involved in academia, I published some papers, mostly related to student motivation, how people write, or statistical methodology. Publishing peer-reviewed work has been less of a priority for me lately, but I still dabble here and there.
 
-+ Marrs, S., Zumbrunn, S., & __Ekholm, E.__ (2022). Measuring students' perceptions of writing feedback. _Current Research in Psychology and Behavioral Science_, _3_(4).
++ Broda, M.D., Ross, E., Sorhagen, N., & __Ekholm, E.__ (2023). Exploring control-value motivational profiles of mathematics anxiety, self-concept, and interest in adolescents. _Frontiers in Psychology_, _14_. https://doi.org/10.3389/fpsyg.2023.1140924
+
++ Marrs, S., Zumbrunn, S., & __Ekholm, E.__ (2022). Measuring students' perceptions of writing feedback. _Current Research in Psychology and Behavioral Science_, _3_(4). https://doi.org/10.54026/CRPBS/1054
 
 + Zumbrunn, S., __Ekholm, E.__, Broda, M., & Koenka, A. C. (2022). Trajectories of students' writing feedback attitudes. _Journal of Experimental Education_. https://doi.org/10.1080/00220973.2022.2064413
 
-+ Chow, J., __Ekholm, E.__, & Bae, C. (2021). Relative contribution of verbal working memory and attention to child language. _Assessment for Effective Intervention_, _47_(1), 3-13.
++ Chow, J., __Ekholm, E.__, & Bae, C. (2021). Relative contribution of verbal working memory and attention to child language. _Assessment for Effective Intervention_, _47_(1), 3-13. http://dx.doi.org/10.1177/1534508420946361
 
-+ Broda, M., __Ekholm, E.__, & Zumbrunn, S. (2020). Assessing the predictive nature of teacher and student writing self-regulation discrepancy. _Frontline Learning Research_, _8_(4), 52.
++ Broda, M., __Ekholm, E.__, & Zumbrunn, S. (2020). Assessing the predictive nature of teacher and student writing self-regulation discrepancy. _Frontline Learning Research_, _8_(4), 52. https://doi.org/10.14786/flr.v8i4.505
 
 + Gellock, J., __Ekholm, E.__, Greenhalgh, G., LeCrom, C., Reina, C., & Kudesia, R. (2019). Women’s lacrosse players’ perceptions of teammate leadership: Examining athlete leadership behaviors, attributes, and interactions. _Journal of Athlete Development and Experience, 1(2)_, 2. https://scholarworks.bgsu.edu/jade/vol1/iss2/2.  
 
