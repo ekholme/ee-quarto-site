@@ -9,6 +9,8 @@ This page contains a list of my academic and non-academic publications, as well 
 
 Back when I was more actively involved in academia, I published some papers, mostly related to student motivation, how people write, or statistical methodology. Publishing peer-reviewed work has been less of a priority for me lately, but I still dabble here and there.
 
++ Senechal, J., __Ekholm, E.__, Aljudaibi, S., Strawderman, M., & Parthemos, C. (2023). Balancing the benefits and risks of large language AI models in K12 public schools: A MERC research brief. Richmond, VA: Metropolitan Educational Research Consortium.
+
 + Broda, M.D., Ross, E., Sorhagen, N., & __Ekholm, E.__ (2023). Exploring control-value motivational profiles of mathematics anxiety, self-concept, and interest in adolescents. _Frontiers in Psychology_, _14_. https://doi.org/10.3389/fpsyg.2023.1140924
 
 + Marrs, S., Zumbrunn, S., & __Ekholm, E.__ (2022). Measuring students' perceptions of writing feedback. _Current Research in Psychology and Behavioral Science_, _3_(4). https://doi.org/10.54026/CRPBS/1054
