@@ -6,7 +6,7 @@
   </url>
   <url>
     <loc>https://www.ericekholm.com/blog.html</loc>
-    <lastmod>2023-04-20T18:47:30.126Z</lastmod>
+    <lastmod>2023-06-10T01:12:41.756Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/index.html</loc>
@@ -147,5 +147,9 @@
   <url>
     <loc>https://www.ericekholm.com/resume.html</loc>
     <lastmod>2023-04-20T18:48:20.745Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.ericekholm.com/posts/string-match-jl/index.html</loc>
+    <lastmod>2023-06-10T01:13:21.335Z</lastmod>
   </url>
 </urlset>

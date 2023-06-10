@@ -2,6 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/posts/string-match-jl/index.html",
       "/posts/stranger-strings/index.html",
       "/posts/mle-logreg-julia/index.html",
       "/posts/cor-generate-data/index.html",
