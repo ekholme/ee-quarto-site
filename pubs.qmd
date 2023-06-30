@@ -9,7 +9,7 @@ This page contains a list of my academic and non-academic publications, as well 
 
 Back when I was more actively involved in academia, I published some papers, mostly related to student motivation, how people write, or statistical methodology. Publishing peer-reviewed work has been less of a priority for me lately, but I still dabble here and there.
 
-+ Senechal, J., __Ekholm, E.__, Aljudaibi, S., Strawderman, M., & Parthemos, C. (2023). Balancing the benefits and risks of large language AI models in K12 public schools: A MERC research brief. Richmond, VA: Metropolitan Educational Research Consortium.
++ Senechal, J., __Ekholm, E.__, Aljudaibi, S., Strawderman, M., & Parthemos, C. (2023). [Balancing the benefits and risks of large language AI models in K12 public schools: A MERC research brief](https://merc.soe.vcu.edu/reports/research-briefs/ai-in-schools/). Richmond, VA: Metropolitan Educational Research Consortium.
 
 + Broda, M.D., Ross, E., Sorhagen, N., & __Ekholm, E.__ (2023). Exploring control-value motivational profiles of mathematics anxiety, self-concept, and interest in adolescents. _Frontiers in Psychology_, _14_. https://doi.org/10.3389/fpsyg.2023.1140924
 
@@ -68,9 +68,11 @@ Back when I was more actively involved in academia, I published some papers, mos
 #### Conference Presentations & Invited Talks
 _Only conference presentations since 2018 included_
 
++ __Ekholme, E.__ (June, 2023). [Using AI to Generate Data-Driven Lesson Plans](https://docs.google.com/presentation/d/1MKi0Fjj39JH4y3P-z28v3KM7tkU9bPuNIVN-Rq-YliM/edit?usp=sharing). Session presented at the annual Metropolitan Educational Research Consortium (MERC) conference, Richmond, VA.
+
 + __Ekholm, E.__ (May, 2022). [Data Viz Tips & Tricks](https://github.com/ekholme/data_viz_tips). Invited talk presented to the Educational Research & Evaluation Network (EREN).
 
-+ __Ekholme, E.__, & Fox, P. (October, 2021). Using machine learning to support student attendance practices. Session presented at the annual [Metropolitan Education Research Consortium (MERC) conference](https://merc.soe.vcu.edu/conference/program/2021/), Richmond, VA. Video available [here](https://www.youtube.com/watch?v=gbTfelMWMiY) (~27:30 timestamp).
++ __Ekholme, E.__, & Fox, P. (October, 2021). Using machine learning to support student attendance practices. Session presented at the annual [Metropolitan Educational Research Consortium (MERC) conference](https://merc.soe.vcu.edu/conference/program/2021/), Richmond, VA. Video available [here](https://www.youtube.com/watch?v=gbTfelMWMiY) (~27:30 timestamp).
 
 + __Ekholm, E.__, & Zumbrun, S. (April, 2020). Investigating relations between writers’ emotional experiences and attention regulation: A daily diary study. Paper presented at the American Educational Research Association (AERA) Annual Meeting, San Francisco, CA.
 

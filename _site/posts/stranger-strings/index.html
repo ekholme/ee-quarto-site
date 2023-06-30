@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.280">
+<meta name="generator" content="quarto-1.3.361">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -19,9 +19,10 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -48,43 +49,13 @@ pre.numberSource code > span > a:first-child::before
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
     padding: 0 4px; width: 4em;
-    color: #aaaaaa;
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
 div.sourceCode
   {   }
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -120,7 +91,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
@@ -142,56 +114,58 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <span class="navbar-title">Eric Ekholm</span>
     </a>
   </div>
+            <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../about.html">
+    <a class="nav-link" href="../../about.html" rel="" target="">
  <span class="menu-text">About Me</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../blog.html">
+    <a class="nav-link" href="../../blog.html" rel="" target="">
  <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../pubs.html">
+    <a class="nav-link" href="../../pubs.html" rel="" target="">
  <span class="menu-text">Publications</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../resume.html">
+    <a class="nav-link" href="../../resume.html" rel="" target="">
  <span class="menu-text">Resume</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/ekholme"><i class="bi bi-github" role="img" aria-label="github">
+    <a class="nav-link" href="https://github.com/ekholme" rel="" target=""><i class="bi bi-github" role="img" aria-label="github">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com/ekholm_e"><i class="bi bi-twitter" role="img" aria-label="twitter">
+    <a class="nav-link" href="https://twitter.com/ekholm_e" rel="" target=""><i class="bi bi-twitter" role="img" aria-label="twitter">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="mailto:eric.ekholm@gmail.com"><i class="bi bi-envelope" role="img" aria-label="email">
+    <a class="nav-link" href="mailto:eric.ekholm@gmail.com" rel="" target=""><i class="bi bi-envelope" role="img" aria-label="email">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://fosstodon.org/@ekholme"><i class="bi bi-mastodon" role="img" aria-label="mastodon">
+    <a class="nav-link" href="https://fosstodon.org/@ekholme" rel="" target=""><i class="bi bi-mastodon" role="img" aria-label="mastodon">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://www.linkedin.com/in/eric-ekholm-8a481022/"><i class="bi bi-linkedin" role="img" aria-label="linkedin">
+    <a class="nav-link" href="https://www.linkedin.com/in/eric-ekholm-8a481022/" rel="" target=""><i class="bi bi-linkedin" role="img" aria-label="linkedin">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
 </ul>
-              <div id="quarto-search" class="" title="Search"></div>
+            <div class="quarto-navbar-tools">
+</div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
@@ -231,7 +205,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
     <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of Contents</h2>
    
@@ -245,6 +219,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </ul>
 </nav>
 </nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
     </div>
@@ -282,16 +257,309 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">first</span>(st_things_dialogue, <span class="fl">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
-
-<div class="data-frame"><p>3 rows × 8 columns (omitted printing of 1 columns)</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>season</th><th>episode</th><th>line</th><th>raw_text</th><th>stage_direction</th><th>dialogue</th><th>start_time</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="String">String</th><th title="Union{Missing, String}">String?</th><th title="Union{Missing, String}">String?</th><th title="Dates.Time">Time</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td>1</td><td>[crickets chirping]</td><td>[crickets chirping]</td><td><em>missing</em></td><td>00:00:07</td></tr><tr><th>2</th><td>1</td><td>1</td><td>2</td><td>[alarm blaring]</td><td>[alarm blaring]</td><td><em>missing</em></td><td>00:00:49</td></tr><tr><th>3</th><td>1</td><td>1</td><td>3</td><td>[panting]</td><td>[panting]</td><td><em>missing</em></td><td>00:00:52</td></tr></tbody></table></div>
+<div class="data-frame"><p>3 rows × 8 columns (omitted printing of 1 columns)</p>
+<table class="data-frame table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">season</th>
+<th data-quarto-table-cell-role="th">episode</th>
+<th data-quarto-table-cell-role="th">line</th>
+<th data-quarto-table-cell-role="th">raw_text</th>
+<th data-quarto-table-cell-role="th">stage_direction</th>
+<th data-quarto-table-cell-role="th">dialogue</th>
+<th data-quarto-table-cell-role="th">start_time</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th data-quarto-table-cell-role="th" title="String">String</th>
+<th data-quarto-table-cell-role="th" title="Union{Missing, String}">String?</th>
+<th data-quarto-table-cell-role="th" title="Union{Missing, String}">String?</th>
+<th data-quarto-table-cell-role="th" title="Dates.Time">Time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>[crickets chirping]</td>
+<td>[crickets chirping]</td>
+<td><em>missing</em></td>
+<td>00:00:07</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>[alarm blaring]</td>
+<td>[alarm blaring]</td>
+<td><em>missing</em></td>
+<td>00:00:49</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">3</td>
+<td>1</td>
+<td>1</td>
+<td>3</td>
+<td>[panting]</td>
+<td>[panting]</td>
+<td><em>missing</em></td>
+<td>00:00:52</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 <p>So we can see that dialogue might be <code>missing</code> if the line is just stage directions. For our purposes here, let’s just use the lines with dialogue. To do this, we can use the <code>dropmissing()</code> function and then pass in the Dataframe and the column we want to only keep complete cases of, which is <code>:dialogue</code> in this case. Note that Julia uses <code>:</code> to denote symbols.</p>
 <div class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>dialogue_complete <span class="op">=</span> <span class="fu">dropmissing</span>(st_things_dialogue, <span class="op">:</span>dialogue)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="5">
-
-<div class="data-frame"><p>26,435 rows × 8 columns (omitted printing of 4 columns)</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>season</th><th>episode</th><th>line</th><th>raw_text</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="String">String</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td>9</td><td>[Mike] Something is coming. Something hungry for blood.</td></tr><tr><th>2</th><td>1</td><td>1</td><td>10</td><td>A shadow grows on the wall behind you, swallowing you in darkness.</td></tr><tr><th>3</th><td>1</td><td>1</td><td>11</td><td>-It is almost here. -What is it?</td></tr><tr><th>4</th><td>1</td><td>1</td><td>12</td><td>What if it's the Demogorgon?</td></tr><tr><th>5</th><td>1</td><td>1</td><td>13</td><td>Oh, Jesus, we're so screwed if it's the Demogorgon.</td></tr><tr><th>6</th><td>1</td><td>1</td><td>14</td><td>It's not the Demogorgon.</td></tr><tr><th>7</th><td>1</td><td>1</td><td>15</td><td>An army of troglodytes charge into the chamber!</td></tr><tr><th>8</th><td>1</td><td>1</td><td>16</td><td>-Troglodytes? -Told ya. [chuckling]</td></tr><tr><th>9</th><td>1</td><td>1</td><td>17</td><td>-[snorts] -[all chuckling]</td></tr><tr><th>10</th><td>1</td><td>1</td><td>18</td><td>[softly] Wait a minute.</td></tr><tr><th>11</th><td>1</td><td>1</td><td>19</td><td>Did you hear that?</td></tr><tr><th>12</th><td>1</td><td>1</td><td>20</td><td>That... that sound?</td></tr><tr><th>13</th><td>1</td><td>1</td><td>21</td><td>Boom... boom...</td></tr><tr><th>14</th><td>1</td><td>1</td><td>22</td><td>-[yells] Boom! -[slams table]</td></tr><tr><th>15</th><td>1</td><td>1</td><td>23</td><td>That didn't come from the troglodytes. No, that...</td></tr><tr><th>16</th><td>1</td><td>1</td><td>24</td><td>That came from something else.</td></tr><tr><th>17</th><td>1</td><td>1</td><td>25</td><td>-The Demogorgon! -[all groaning]</td></tr><tr><th>18</th><td>1</td><td>1</td><td>26</td><td>-We're in deep shit. -Will, your action!</td></tr><tr><th>19</th><td>1</td><td>1</td><td>27</td><td>-I don't know! -Fireball him!</td></tr><tr><th>20</th><td>1</td><td>1</td><td>28</td><td>I'd have to roll a 13 or higher!</td></tr><tr><th>21</th><td>1</td><td>1</td><td>29</td><td>Too risky. Cast a protection spell.</td></tr><tr><th>22</th><td>1</td><td>1</td><td>30</td><td>-Don't be a pussy. Fireball him! -Cast Protection.</td></tr><tr><th>23</th><td>1</td><td>1</td><td>31</td><td>The Demogorgon is tired of your silly human bickering!</td></tr><tr><th>24</th><td>1</td><td>1</td><td>32</td><td>It stomps towards you.</td></tr><tr><th>25</th><td>1</td><td>1</td><td>33</td><td>-Boom! -Fireball him!</td></tr><tr><th>26</th><td>1</td><td>1</td><td>34</td><td>-Another stomp, boom! -Cast Protection.</td></tr><tr><th>27</th><td>1</td><td>1</td><td>35</td><td>-He roars in anger! -[all clamoring]</td></tr><tr><th>28</th><td>1</td><td>1</td><td>36</td><td>-Fireball! -[die clattering]</td></tr><tr><th>29</th><td>1</td><td>1</td><td>37</td><td>-Oh, shit! -[Lucas] Where'd it go?</td></tr><tr><th>30</th><td>1</td><td>1</td><td>38</td><td>[Lucas] Where is it? [Will] I don't know!</td></tr><tr><th>⋮</th><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr></tbody></table></div>
+<div class="data-frame"><p>26,435 rows × 8 columns (omitted printing of 4 columns)</p>
+<table class="data-frame table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">season</th>
+<th data-quarto-table-cell-role="th">episode</th>
+<th data-quarto-table-cell-role="th">line</th>
+<th data-quarto-table-cell-role="th">raw_text</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th data-quarto-table-cell-role="th" title="String">String</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1</td>
+<td>1</td>
+<td>1</td>
+<td>9</td>
+<td>[Mike] Something is coming. Something hungry for blood.</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>A shadow grows on the wall behind you, swallowing you in darkness.</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">3</td>
+<td>1</td>
+<td>1</td>
+<td>11</td>
+<td>-It is almost here. -What is it?</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">4</td>
+<td>1</td>
+<td>1</td>
+<td>12</td>
+<td>What if it's the Demogorgon?</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">5</td>
+<td>1</td>
+<td>1</td>
+<td>13</td>
+<td>Oh, Jesus, we're so screwed if it's the Demogorgon.</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">6</td>
+<td>1</td>
+<td>1</td>
+<td>14</td>
+<td>It's not the Demogorgon.</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">7</td>
+<td>1</td>
+<td>1</td>
+<td>15</td>
+<td>An army of troglodytes charge into the chamber!</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">8</td>
+<td>1</td>
+<td>1</td>
+<td>16</td>
+<td>-Troglodytes? -Told ya. [chuckling]</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">9</td>
+<td>1</td>
+<td>1</td>
+<td>17</td>
+<td>-[snorts] -[all chuckling]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">10</td>
+<td>1</td>
+<td>1</td>
+<td>18</td>
+<td>[softly] Wait a minute.</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">11</td>
+<td>1</td>
+<td>1</td>
+<td>19</td>
+<td>Did you hear that?</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">12</td>
+<td>1</td>
+<td>1</td>
+<td>20</td>
+<td>That... that sound?</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">13</td>
+<td>1</td>
+<td>1</td>
+<td>21</td>
+<td>Boom... boom...</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">14</td>
+<td>1</td>
+<td>1</td>
+<td>22</td>
+<td>-[yells] Boom! -[slams table]</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">15</td>
+<td>1</td>
+<td>1</td>
+<td>23</td>
+<td>That didn't come from the troglodytes. No, that...</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">16</td>
+<td>1</td>
+<td>1</td>
+<td>24</td>
+<td>That came from something else.</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">17</td>
+<td>1</td>
+<td>1</td>
+<td>25</td>
+<td>-The Demogorgon! -[all groaning]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">18</td>
+<td>1</td>
+<td>1</td>
+<td>26</td>
+<td>-We're in deep shit. -Will, your action!</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">19</td>
+<td>1</td>
+<td>1</td>
+<td>27</td>
+<td>-I don't know! -Fireball him!</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">20</td>
+<td>1</td>
+<td>1</td>
+<td>28</td>
+<td>I'd have to roll a 13 or higher!</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">21</td>
+<td>1</td>
+<td>1</td>
+<td>29</td>
+<td>Too risky. Cast a protection spell.</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">22</td>
+<td>1</td>
+<td>1</td>
+<td>30</td>
+<td>-Don't be a pussy. Fireball him! -Cast Protection.</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">23</td>
+<td>1</td>
+<td>1</td>
+<td>31</td>
+<td>The Demogorgon is tired of your silly human bickering!</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">24</td>
+<td>1</td>
+<td>1</td>
+<td>32</td>
+<td>It stomps towards you.</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">25</td>
+<td>1</td>
+<td>1</td>
+<td>33</td>
+<td>-Boom! -Fireball him!</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">26</td>
+<td>1</td>
+<td>1</td>
+<td>34</td>
+<td>-Another stomp, boom! -Cast Protection.</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">27</td>
+<td>1</td>
+<td>1</td>
+<td>35</td>
+<td>-He roars in anger! -[all clamoring]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">28</td>
+<td>1</td>
+<td>1</td>
+<td>36</td>
+<td>-Fireball! -[die clattering]</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">29</td>
+<td>1</td>
+<td>1</td>
+<td>37</td>
+<td>-Oh, shit! -[Lucas] Where'd it go?</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">30</td>
+<td>1</td>
+<td>1</td>
+<td>38</td>
+<td>[Lucas] Where is it? [Will] I don't know!</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">⋮</td>
+<td>⋮</td>
+<td>⋮</td>
+<td>⋮</td>
+<td>⋮</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 </section>
@@ -353,8 +621,245 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
-
-<div class="data-frame"><p>26,435 rows × 4 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>season</th><th>episode</th><th>line</th><th>dialogue_split</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Vector{SubString{String}}">Array…</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td>9</td><td>["Something", "is", "coming.", "Something", "hungry", "for", "blood."]</td></tr><tr><th>2</th><td>1</td><td>1</td><td>10</td><td>["A", "shadow", "grows", "on", "the", "wall", "behind", "you,", "swallowing", "you", "in", "darkness."]</td></tr><tr><th>3</th><td>1</td><td>1</td><td>11</td><td>["It", "is", "almost", "here.", "What", "is", "it?"]</td></tr><tr><th>4</th><td>1</td><td>1</td><td>12</td><td>["What", "if", "it's", "the", "Demogorgon?"]</td></tr><tr><th>5</th><td>1</td><td>1</td><td>13</td><td>["Oh,", "Jesus,", "we're", "so", "screwed", "if", "it's", "the", "Demogorgon."]</td></tr><tr><th>6</th><td>1</td><td>1</td><td>14</td><td>["It's", "not", "the", "Demogorgon."]</td></tr><tr><th>7</th><td>1</td><td>1</td><td>15</td><td>["An", "army", "of", "troglodytes", "charge", "into", "the", "chamber!"]</td></tr><tr><th>8</th><td>1</td><td>1</td><td>16</td><td>["Troglodytes?", "Told", "ya."]</td></tr><tr><th>9</th><td>1</td><td>1</td><td>17</td><td>[]</td></tr><tr><th>10</th><td>1</td><td>1</td><td>18</td><td>["Wait", "a", "minute."]</td></tr><tr><th>11</th><td>1</td><td>1</td><td>19</td><td>["Did", "you", "hear", "that?"]</td></tr><tr><th>12</th><td>1</td><td>1</td><td>20</td><td>["That...", "that", "sound?"]</td></tr><tr><th>13</th><td>1</td><td>1</td><td>21</td><td>["Boom...", "boom..."]</td></tr><tr><th>14</th><td>1</td><td>1</td><td>22</td><td>["Boom!"]</td></tr><tr><th>15</th><td>1</td><td>1</td><td>23</td><td>["That", "didn't", "come", "from", "the", "troglodytes.", "No,", "that..."]</td></tr><tr><th>16</th><td>1</td><td>1</td><td>24</td><td>["That", "came", "from", "something", "else."]</td></tr><tr><th>17</th><td>1</td><td>1</td><td>25</td><td>["The", "Demogorgon!"]</td></tr><tr><th>18</th><td>1</td><td>1</td><td>26</td><td>["We're", "in", "deep", "shit.", "Will,", "your", "action!"]</td></tr><tr><th>19</th><td>1</td><td>1</td><td>27</td><td>["I", "don't", "know!", "Fireball", "him!"]</td></tr><tr><th>20</th><td>1</td><td>1</td><td>28</td><td>["I'd", "have", "to", "roll", "a", "13", "or", "higher!"]</td></tr><tr><th>21</th><td>1</td><td>1</td><td>29</td><td>["Too", "risky.", "Cast", "a", "protection", "spell."]</td></tr><tr><th>22</th><td>1</td><td>1</td><td>30</td><td>["Don't", "be", "a", "pussy.", "Fireball", "him!", "Cast", "Protection."]</td></tr><tr><th>23</th><td>1</td><td>1</td><td>31</td><td>["The", "Demogorgon", "is", "tired", "of", "your", "silly", "human", "bickering!"]</td></tr><tr><th>24</th><td>1</td><td>1</td><td>32</td><td>["It", "stomps", "towards", "you."]</td></tr><tr><th>25</th><td>1</td><td>1</td><td>33</td><td>["Boom!", "Fireball", "him!"]</td></tr><tr><th>26</th><td>1</td><td>1</td><td>34</td><td>["Another", "stomp,", "boom!", "Cast", "Protection."]</td></tr><tr><th>27</th><td>1</td><td>1</td><td>35</td><td>["He", "roars", "in", "anger!"]</td></tr><tr><th>28</th><td>1</td><td>1</td><td>36</td><td>["Fireball!"]</td></tr><tr><th>29</th><td>1</td><td>1</td><td>37</td><td>["Oh,", "shit!", "Where'd", "it", "go?"]</td></tr><tr><th>30</th><td>1</td><td>1</td><td>38</td><td>["Where", "is", "it?", "I", "don't", "know!"]</td></tr><tr><th>⋮</th><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr></tbody></table></div>
+<div class="data-frame"><p>26,435 rows × 4 columns</p>
+<table class="data-frame table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">season</th>
+<th data-quarto-table-cell-role="th">episode</th>
+<th data-quarto-table-cell-role="th">line</th>
+<th data-quarto-table-cell-role="th">dialogue_split</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th data-quarto-table-cell-role="th" title="Vector{SubString{String}}">Array…</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1</td>
+<td>1</td>
+<td>1</td>
+<td>9</td>
+<td>["Something", "is", "coming.", "Something", "hungry", "for", "blood."]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>["A", "shadow", "grows", "on", "the", "wall", "behind", "you,", "swallowing", "you", "in", "darkness."]</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">3</td>
+<td>1</td>
+<td>1</td>
+<td>11</td>
+<td>["It", "is", "almost", "here.", "What", "is", "it?"]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">4</td>
+<td>1</td>
+<td>1</td>
+<td>12</td>
+<td>["What", "if", "it's", "the", "Demogorgon?"]</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">5</td>
+<td>1</td>
+<td>1</td>
+<td>13</td>
+<td>["Oh,", "Jesus,", "we're", "so", "screwed", "if", "it's", "the", "Demogorgon."]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">6</td>
+<td>1</td>
+<td>1</td>
+<td>14</td>
+<td>["It's", "not", "the", "Demogorgon."]</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">7</td>
+<td>1</td>
+<td>1</td>
+<td>15</td>
+<td>["An", "army", "of", "troglodytes", "charge", "into", "the", "chamber!"]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">8</td>
+<td>1</td>
+<td>1</td>
+<td>16</td>
+<td>["Troglodytes?", "Told", "ya."]</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">9</td>
+<td>1</td>
+<td>1</td>
+<td>17</td>
+<td>[]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">10</td>
+<td>1</td>
+<td>1</td>
+<td>18</td>
+<td>["Wait", "a", "minute."]</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">11</td>
+<td>1</td>
+<td>1</td>
+<td>19</td>
+<td>["Did", "you", "hear", "that?"]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">12</td>
+<td>1</td>
+<td>1</td>
+<td>20</td>
+<td>["That...", "that", "sound?"]</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">13</td>
+<td>1</td>
+<td>1</td>
+<td>21</td>
+<td>["Boom...", "boom..."]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">14</td>
+<td>1</td>
+<td>1</td>
+<td>22</td>
+<td>["Boom!"]</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">15</td>
+<td>1</td>
+<td>1</td>
+<td>23</td>
+<td>["That", "didn't", "come", "from", "the", "troglodytes.", "No,", "that..."]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">16</td>
+<td>1</td>
+<td>1</td>
+<td>24</td>
+<td>["That", "came", "from", "something", "else."]</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">17</td>
+<td>1</td>
+<td>1</td>
+<td>25</td>
+<td>["The", "Demogorgon!"]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">18</td>
+<td>1</td>
+<td>1</td>
+<td>26</td>
+<td>["We're", "in", "deep", "shit.", "Will,", "your", "action!"]</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">19</td>
+<td>1</td>
+<td>1</td>
+<td>27</td>
+<td>["I", "don't", "know!", "Fireball", "him!"]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">20</td>
+<td>1</td>
+<td>1</td>
+<td>28</td>
+<td>["I'd", "have", "to", "roll", "a", "13", "or", "higher!"]</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">21</td>
+<td>1</td>
+<td>1</td>
+<td>29</td>
+<td>["Too", "risky.", "Cast", "a", "protection", "spell."]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">22</td>
+<td>1</td>
+<td>1</td>
+<td>30</td>
+<td>["Don't", "be", "a", "pussy.", "Fireball", "him!", "Cast", "Protection."]</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">23</td>
+<td>1</td>
+<td>1</td>
+<td>31</td>
+<td>["The", "Demogorgon", "is", "tired", "of", "your", "silly", "human", "bickering!"]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">24</td>
+<td>1</td>
+<td>1</td>
+<td>32</td>
+<td>["It", "stomps", "towards", "you."]</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">25</td>
+<td>1</td>
+<td>1</td>
+<td>33</td>
+<td>["Boom!", "Fireball", "him!"]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">26</td>
+<td>1</td>
+<td>1</td>
+<td>34</td>
+<td>["Another", "stomp,", "boom!", "Cast", "Protection."]</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">27</td>
+<td>1</td>
+<td>1</td>
+<td>35</td>
+<td>["He", "roars", "in", "anger!"]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">28</td>
+<td>1</td>
+<td>1</td>
+<td>36</td>
+<td>["Fireball!"]</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">29</td>
+<td>1</td>
+<td>1</td>
+<td>37</td>
+<td>["Oh,", "shit!", "Where'd", "it", "go?"]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">30</td>
+<td>1</td>
+<td>1</td>
+<td>38</td>
+<td>["Where", "is", "it?", "I", "don't", "know!"]</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">⋮</td>
+<td>⋮</td>
+<td>⋮</td>
+<td>⋮</td>
+<td>⋮</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 <p>Technically we don’t <em>need</em> to chain anything above since we’re just doing one operation (<code>select()</code>) right now, but we’ll add more soon.</p>
@@ -363,8 +868,42 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">first</span>(df_split, <span class="fl">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="10">
-
-<div class="data-frame"><p>2 rows × 4 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>season</th><th>episode</th><th>line</th><th>dialogue_split</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Vector{SubString{String}}">Array…</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td>9</td><td>["Something", "is", "coming.", "Something", "hungry", "for", "blood."]</td></tr><tr><th>2</th><td>1</td><td>1</td><td>10</td><td>["A", "shadow", "grows", "on", "the", "wall", "behind", "you,", "swallowing", "you", "in", "darkness."]</td></tr></tbody></table></div>
+<div class="data-frame"><p>2 rows × 4 columns</p>
+<table class="data-frame table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">season</th>
+<th data-quarto-table-cell-role="th">episode</th>
+<th data-quarto-table-cell-role="th">line</th>
+<th data-quarto-table-cell-role="th">dialogue_split</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th data-quarto-table-cell-role="th" title="Vector{SubString{String}}">Array…</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1</td>
+<td>1</td>
+<td>1</td>
+<td>9</td>
+<td>["Something", "is", "coming.", "Something", "hungry", "for", "blood."]</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>["A", "shadow", "grows", "on", "the", "wall", "behind", "you,", "swallowing", "you", "in", "darkness."]</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 <p>Our <code>dialogue_split</code> column is a vector of vectors. To get around this, we want to flatten the column so that each row contains a single word. The nice thing about our chain operation above is that we can just plunk the <code>flatten()</code> function right on the end to do this:</p>
@@ -379,8 +918,245 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">flatten</span>(<span class="op">:</span>dialogue_split)</span>
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="11">
-
-<div class="data-frame"><p>145,243 rows × 4 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>season</th><th>episode</th><th>line</th><th>dialogue_split</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="SubString{String}">SubStrin…</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td>9</td><td>Something</td></tr><tr><th>2</th><td>1</td><td>1</td><td>9</td><td>is</td></tr><tr><th>3</th><td>1</td><td>1</td><td>9</td><td>coming.</td></tr><tr><th>4</th><td>1</td><td>1</td><td>9</td><td>Something</td></tr><tr><th>5</th><td>1</td><td>1</td><td>9</td><td>hungry</td></tr><tr><th>6</th><td>1</td><td>1</td><td>9</td><td>for</td></tr><tr><th>7</th><td>1</td><td>1</td><td>9</td><td>blood.</td></tr><tr><th>8</th><td>1</td><td>1</td><td>10</td><td>A</td></tr><tr><th>9</th><td>1</td><td>1</td><td>10</td><td>shadow</td></tr><tr><th>10</th><td>1</td><td>1</td><td>10</td><td>grows</td></tr><tr><th>11</th><td>1</td><td>1</td><td>10</td><td>on</td></tr><tr><th>12</th><td>1</td><td>1</td><td>10</td><td>the</td></tr><tr><th>13</th><td>1</td><td>1</td><td>10</td><td>wall</td></tr><tr><th>14</th><td>1</td><td>1</td><td>10</td><td>behind</td></tr><tr><th>15</th><td>1</td><td>1</td><td>10</td><td>you,</td></tr><tr><th>16</th><td>1</td><td>1</td><td>10</td><td>swallowing</td></tr><tr><th>17</th><td>1</td><td>1</td><td>10</td><td>you</td></tr><tr><th>18</th><td>1</td><td>1</td><td>10</td><td>in</td></tr><tr><th>19</th><td>1</td><td>1</td><td>10</td><td>darkness.</td></tr><tr><th>20</th><td>1</td><td>1</td><td>11</td><td>It</td></tr><tr><th>21</th><td>1</td><td>1</td><td>11</td><td>is</td></tr><tr><th>22</th><td>1</td><td>1</td><td>11</td><td>almost</td></tr><tr><th>23</th><td>1</td><td>1</td><td>11</td><td>here.</td></tr><tr><th>24</th><td>1</td><td>1</td><td>11</td><td>What</td></tr><tr><th>25</th><td>1</td><td>1</td><td>11</td><td>is</td></tr><tr><th>26</th><td>1</td><td>1</td><td>11</td><td>it?</td></tr><tr><th>27</th><td>1</td><td>1</td><td>12</td><td>What</td></tr><tr><th>28</th><td>1</td><td>1</td><td>12</td><td>if</td></tr><tr><th>29</th><td>1</td><td>1</td><td>12</td><td>it's</td></tr><tr><th>30</th><td>1</td><td>1</td><td>12</td><td>the</td></tr><tr><th>⋮</th><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr></tbody></table></div>
+<div class="data-frame"><p>145,243 rows × 4 columns</p>
+<table class="data-frame table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">season</th>
+<th data-quarto-table-cell-role="th">episode</th>
+<th data-quarto-table-cell-role="th">line</th>
+<th data-quarto-table-cell-role="th">dialogue_split</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th data-quarto-table-cell-role="th" title="SubString{String}">SubStrin…</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1</td>
+<td>1</td>
+<td>1</td>
+<td>9</td>
+<td>Something</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2</td>
+<td>1</td>
+<td>1</td>
+<td>9</td>
+<td>is</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">3</td>
+<td>1</td>
+<td>1</td>
+<td>9</td>
+<td>coming.</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">4</td>
+<td>1</td>
+<td>1</td>
+<td>9</td>
+<td>Something</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">5</td>
+<td>1</td>
+<td>1</td>
+<td>9</td>
+<td>hungry</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">6</td>
+<td>1</td>
+<td>1</td>
+<td>9</td>
+<td>for</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">7</td>
+<td>1</td>
+<td>1</td>
+<td>9</td>
+<td>blood.</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">8</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>A</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">9</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>shadow</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">10</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>grows</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">11</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>on</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">12</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>the</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">13</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>wall</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">14</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>behind</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">15</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>you,</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">16</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>swallowing</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">17</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>you</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">18</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>in</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">19</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>darkness.</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">20</td>
+<td>1</td>
+<td>1</td>
+<td>11</td>
+<td>It</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">21</td>
+<td>1</td>
+<td>1</td>
+<td>11</td>
+<td>is</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">22</td>
+<td>1</td>
+<td>1</td>
+<td>11</td>
+<td>almost</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">23</td>
+<td>1</td>
+<td>1</td>
+<td>11</td>
+<td>here.</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">24</td>
+<td>1</td>
+<td>1</td>
+<td>11</td>
+<td>What</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">25</td>
+<td>1</td>
+<td>1</td>
+<td>11</td>
+<td>is</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">26</td>
+<td>1</td>
+<td>1</td>
+<td>11</td>
+<td>it?</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">27</td>
+<td>1</td>
+<td>1</td>
+<td>12</td>
+<td>What</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">28</td>
+<td>1</td>
+<td>1</td>
+<td>12</td>
+<td>if</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">29</td>
+<td>1</td>
+<td>1</td>
+<td>12</td>
+<td>it's</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">30</td>
+<td>1</td>
+<td>1</td>
+<td>12</td>
+<td>the</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">⋮</td>
+<td>⋮</td>
+<td>⋮</td>
+<td>⋮</td>
+<td>⋮</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 <p>Better! Now let’s check out the first 10 elements of our dialogue split column:</p>
@@ -417,8 +1193,278 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">transform</span>(<span class="op">:</span>dialogue_split <span class="op">=&gt;</span> <span class="fu">ByRow</span>(strip_punc) <span class="op">=&gt;</span> <span class="op">:</span>dialogue_stripped)</span>
 <span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="14">
-
-<div class="data-frame"><p>145,243 rows × 5 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>season</th><th>episode</th><th>line</th><th>dialogue_split</th><th>dialogue_stripped</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="String">String</th><th title="SubString{String}">SubStrin…</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td>9</td><td>something</td><td>something</td></tr><tr><th>2</th><td>1</td><td>1</td><td>9</td><td>is</td><td>is</td></tr><tr><th>3</th><td>1</td><td>1</td><td>9</td><td>coming.</td><td>coming</td></tr><tr><th>4</th><td>1</td><td>1</td><td>9</td><td>something</td><td>something</td></tr><tr><th>5</th><td>1</td><td>1</td><td>9</td><td>hungry</td><td>hungry</td></tr><tr><th>6</th><td>1</td><td>1</td><td>9</td><td>for</td><td>for</td></tr><tr><th>7</th><td>1</td><td>1</td><td>9</td><td>blood.</td><td>blood</td></tr><tr><th>8</th><td>1</td><td>1</td><td>10</td><td>a</td><td>a</td></tr><tr><th>9</th><td>1</td><td>1</td><td>10</td><td>shadow</td><td>shadow</td></tr><tr><th>10</th><td>1</td><td>1</td><td>10</td><td>grows</td><td>grows</td></tr><tr><th>11</th><td>1</td><td>1</td><td>10</td><td>on</td><td>on</td></tr><tr><th>12</th><td>1</td><td>1</td><td>10</td><td>the</td><td>the</td></tr><tr><th>13</th><td>1</td><td>1</td><td>10</td><td>wall</td><td>wall</td></tr><tr><th>14</th><td>1</td><td>1</td><td>10</td><td>behind</td><td>behind</td></tr><tr><th>15</th><td>1</td><td>1</td><td>10</td><td>you,</td><td>you</td></tr><tr><th>16</th><td>1</td><td>1</td><td>10</td><td>swallowing</td><td>swallowing</td></tr><tr><th>17</th><td>1</td><td>1</td><td>10</td><td>you</td><td>you</td></tr><tr><th>18</th><td>1</td><td>1</td><td>10</td><td>in</td><td>in</td></tr><tr><th>19</th><td>1</td><td>1</td><td>10</td><td>darkness.</td><td>darkness</td></tr><tr><th>20</th><td>1</td><td>1</td><td>11</td><td>it</td><td>it</td></tr><tr><th>21</th><td>1</td><td>1</td><td>11</td><td>is</td><td>is</td></tr><tr><th>22</th><td>1</td><td>1</td><td>11</td><td>almost</td><td>almost</td></tr><tr><th>23</th><td>1</td><td>1</td><td>11</td><td>here.</td><td>here</td></tr><tr><th>24</th><td>1</td><td>1</td><td>11</td><td>what</td><td>what</td></tr><tr><th>25</th><td>1</td><td>1</td><td>11</td><td>is</td><td>is</td></tr><tr><th>26</th><td>1</td><td>1</td><td>11</td><td>it?</td><td>it</td></tr><tr><th>27</th><td>1</td><td>1</td><td>12</td><td>what</td><td>what</td></tr><tr><th>28</th><td>1</td><td>1</td><td>12</td><td>if</td><td>if</td></tr><tr><th>29</th><td>1</td><td>1</td><td>12</td><td>it's</td><td>it's</td></tr><tr><th>30</th><td>1</td><td>1</td><td>12</td><td>the</td><td>the</td></tr><tr><th>⋮</th><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr></tbody></table></div>
+<div class="data-frame"><p>145,243 rows × 5 columns</p>
+<table class="data-frame table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">season</th>
+<th data-quarto-table-cell-role="th">episode</th>
+<th data-quarto-table-cell-role="th">line</th>
+<th data-quarto-table-cell-role="th">dialogue_split</th>
+<th data-quarto-table-cell-role="th">dialogue_stripped</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th data-quarto-table-cell-role="th" title="String">String</th>
+<th data-quarto-table-cell-role="th" title="SubString{String}">SubStrin…</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1</td>
+<td>1</td>
+<td>1</td>
+<td>9</td>
+<td>something</td>
+<td>something</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2</td>
+<td>1</td>
+<td>1</td>
+<td>9</td>
+<td>is</td>
+<td>is</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">3</td>
+<td>1</td>
+<td>1</td>
+<td>9</td>
+<td>coming.</td>
+<td>coming</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">4</td>
+<td>1</td>
+<td>1</td>
+<td>9</td>
+<td>something</td>
+<td>something</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">5</td>
+<td>1</td>
+<td>1</td>
+<td>9</td>
+<td>hungry</td>
+<td>hungry</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">6</td>
+<td>1</td>
+<td>1</td>
+<td>9</td>
+<td>for</td>
+<td>for</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">7</td>
+<td>1</td>
+<td>1</td>
+<td>9</td>
+<td>blood.</td>
+<td>blood</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">8</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>a</td>
+<td>a</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">9</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>shadow</td>
+<td>shadow</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">10</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>grows</td>
+<td>grows</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">11</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>on</td>
+<td>on</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">12</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>the</td>
+<td>the</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">13</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>wall</td>
+<td>wall</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">14</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>behind</td>
+<td>behind</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">15</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>you,</td>
+<td>you</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">16</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>swallowing</td>
+<td>swallowing</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">17</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>you</td>
+<td>you</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">18</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>in</td>
+<td>in</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">19</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>darkness.</td>
+<td>darkness</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">20</td>
+<td>1</td>
+<td>1</td>
+<td>11</td>
+<td>it</td>
+<td>it</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">21</td>
+<td>1</td>
+<td>1</td>
+<td>11</td>
+<td>is</td>
+<td>is</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">22</td>
+<td>1</td>
+<td>1</td>
+<td>11</td>
+<td>almost</td>
+<td>almost</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">23</td>
+<td>1</td>
+<td>1</td>
+<td>11</td>
+<td>here.</td>
+<td>here</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">24</td>
+<td>1</td>
+<td>1</td>
+<td>11</td>
+<td>what</td>
+<td>what</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">25</td>
+<td>1</td>
+<td>1</td>
+<td>11</td>
+<td>is</td>
+<td>is</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">26</td>
+<td>1</td>
+<td>1</td>
+<td>11</td>
+<td>it?</td>
+<td>it</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">27</td>
+<td>1</td>
+<td>1</td>
+<td>12</td>
+<td>what</td>
+<td>what</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">28</td>
+<td>1</td>
+<td>1</td>
+<td>12</td>
+<td>if</td>
+<td>if</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">29</td>
+<td>1</td>
+<td>1</td>
+<td>12</td>
+<td>it's</td>
+<td>it's</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">30</td>
+<td>1</td>
+<td>1</td>
+<td>12</td>
+<td>the</td>
+<td>the</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">⋮</td>
+<td>⋮</td>
+<td>⋮</td>
+<td>⋮</td>
+<td>⋮</td>
+<td>⋮</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 <p>Confirming that this worked:</p>
@@ -472,8 +1518,278 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">:</span>dialogue_stripped <span class="op">=&gt;</span> x <span class="op">-&gt;</span> .!<span class="fu">in</span>.(x, <span class="fu">Ref</span>(stops))</span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="17">
-
-<div class="data-frame"><p>50,812 rows × 5 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>season</th><th>episode</th><th>line</th><th>dialogue_split</th><th>dialogue_stripped</th></tr><tr><th></th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="Int64">Int64</th><th title="String">String</th><th title="SubString{String}">SubStrin…</th></tr></thead><tbody><tr><th>1</th><td>1</td><td>1</td><td>9</td><td>coming.</td><td>coming</td></tr><tr><th>2</th><td>1</td><td>1</td><td>9</td><td>hungry</td><td>hungry</td></tr><tr><th>3</th><td>1</td><td>1</td><td>9</td><td>blood.</td><td>blood</td></tr><tr><th>4</th><td>1</td><td>1</td><td>10</td><td>shadow</td><td>shadow</td></tr><tr><th>5</th><td>1</td><td>1</td><td>10</td><td>grows</td><td>grows</td></tr><tr><th>6</th><td>1</td><td>1</td><td>10</td><td>wall</td><td>wall</td></tr><tr><th>7</th><td>1</td><td>1</td><td>10</td><td>swallowing</td><td>swallowing</td></tr><tr><th>8</th><td>1</td><td>1</td><td>10</td><td>darkness.</td><td>darkness</td></tr><tr><th>9</th><td>1</td><td>1</td><td>12</td><td>demogorgon?</td><td>demogorgon</td></tr><tr><th>10</th><td>1</td><td>1</td><td>13</td><td>oh,</td><td>oh</td></tr><tr><th>11</th><td>1</td><td>1</td><td>13</td><td>jesus,</td><td>jesus</td></tr><tr><th>12</th><td>1</td><td>1</td><td>13</td><td>screwed</td><td>screwed</td></tr><tr><th>13</th><td>1</td><td>1</td><td>13</td><td>demogorgon.</td><td>demogorgon</td></tr><tr><th>14</th><td>1</td><td>1</td><td>14</td><td>demogorgon.</td><td>demogorgon</td></tr><tr><th>15</th><td>1</td><td>1</td><td>15</td><td>army</td><td>army</td></tr><tr><th>16</th><td>1</td><td>1</td><td>15</td><td>troglodytes</td><td>troglodytes</td></tr><tr><th>17</th><td>1</td><td>1</td><td>15</td><td>charge</td><td>charge</td></tr><tr><th>18</th><td>1</td><td>1</td><td>15</td><td>chamber!</td><td>chamber</td></tr><tr><th>19</th><td>1</td><td>1</td><td>16</td><td>troglodytes?</td><td>troglodytes</td></tr><tr><th>20</th><td>1</td><td>1</td><td>16</td><td>told</td><td>told</td></tr><tr><th>21</th><td>1</td><td>1</td><td>16</td><td>ya.</td><td>ya</td></tr><tr><th>22</th><td>1</td><td>1</td><td>18</td><td>wait</td><td>wait</td></tr><tr><th>23</th><td>1</td><td>1</td><td>18</td><td>minute.</td><td>minute</td></tr><tr><th>24</th><td>1</td><td>1</td><td>19</td><td>hear</td><td>hear</td></tr><tr><th>25</th><td>1</td><td>1</td><td>20</td><td>sound?</td><td>sound</td></tr><tr><th>26</th><td>1</td><td>1</td><td>21</td><td>boom...</td><td>boom</td></tr><tr><th>27</th><td>1</td><td>1</td><td>21</td><td>boom...</td><td>boom</td></tr><tr><th>28</th><td>1</td><td>1</td><td>22</td><td>boom!</td><td>boom</td></tr><tr><th>29</th><td>1</td><td>1</td><td>23</td><td>troglodytes.</td><td>troglodytes</td></tr><tr><th>30</th><td>1</td><td>1</td><td>24</td><td>else.</td><td>else</td></tr><tr><th>⋮</th><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr></tbody></table></div>
+<div class="data-frame"><p>50,812 rows × 5 columns</p>
+<table class="data-frame table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">season</th>
+<th data-quarto-table-cell-role="th">episode</th>
+<th data-quarto-table-cell-role="th">line</th>
+<th data-quarto-table-cell-role="th">dialogue_split</th>
+<th data-quarto-table-cell-role="th">dialogue_stripped</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th data-quarto-table-cell-role="th" title="Int64">Int64</th>
+<th data-quarto-table-cell-role="th" title="String">String</th>
+<th data-quarto-table-cell-role="th" title="SubString{String}">SubStrin…</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1</td>
+<td>1</td>
+<td>1</td>
+<td>9</td>
+<td>coming.</td>
+<td>coming</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2</td>
+<td>1</td>
+<td>1</td>
+<td>9</td>
+<td>hungry</td>
+<td>hungry</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">3</td>
+<td>1</td>
+<td>1</td>
+<td>9</td>
+<td>blood.</td>
+<td>blood</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">4</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>shadow</td>
+<td>shadow</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">5</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>grows</td>
+<td>grows</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">6</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>wall</td>
+<td>wall</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">7</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>swallowing</td>
+<td>swallowing</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">8</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td>darkness.</td>
+<td>darkness</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">9</td>
+<td>1</td>
+<td>1</td>
+<td>12</td>
+<td>demogorgon?</td>
+<td>demogorgon</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">10</td>
+<td>1</td>
+<td>1</td>
+<td>13</td>
+<td>oh,</td>
+<td>oh</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">11</td>
+<td>1</td>
+<td>1</td>
+<td>13</td>
+<td>jesus,</td>
+<td>jesus</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">12</td>
+<td>1</td>
+<td>1</td>
+<td>13</td>
+<td>screwed</td>
+<td>screwed</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">13</td>
+<td>1</td>
+<td>1</td>
+<td>13</td>
+<td>demogorgon.</td>
+<td>demogorgon</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">14</td>
+<td>1</td>
+<td>1</td>
+<td>14</td>
+<td>demogorgon.</td>
+<td>demogorgon</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">15</td>
+<td>1</td>
+<td>1</td>
+<td>15</td>
+<td>army</td>
+<td>army</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">16</td>
+<td>1</td>
+<td>1</td>
+<td>15</td>
+<td>troglodytes</td>
+<td>troglodytes</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">17</td>
+<td>1</td>
+<td>1</td>
+<td>15</td>
+<td>charge</td>
+<td>charge</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">18</td>
+<td>1</td>
+<td>1</td>
+<td>15</td>
+<td>chamber!</td>
+<td>chamber</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">19</td>
+<td>1</td>
+<td>1</td>
+<td>16</td>
+<td>troglodytes?</td>
+<td>troglodytes</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">20</td>
+<td>1</td>
+<td>1</td>
+<td>16</td>
+<td>told</td>
+<td>told</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">21</td>
+<td>1</td>
+<td>1</td>
+<td>16</td>
+<td>ya.</td>
+<td>ya</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">22</td>
+<td>1</td>
+<td>1</td>
+<td>18</td>
+<td>wait</td>
+<td>wait</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">23</td>
+<td>1</td>
+<td>1</td>
+<td>18</td>
+<td>minute.</td>
+<td>minute</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">24</td>
+<td>1</td>
+<td>1</td>
+<td>19</td>
+<td>hear</td>
+<td>hear</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">25</td>
+<td>1</td>
+<td>1</td>
+<td>20</td>
+<td>sound?</td>
+<td>sound</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">26</td>
+<td>1</td>
+<td>1</td>
+<td>21</td>
+<td>boom...</td>
+<td>boom</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">27</td>
+<td>1</td>
+<td>1</td>
+<td>21</td>
+<td>boom...</td>
+<td>boom</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">28</td>
+<td>1</td>
+<td>1</td>
+<td>22</td>
+<td>boom!</td>
+<td>boom</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">29</td>
+<td>1</td>
+<td>1</td>
+<td>23</td>
+<td>troglodytes.</td>
+<td>troglodytes</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">30</td>
+<td>1</td>
+<td>1</td>
+<td>24</td>
+<td>else.</td>
+<td>else</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">⋮</td>
+<td>⋮</td>
+<td>⋮</td>
+<td>⋮</td>
+<td>⋮</td>
+<td>⋮</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 <p>If you’re not familiar with Julia, the <code>.</code> is a way to broadcast/vectorize operations, which mostly aren’t vectorized by default. And to be completely honest, I’m not sure why I need to wrap our stopwords in <code>Ref()</code>, but the internet says I do and I assume this is some Julia equivalent of, like, tidyeval that I haven’t gotten around to understanding yet. But regardless, this does what we want!</p>
@@ -489,8 +1805,124 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">first</span>(<span class="fl">20</span>)</span>
 <span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="18">
-
-<div class="data-frame"><p>20 rows × 2 columns</p><table class="data-frame table table-sm table-striped"><thead><tr><th></th><th>dialogue_stripped</th><th>count</th></tr><tr><th></th><th title="SubString{String}">SubStrin…</th><th title="Int64">Int64</th></tr></thead><tbody><tr><th>1</th><td>♪</td><td>1386</td></tr><tr><th>2</th><td>yeah</td><td>1106</td></tr><tr><th>3</th><td>okay</td><td>960</td></tr><tr><th>4</th><td>oh</td><td>670</td></tr><tr><th>5</th><td>hey</td><td>631</td></tr><tr><th>6</th><td>shit</td><td>456</td></tr><tr><th>7</th><td>gonna</td><td>427</td></tr><tr><th>8</th><td>uh</td><td>396</td></tr><tr><th>9</th><td>mean</td><td>310</td></tr><tr><th>10</th><td>time</td><td>284</td></tr><tr><th>11</th><td>sorry</td><td>281</td></tr><tr><th>12</th><td>look</td><td>242</td></tr><tr><th>13</th><td>tell</td><td>240</td></tr><tr><th>14</th><td>mike</td><td>234</td></tr><tr><th>15</th><td>stop</td><td>227</td></tr><tr><th>16</th><td>maybe</td><td>225</td></tr><tr><th>17</th><td>please</td><td>224</td></tr><tr><th>18</th><td>max</td><td>213</td></tr><tr><th>19</th><td>god</td><td>211</td></tr><tr><th>20</th><td>little</td><td>211</td></tr></tbody></table></div>
+<div class="data-frame"><p>20 rows × 2 columns</p>
+<table class="data-frame table table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">dialogue_stripped</th>
+<th data-quarto-table-cell-role="th">count</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th" title="SubString{String}">SubStrin…</th>
+<th data-quarto-table-cell-role="th" title="Int64">Int64</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1</td>
+<td>♪</td>
+<td>1386</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2</td>
+<td>yeah</td>
+<td>1106</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">3</td>
+<td>okay</td>
+<td>960</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">4</td>
+<td>oh</td>
+<td>670</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">5</td>
+<td>hey</td>
+<td>631</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">6</td>
+<td>shit</td>
+<td>456</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">7</td>
+<td>gonna</td>
+<td>427</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">8</td>
+<td>uh</td>
+<td>396</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">9</td>
+<td>mean</td>
+<td>310</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">10</td>
+<td>time</td>
+<td>284</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">11</td>
+<td>sorry</td>
+<td>281</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">12</td>
+<td>look</td>
+<td>242</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">13</td>
+<td>tell</td>
+<td>240</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">14</td>
+<td>mike</td>
+<td>234</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">15</td>
+<td>stop</td>
+<td>227</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">16</td>
+<td>maybe</td>
+<td>225</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">17</td>
+<td>please</td>
+<td>224</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">18</td>
+<td>max</td>
+<td>213</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">19</td>
+<td>god</td>
+<td>211</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">20</td>
+<td>little</td>
+<td>211</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 <p>I’m actually not going to explain the above because I think it’s pretty intuitive if you’ve been following along so far and are familiar with either R or Python functions (the function names here are pretty descriptive, I think).</p>
@@ -523,15 +1955,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div quarto-reuse="quarto-reuse" class="quarto-appendix-contents"><a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">https://creativecommons.org/licenses/by-nc/4.0/</a></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{ekholm2022,
-  author = {Eric Ekholm},
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">https://creativecommons.org/licenses/by-nc/4.0/</a></div></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{ekholm2022,
+  author = {Ekholm, Eric},
   title = {Stranger {Strings}},
   date = {2022-10-26},
   url = {https://www.ericekholm.com/posts/stranger-strings},
   langid = {en}
 }
-</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-ekholm2022" class="csl-entry quarto-appendix-citeas" role="doc-biblioentry">
-Eric Ekholm. 2022. <span>“Stranger Strings.”</span> October 26, 2022. <a href="https://www.ericekholm.com/posts/stranger-strings">https://www.ericekholm.com/posts/stranger-strings</a>.
+</code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-ekholm2022" class="csl-entry quarto-appendix-citeas" role="listitem">
+Ekholm, Eric. 2022. <span>“Stranger Strings.”</span> October 26, 2022.
+<a href="https://www.ericekholm.com/posts/stranger-strings">https://www.ericekholm.com/posts/stranger-strings</a>.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -560,9 +1993,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -627,6 +2074,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
