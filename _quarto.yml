@@ -15,7 +15,7 @@ website:
       - blog.qmd
       - pubs.qmd
       - text: "Resume"
-        href: resume.html
+        href: resume.pdf
 
     right:
       - icon: github

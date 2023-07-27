@@ -1,0 +1,143 @@
+---
+format: 
+  pdf: 
+    documentclass: article
+    geometry:
+      - top=10mm
+      - left=15mm
+      - right=15mm
+      - bottom=5mm
+      - heightrounded
+    fontfamily: libertine
+    colorlinks: true
+    fontsize: "14"
+    include-in-header: 
+      text: |
+        \usepackage{multicol}
+        \usepackage{lipsum}
+        \usepackage{hyperref}
+        \usepackage{libertine}
+        \pagestyle{empty}
+        \setlength{\multicolsep}{2pt plus 1.0pt minus 0.75pt}% 50% of original values
+        \setlength{\columnsep}{3em}
+---
+
+<!-- Title -->
+\begin{huge}\begin{center}{\bf Eric Ekholm}\end{center}\end{huge}
+
+<!-- Contact Info -->
+\begin{center}eric.ekholm@gmail.com ∙ \href{https://ericekholm.com}{Website} ∙ \href{https://github.com/ekholme}{Github} ∙ \href{https://www.linkedin.com/in/eric-ekholm-8a481022}{LinkedIn}\end{center}
+\vspace{5pt}
+
+I am a data scientist with over 5 years of experience using data to improve educational practice and decision making. I have hands-on experience in research design, machine learning, software engineering, and cloud computing. I am particularly passionate about communicating the results of my work in accessible language and intuitive visualizations.
+
+<!-- Experience 1 -->
+\begin{large}
+  {\bf Work Experience}
+  \vspace{3pt}
+  \hrule
+\end{large}
+  \begin{multicols}{2}
+    \begin{flushleft}{\bf Data Specialist}\end{flushleft}
+    \begin{flushright}{\bf 2021-Present}\end{flushright}
+  \end{multicols}
+\vspace{-0.25cm}
+\emph{Chesterfield County Public Schools, Midlothian, VA}
+
+* Built dashboards displaying student assessment performance accessed by hundreds of users, using R, Shiny, Docker, and Google Cloud. 
+* Evaluated the return on investment of over $5 million in new and existing programs using quantitative and qualitative methods.
+* Developed and maintained several internal R packages used by the entire Research and Evaluation team.
+* Developed and maintained ETL pipelines for integrating data from vendors into internal databases, using R, Go, and SQLServer.
+* Fit an early warning model predicting student chronic absenteeism using R and the tidymodels framework. Educated division leaders on appropriate use of this model.
+* Created and maintained an internal website containing all reports written by the Research and Evaluation team, using Quarto, Python, and Google Cloud.
+* Led the migration of analytics tools from locally-hosted tools to Google Cloud tools, improving team efficiency.
+
+\vspace{7pt}
+
+<!-- Experience 2 -->
+  \begin{multicols}{2}
+    \begin{flushleft}{\bf Associate Director, Early Childhood Data}\end{flushleft}
+    \begin{flushright}{\bf 2019-2021}\end{flushright}
+  \end{multicols}
+\vspace{-0.25cm}
+\emph{Virginia Department of Education, Richmond, VA}
+
+* Oversaw the development of LinkB5, a data portal used by thousands of early childhood programs across Virginia.
+* Led data sharing and research efforts with external partners, including public and private organizations.
+* Created hundreds of individualized early childhood reports and visuals for state legislators, using R and Rmarkdown.
+* Combined data from public and internal sources to develop a model estimating the proportion of eligible children served by Virginia's early childhood programs. This model was used as part of a successful effort to appropriate millions in additional funding for early childhood programs.
+
+\vspace{7pt}
+
+<!-- Experience 3 -->
+  \begin{multicols}{2}
+    \begin{flushleft}{\bf Graduate Research Assistant}\end{flushleft}
+    \begin{flushright}{\bf 2016-2019}\end{flushright}
+  \end{multicols}
+\vspace{-0.25cm}
+\emph{Virginia Commonwealth University School of Education, Richmond, VA}
+
+* Published [11 peer-reviewed articles](https://www.ericekholm.com/pubs.html) on a variety of topics in education and quantitative methodology.
+* Led statistical modeling and data management for the Motivation in Context lab.
+
+<!-- Education -->
+\begin{large}
+  {\bf Education}
+  \vspace{3pt}
+  \hrule
+\end{large}
+
+  \begin{multicols}{2}
+  \begin{flushleft}{\bf Ph.D, Educational Psychology}\end{flushleft}
+  \begin{flushright}{\bf 2016-2019}\end{flushright}
+  \end{multicols}
+  \vspace{-0.25cm}
+  \emph{Virginia Commonwealth University, Richmond, VA}
+  \vspace{.2 cm}
+
+  \begin{multicols}{2}
+  \begin{flushleft}{\bf M.T., Education}\end{flushleft}
+  \begin{flushright}{\bf 2011-2012}\end{flushright}
+  \end{multicols}
+  \vspace{-0.25cm}
+  \emph{Virginia Commonwealth University, Richmond, VA}
+  \vspace{.2 cm}
+
+  \begin{multicols}{2}
+  \begin{flushleft}{\bf B.A., English}\end{flushleft}
+  \begin{flushright}{\bf 2006-2010}\end{flushright}
+  \end{multicols}
+  \vspace{-0.25cm}
+  \emph{Virginia Tech, Blacksburg, VA}
+
+\vspace{7pt}
+
+<!-- Technologies and Languages -->
+\begin{large}
+  {\bf Technologies and Languages}
+  \vspace{3pt}
+  \hrule
+\end{large}
+\vspace{7pt}
+**Languages:** R, SQL, Go, Julia, Python, Bash
+\vspace{-0.2cm}
+
+**Technologies:** Git, Quarto, Postgres, SQLServer, NoSQL, Google Cloud Platform, Docker
+\vspace{-0.2cm}
+
+**Other:** Machine learning, Causal inference, Statistics, Data visualization, Research design, Data structures and algorithms
+
+<!-- Projects -->
+\begin{large}
+  {\bf Projects}
+  \vspace{3pt}
+  \hrule
+\end{large}
+\vspace{7pt}
+**Flex Creek:** Workout tracking and recommendation application in Go. Concepts include REST API design, NoSQL database (Firestore), and JWT authentication. See the [source on Github](https://github.com/ekholme/flex_creek). 
+\vspace{-0.2cm}
+
+**Saul:** AI-powered lesson plan generator written in Go. Concepts include integration with the OpenAI API, REST API design, and front-end templating. See the [source on Github](https://github.com/ekholme/saul) 
+\vspace{-0.2cm}
+
+**Leakybrain:** A [technical notes site](https://leakybrain.netlify.app/) containing notes on statistics and data science workflows, among other things.
