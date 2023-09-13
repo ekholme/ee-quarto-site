@@ -16,6 +16,8 @@ website:
       - pubs.qmd
       - text: "Resume"
         href: resume.pdf
+      - text: "Leakybrain"
+        href: https://leakybrain.ericekholm.com
 
     right:
       - icon: github
