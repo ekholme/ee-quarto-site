@@ -35,6 +35,20 @@
     "text": "I am an educator, researcher, data scientist, and writer. I am currently an Education Data Specialist for Chesterfield County Public Schools, where I use data to help guide decisions and improve students’ educational experiences."
   },
   {
+    "objectID": "notes/9-26-23/index.html",
+    "href": "notes/9-26-23/index.html",
+    "title": "9-26-23 Daily Note",
+    "section": "",
+    "text": "One thing I learned today (finally!) was how to properly write a cloudbuild.yaml file to:\n\nBuild a Docker image using Cloud Build, and then\nPush the built image to Google’s Artifact Registry\n\nFor this to work, first set up an Artifact Registry repository in a project via:\ngcloud artifacts repositories create REPO_NAME --format docker --region us-east4\nOr something very similar to that\nThen, in the cloudbuild.yaml file in the directory, include the following:\nsteps:\n  #docker build \n  - name: 'gcr.io/cloud-builders/docker'\n    args: ['build', '-t',\n            'us-east4-docker.pkg.dev/${PROJECT_ID}/$REPO_NAME/$IMAGE_NAME:latest',\n            '.']\n  #docker push to artifact registry\n  - name: 'gcr.io/cloud-builders/docker'\n    args: ['push', 'us-east4-docker.pkg.dev/${PROJECT_ID}/$REPO_NAME/$IMAGE_NAME:latest']\ntimeout: 3600s\nBut replace $REPO_NAME and $IMAGE_NAME with the relevant values."
+  },
+  {
+    "objectID": "notes.html",
+    "href": "notes.html",
+    "title": "Daily Notes",
+    "section": "",
+    "text": "9-26-23 Daily Note\n\n\n\n\n\n\n\nGoogle Cloud\n\n\n\n\ncloudbuild.yaml and Artifact Registry\n\n\n\n\n\n\nSep 26, 2023\n\n\n\n\n\n\nNo matching items"
+  },
+  {
     "objectID": "posts/combining-pmap-and-docall/index.html",
     "href": "posts/combining-pmap-and-docall/index.html",
     "title": "Combining pmap and do.call",

@@ -1,0 +1,41 @@
+---
+title: "9-26-23 Daily Note"
+description: |
+  cloudbuild.yaml and Artifact Registry
+date: today
+format:
+  html:
+    code-fold: true
+categories: [Google Cloud]
+---
+
+One thing I learned today (finally!) was how to properly write a `cloudbuild.yaml` file to:
+
+1. Build a Docker image using [Cloud Build](https://cloud.google.com/build), and then
+
+2. Push the built image to Google's [Artifact Registry](https://cloud.google.com/artifact-registry)
+
+For this to work, first set up an Artifact Registry repository in a project via:
+
+```bash
+gcloud artifacts repositories create REPO_NAME --format docker --region us-east4
+```
+
+Or something very similar to that
+
+Then, in the `cloudbuild.yaml` file in the directory, include the following:
+
+```yaml
+steps:
+  #docker build 
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t',
+            'us-east4-docker.pkg.dev/${PROJECT_ID}/$REPO_NAME/$IMAGE_NAME:latest',
+            '.']
+  #docker push to artifact registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'us-east4-docker.pkg.dev/${PROJECT_ID}/$REPO_NAME/$IMAGE_NAME:latest']
+timeout: 3600s
+```
+
+But replace `$REPO_NAME` and `$IMAGE_NAME` with the relevant values.

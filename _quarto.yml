@@ -18,6 +18,7 @@ website:
         href: resume.pdf
       - text: "Leakybrain"
         href: https://leakybrain.ericekholm.com
+      - notes.qmd
 
     right:
       - icon: github
