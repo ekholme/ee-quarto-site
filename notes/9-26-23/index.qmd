@@ -2,7 +2,7 @@
 title: "9-26-23 Daily Note"
 description: |
   cloudbuild.yaml and Artifact Registry
-date: today
+date: 2023-09-26
 format:
   html:
     code-fold: true

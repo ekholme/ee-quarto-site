@@ -42,11 +42,18 @@
     "text": "One thing I learned today (finally!) was how to properly write a cloudbuild.yaml file to:\n\nBuild a Docker image using Cloud Build, and then\nPush the built image to Google’s Artifact Registry\n\nFor this to work, first set up an Artifact Registry repository in a project via:\ngcloud artifacts repositories create REPO_NAME --format docker --region us-east4\nOr something very similar to that\nThen, in the cloudbuild.yaml file in the directory, include the following:\nsteps:\n  #docker build \n  - name: 'gcr.io/cloud-builders/docker'\n    args: ['build', '-t',\n            'us-east4-docker.pkg.dev/${PROJECT_ID}/$REPO_NAME/$IMAGE_NAME:latest',\n            '.']\n  #docker push to artifact registry\n  - name: 'gcr.io/cloud-builders/docker'\n    args: ['push', 'us-east4-docker.pkg.dev/${PROJECT_ID}/$REPO_NAME/$IMAGE_NAME:latest']\ntimeout: 3600s\nBut replace $REPO_NAME and $IMAGE_NAME with the relevant values."
   },
   {
+    "objectID": "notes/9-27-23/index.html",
+    "href": "notes/9-27-23/index.html",
+    "title": "9-27-23 Daily Note",
+    "section": "",
+    "text": "According to Squat University, suitcase carries with a kettlebell are a great core workout.\nThe video linked above says that, to do them properly, you should brace your core while carrying (you can test this by poking your finger into your obliques), breathe through your diaphragm, and try to keep your torso level as you carry a kettlebell on one side.\nThe weight of the kettlebell doesn’t have to be super heavy either, I don’t think. And to make the exercise more difficult, you can either add weight or carry the kettlebell bell-side-up (still holding the handle), which will require more coordination and activation to stabilize it.\nThe exercise doesn’t take long, either – the video suggests 3-4 sets of ~45-60 second carries per side.\nI should probably start incorporating this into my workout as auxiliary work – it shouldn’t be difficult to superset this into basically any workout I do."
+  },
+  {
     "objectID": "notes.html",
     "href": "notes.html",
     "title": "Daily Notes",
     "section": "",
-    "text": "9-26-23 Daily Note\n\n\n\n\n\n\n\nGoogle Cloud\n\n\n\n\ncloudbuild.yaml and Artifact Registry\n\n\n\n\n\n\nSep 26, 2023\n\n\n\n\n\n\nNo matching items"
+    "text": "9-27-23 Daily Note\n\n\n\n\n\n\n\nFitness\n\n\n\n\nSuitcase carries for core stability\n\n\n\n\n\n\nSep 27, 2023\n\n\n\n\n\n\n  \n\n\n\n\n9-26-23 Daily Note\n\n\n\n\n\n\n\nGoogle Cloud\n\n\n\n\ncloudbuild.yaml and Artifact Registry\n\n\n\n\n\n\nSep 26, 2023\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/combining-pmap-and-docall/index.html",
