@@ -35,34 +35,6 @@
     "text": "I am an educator, researcher, data scientist, and writer. I am currently an Education Data Specialist for Chesterfield County Public Schools, where I use data to help guide decisions and improve students’ educational experiences."
   },
   {
-    "objectID": "notes/9-26-23/index.html",
-    "href": "notes/9-26-23/index.html",
-    "title": "9-26-23 Daily Note",
-    "section": "",
-    "text": "One thing I learned today (finally!) was how to properly write a cloudbuild.yaml file to:\n\nBuild a Docker image using Cloud Build, and then\nPush the built image to Google’s Artifact Registry\n\nFor this to work, first set up an Artifact Registry repository in a project via:\ngcloud artifacts repositories create REPO_NAME --format docker --region us-east4\nOr something very similar to that\nThen, in the cloudbuild.yaml file in the directory, include the following:\nsteps:\n  #docker build \n  - name: 'gcr.io/cloud-builders/docker'\n    args: ['build', '-t',\n            'us-east4-docker.pkg.dev/${PROJECT_ID}/$REPO_NAME/$IMAGE_NAME:latest',\n            '.']\n  #docker push to artifact registry\n  - name: 'gcr.io/cloud-builders/docker'\n    args: ['push', 'us-east4-docker.pkg.dev/${PROJECT_ID}/$REPO_NAME/$IMAGE_NAME:latest']\ntimeout: 3600s\nBut replace $REPO_NAME and $IMAGE_NAME with the relevant values."
-  },
-  {
-    "objectID": "notes/9-27-23/index.html",
-    "href": "notes/9-27-23/index.html",
-    "title": "9-27-23 Daily Note",
-    "section": "",
-    "text": "According to Squat University, suitcase carries with a kettlebell are a great core workout.\nThe video linked above says that, to do them properly, you should brace your core while carrying (you can test this by poking your finger into your obliques), breathe through your diaphragm, and try to keep your torso level as you carry a kettlebell on one side.\nThe weight of the kettlebell doesn’t have to be super heavy either, I don’t think. And to make the exercise more difficult, you can either add weight or carry the kettlebell bell-side-up (still holding the handle), which will require more coordination and activation to stabilize it.\nThe exercise doesn’t take long, either – the video suggests 3-4 sets of ~45-60 second carries per side.\nI should probably start incorporating this into my workout as auxiliary work – it shouldn’t be difficult to superset this into basically any workout I do."
-  },
-  {
-    "objectID": "notes/9-28-23/index.html",
-    "href": "notes/9-28-23/index.html",
-    "title": "9-28-23 Daily Note",
-    "section": "",
-    "text": "I read an opinion piece about AI in education today, and the author stressed that researchers need to consider the difference between “doing things ethically” and “doing ethical things.” I hadn’t thought much about the difference between these two things before, but it does seem striking now that he raised it.\nMy interpretation of the difference here is that “doing ethical things” requires carefully contemplating the end-state of your research/product/project/whatever, and the potential consequences of this end-state, before embarking on a project. That is, it requires some determination at the outset of whether the whole endeavor is ethical.\n“Doing things ethically,” on the other hand, doesn’t seem to require this. Rather, to “do things ethically,” researchers/developers/whoever just need to ensure that the process is ethical – that participants are treated fairly, proper disclosures are made, etc.\nFor example, when developing an AI application, a company could “do things ethically” by paying its employees fairly, abiding by all relevant laws and regulations when gathering training data (which isn’t always the case), treat any research participants beneficently, etc. But this doesn’t mean that the application the company is creating is, in itself, ethical. What if it were an education application that used poor pedagogical practices? What if it forced automation of decisions that should be left up to teachers? This may not be an ethical application, even if the process for getting to it was ethical.\nI really appreciated the point made here, and it’s something I want to think on more as I engage more in the AI world."
-  },
-  {
-    "objectID": "notes.html",
-    "href": "notes.html",
-    "title": "Daily Notes",
-    "section": "",
-    "text": "9-27-23 Daily Note\n\n\n\n\n\n\n\nFitness\n\n\n\n\nSuitcase carries for core stability\n\n\n\n\n\n\nSep 28, 2023\n\n\n\n\n\n\n  \n\n\n\n\n9-28-23 Daily Note\n\n\n\n\n\n\n\nEthics\n\n\nAI\n\n\n\n\ndoing things ethically vs doing ethical things\n\n\n\n\n\n\nSep 28, 2023\n\n\n\n\n\n\n  \n\n\n\n\n9-26-23 Daily Note\n\n\n\n\n\n\n\nGoogle Cloud\n\n\n\n\ncloudbuild.yaml and Artifact Registry\n\n\n\n\n\n\nSep 26, 2023\n\n\n\n\n\n\nNo matching items"
-  },
-  {
     "objectID": "posts/combining-pmap-and-docall/index.html",
     "href": "posts/combining-pmap-and-docall/index.html",
     "title": "Combining pmap and do.call",
