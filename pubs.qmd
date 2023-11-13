@@ -5,7 +5,7 @@ title: "Publications"
 This page contains a list of my academic and non-academic publications, as well as my conference presentations.
 
 
-#### Peer-Reviewed Publications
+#### Academic & Peer-Reviewed Publications
 
 Back when I was more actively involved in academia, I published some papers, mostly related to student motivation, how people write, or statistical methodology. Publishing peer-reviewed work has been less of a priority for me lately, but I still dabble here and there.
 
@@ -67,6 +67,7 @@ Back when I was more actively involved in academia, I published some papers, mos
 
 #### Conference Presentations & Invited Talks
 _Only conference presentations since 2018 included_
+ + __Ekholm, E.__ (November, 2023). [The Opportunities and Challenges of Using AI in the Classroom](https://docs.google.com/presentation/d/1F0VRkuDmlgj2Fuk4c5sSPEQDI0YIh8Ic3UPLDz31OM8/edit?usp=sharing). Session delivered as part of the Randolph-Macon College Education Department Fall 2023 Teacher Professional Development Series.
 
 + __Ekholme, E.__ (June, 2023). [Using AI to Generate Data-Driven Lesson Plans](https://docs.google.com/presentation/d/1MKi0Fjj39JH4y3P-z28v3KM7tkU9bPuNIVN-Rq-YliM/edit?usp=sharing). Session presented at the annual Metropolitan Educational Research Consortium (MERC) conference, Richmond, VA.
 
