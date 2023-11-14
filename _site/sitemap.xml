@@ -2,154 +2,158 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.ericekholm.com/about.html</loc>
-    <lastmod>2023-10-09T13:22:33.985Z</lastmod>
+    <lastmod>2023-11-14T01:00:32.557Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/blog.html</loc>
-    <lastmod>2023-10-09T13:22:43.775Z</lastmod>
+    <lastmod>2023-11-14T01:00:43.520Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/index.html</loc>
-    <lastmod>2023-10-09T13:22:44.257Z</lastmod>
+    <lastmod>2023-11-14T01:00:44.028Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/combining-pmap-and-docall/index.html</loc>
-    <lastmod>2023-10-09T13:22:46.134Z</lastmod>
+    <lastmod>2023-11-14T01:00:46.066Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/cor-generate-data/index.html</loc>
-    <lastmod>2023-10-09T13:22:47.258Z</lastmod>
+    <lastmod>2023-11-14T01:00:47.266Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/crossfit-games-2022/index.html</loc>
-    <lastmod>2023-10-09T13:22:49.099Z</lastmod>
+    <lastmod>2023-11-14T01:00:49.265Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/demo-quarto-site/index.html</loc>
-    <lastmod>2023-10-09T13:22:49.915Z</lastmod>
+    <lastmod>2023-11-14T01:00:50.061Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/dungeons-and-dragons-part-1/index.html</loc>
-    <lastmod>2023-10-09T13:22:51.375Z</lastmod>
+    <lastmod>2023-11-14T01:00:51.423Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/dungeons-and-dragons-part-2/index.html</loc>
-    <lastmod>2023-10-09T13:22:53.548Z</lastmod>
+    <lastmod>2023-11-14T01:00:53.799Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/dungeons-and-dragons-part-3/index.html</loc>
-    <lastmod>2023-10-09T13:22:55.325Z</lastmod>
+    <lastmod>2023-11-14T01:00:55.746Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/dungeons-and-dragons-part-4/index.html</loc>
-    <lastmod>2023-10-09T13:22:57.020Z</lastmod>
+    <lastmod>2023-11-14T01:00:57.551Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/fitting-a-multiple-regression-with-torch/index.html</loc>
-    <lastmod>2023-10-09T13:22:58.673Z</lastmod>
+    <lastmod>2023-11-14T01:00:59.176Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/function-writing-metacognition/index.html</loc>
-    <lastmod>2023-10-09T13:22:59.968Z</lastmod>
+    <lastmod>2023-11-14T01:01:00.486Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.ericekholm.com/posts/gcp-quarto-api/index.html</loc>
+    <lastmod>2023-11-14T01:01:00.996Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/improving-ggplots-with-text-color/index.html</loc>
-    <lastmod>2023-10-09T13:23:01.299Z</lastmod>
+    <lastmod>2023-11-14T01:01:02.382Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/its-a-me-linear-regression/index.html</loc>
-    <lastmod>2023-10-09T13:23:02.915Z</lastmod>
+    <lastmod>2023-11-14T01:01:03.921Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/kaduzs/index.html</loc>
-    <lastmod>2023-10-09T13:23:05.060Z</lastmod>
+    <lastmod>2023-11-14T01:01:06.060Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/mle-learning-julia/index.html</loc>
-    <lastmod>2023-10-09T13:23:07.011Z</lastmod>
+    <lastmod>2023-11-14T01:01:08.089Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/mle-logreg-julia/index.html</loc>
-    <lastmod>2023-10-09T13:23:08.447Z</lastmod>
+    <lastmod>2023-11-14T01:01:09.628Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/personalizing-the-distill-template/index.html</loc>
-    <lastmod>2023-10-09T13:23:09.629Z</lastmod>
+    <lastmod>2023-11-14T01:01:10.869Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/predicting-mobile-phone-subscription-growth/index.html</loc>
-    <lastmod>2023-10-09T13:23:11.018Z</lastmod>
+    <lastmod>2023-11-14T01:01:12.461Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/publishing-rmarkdown-to-google-sites/index.html</loc>
-    <lastmod>2023-10-09T13:23:11.749Z</lastmod>
+    <lastmod>2023-11-14T01:01:13.225Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/riddler-express-march-20-2020/index.html</loc>
-    <lastmod>2023-10-09T13:23:12.827Z</lastmod>
+    <lastmod>2023-11-14T01:01:14.436Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/robustly-create-parameterized-reports/index.html</loc>
-    <lastmod>2023-10-09T13:23:14.245Z</lastmod>
+    <lastmod>2023-11-14T01:01:16.087Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/rstudio-table-contest-submission/index.html</loc>
-    <lastmod>2023-10-09T13:23:15.792Z</lastmod>
+    <lastmod>2023-11-14T01:01:17.737Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/rva-pets/index.html</loc>
-    <lastmod>2023-10-09T13:23:17.190Z</lastmod>
+    <lastmod>2023-11-14T01:01:19.188Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/scooby-doo-eda/index.html</loc>
-    <lastmod>2023-10-09T13:23:18.803Z</lastmod>
+    <lastmod>2023-11-14T01:01:20.933Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/scrantonicity-part-1/index.html</loc>
-    <lastmod>2023-10-09T13:23:20.671Z</lastmod>
+    <lastmod>2023-11-14T01:01:23.024Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/scrantonicity-part-2/index.html</loc>
-    <lastmod>2023-10-09T13:23:22.048Z</lastmod>
+    <lastmod>2023-11-14T01:01:24.409Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/scrantonicity-part-3/index.html</loc>
-    <lastmod>2023-10-09T13:23:23.898Z</lastmod>
+    <lastmod>2023-11-14T01:01:26.229Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/simulating-triangles/index.html</loc>
-    <lastmod>2023-10-09T13:23:25.157Z</lastmod>
+    <lastmod>2023-11-14T01:01:27.418Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/stranger-strings/index.html</loc>
-    <lastmod>2023-10-09T13:23:27.892Z</lastmod>
+    <lastmod>2023-11-14T01:01:30.397Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/string-match-jl/index.html</loc>
-    <lastmod>2023-10-09T13:23:29.105Z</lastmod>
+    <lastmod>2023-11-14T01:01:31.615Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/this-code-is-bigtime/index.html</loc>
-    <lastmod>2023-10-09T13:23:30.052Z</lastmod>
+    <lastmod>2023-11-14T01:01:32.641Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/unconsciousness-in-the-xmen/index.html</loc>
-    <lastmod>2023-10-09T13:23:31.485Z</lastmod>
+    <lastmod>2023-11-14T01:01:34.081Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/virginia-datathon-recap/index.html</loc>
-    <lastmod>2023-10-09T13:23:32.085Z</lastmod>
+    <lastmod>2023-11-14T01:01:34.704Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/writing-window-functions/index.html</loc>
-    <lastmod>2023-10-09T13:23:33.535Z</lastmod>
+    <lastmod>2023-11-14T01:01:36.086Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/posts/your-moms-house-analysis/index.html</loc>
-    <lastmod>2023-10-09T13:23:35.434Z</lastmod>
+    <lastmod>2023-11-14T01:01:38.251Z</lastmod>
   </url>
   <url>
     <loc>https://www.ericekholm.com/pubs.html</loc>
-    <lastmod>2023-10-09T13:23:36.016Z</lastmod>
+    <lastmod>2023-11-14T01:01:38.877Z</lastmod>
   </url>
 </urlset>

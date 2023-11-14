@@ -1,0 +1,9 @@
+---
+title: "Deploying an API with R, Quarto, and Google Cloud"
+description: |
+  A step-by-step tutorial
+date: today
+categories: [R, GCP, Quarto, plumber]
+---
+
+I wrote a step-by-step tutorial on how to deploy an API (using R and the plumber package) that renders Quarto documents via Google Cloud. You can check out the README in [this repo](https://github.com/ekholme/gcp_quarto_api) for a full walkthrough.
