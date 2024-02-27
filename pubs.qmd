@@ -66,7 +66,9 @@ Back when I was more actively involved in academia, I published some papers, mos
 <br/>
 
 #### Conference Presentations & Invited Talks
-_Only conference presentations since 2018 included_
+_Only conference presentations & talks since 2018 included_
+
++ Panelist (February, 2024) "Empowering Leaders and Learners: Navigating the AI Landscape." [Greater Richmond Area Educational Technology (GRAETC)](http://www.graetc.org/) AI Symposium, Richmond, VA. 
 
  + __Ekholm, E.__ (November, 2023). [The Opportunities and Challenges of Using AI in the Classroom](https://docs.google.com/presentation/d/1F0VRkuDmlgj2Fuk4c5sSPEQDI0YIh8Ic3UPLDz31OM8/edit?usp=sharing). Session delivered as part of the Randolph-Macon College Education Department Fall 2023 Teacher Professional Development Series.
 
