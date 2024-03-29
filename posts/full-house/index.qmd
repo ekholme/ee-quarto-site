@@ -1,0 +1,131 @@
+---
+title: Probability of Drawing a Full House
+description: |
+  Calculating the probability of drawing a full house
+date: 2024-03-29
+format:
+  html:
+    code-fold: true
+    fig-height: 7
+    fig-width: 8
+execute: 
+  warning: false
+categories: [Julia, Probability]
+jupyter: julia-1.9
+---
+
+I recently saw someone mention that they received an interview question for a DS position in which they were asked to calculate the probability of drawing a full house when drawing 5 cards from a standard 52-card deck.
+
+So let's solve that in Julia.
+
+## Solving analytically
+
+The function we want is `binomial(n::Integer, k::Integer)`, which returns the [binomial coefficient](https://en.wikipedia.org/wiki/Binomial_coefficient) -- the number of ways to choose `k` out of `n` items.
+
+Let's look at some examples. First, if we try 4C1 (4 choose 1), we expect to just get 4 -- there are 4 different ways to choose 1 item from a group of 4 items. 
+
+```{julia}
+binomial(4, 1)
+```
+
+Now imagine we choose 2 different items from a group of 4. We expect to get 6 (assuming we don't care about order, i.e. that 1,2 is the same as 2,1):
+
+1. 1, 2
+2. 1, 3
+3. 1, 4
+4. 2, 3
+5. 2, 4
+6. 3, 4
+
+```{julia}
+binomial(4, 2)
+```
+
+So let's solve the actual problem now. A full house is 5 cards comprising 3-of-a-kind and a pair. There are 52 cards in a deck -- 4 suits comprising 13 unique values (2, 3, ..., Ace) each.
+
+The approach here is to calculate the number of ways to get a full house and divide that by the number of ways to draw 5 cards from a deck. We can start with the number of ways to draw 5 cards from a deck (the denominator) first, since it's the most straightforward:
+
+```{julia}
+denom = binomial(52, 5)
+```
+
+Then let's calculate the number of ways we can get three of a kind. There are 13 different card values and 4 different suits. We need to choose 1 value with 3 different suits:
+
+- `binomial(13, 1)` gives us the number of ways to choose 1 value from 13 options (which is just 13)
+- `binomial(4, 3)` gives us the number of ways to choose 3 different suits from 4 possible options
+
+And then since this is probability, we multiply everything together:
+
+```{julia}
+three_kind = binomial(13, 1) * binomial(4, 3)
+```
+
+Then we do the same thing for drawing a pair. There are now 12 different card values (we can't get a pair of the value that we already drew three-of-a-kind for), and we need to choose 1 value with 2 different suits:
+
+```{julia}
+two_kind = binomial(12, 1) * binomial(4, 2)
+```
+
+And from here, we can estimate the probability of a full house by multiplying and dividing:
+
+```{julia}
+(three_kind * two_kind) / denom
+```
+
+So there's a 0.144% chance of drawing a full house from a typical 52-card deck.
+
+## Solving with simulation
+
+We could also take a simulation-approach to solving this. First, let's create a deck of cards.
+
+```{julia}
+using Random
+using StatsBase
+
+Random.seed!(0408)
+
+deck = collect(repeat(1:13, 4))
+```
+
+Then we'll create a few functions to help us with the simulation:
+
+1. `make_hands()` will draw `n` 5-card hands from the deck;
+2. `is_full_house()` will check whether any given hand is a full house;
+3.  `count_full_house()` takes a vector of hands and counts the number of them that have a full house
+
+```{julia}
+function make_hands(deck::AbstractVector{<:Integer}, n::Int64)
+    v = Vector{Vector{Int64}}(undef, n)
+    for i in 1:n
+        v[i] = sample(deck, 5; replace=false)
+    end
+    return v
+end
+
+function is_full_house(hand::AbstractVector{<:Integer})
+    return extrema(values(countmap(hand))) == (2, 3)
+end
+
+function count_full_house(hands::Vector{Vector{Int64}})
+    s = 0
+    for i in eachindex(hands)
+        if is_full_house(hands[i])
+            s += 1
+        end
+    end
+    return s
+end
+
+```
+
+Then from here we just run our simulation.
+
+```{julia}
+n = 1_000_000
+
+hands = make_hands(deck, n);
+
+count_full_house(hands) / n
+```
+
+And we see that we get roughly the same answer as we did previously.

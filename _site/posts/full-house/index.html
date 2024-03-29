@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="dcterms.date" content="2024-03-29">
-<meta name="description" content="A step-by-step tutorial">
+<meta name="description" content="Calculating the probability of drawing a full house">
 
-<title>Eric Ekholm - Deploying an API with R, Quarto, and Google Cloud</title>
+<title>Eric Ekholm - Probability of Drawing a Full House</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -141,17 +175,15 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Deploying an API with R, Quarto, and Google Cloud</h1>
+      <h1 class="title">Probability of Drawing a Full House</h1>
                   <div>
         <div class="description">
-          <p>A step-by-step tutorial</p>
+          <p>Calculating the probability of drawing a full house</p>
         </div>
       </div>
                           <div class="quarto-categories">
-                <div class="quarto-category">R</div>
-                <div class="quarto-category">GCP</div>
-                <div class="quarto-category">Quarto</div>
-                <div class="quarto-category">plumber</div>
+                <div class="quarto-category">Julia</div>
+                <div class="quarto-category">Probability</div>
               </div>
                   </div>
   </div>
@@ -174,7 +206,14 @@ ul.task-list li input[type="checkbox"] {
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
-    
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of Contents</h2>
+   
+  <ul class="collapse">
+  <li><a href="#solving-analytically" id="toc-solving-analytically" class="nav-link active" data-scroll-target="#solving-analytically">Solving analytically</a></li>
+  <li><a href="#solving-with-simulation" id="toc-solving-with-simulation" class="nav-link" data-scroll-target="#solving-with-simulation">Solving with simulation</a></li>
+  </ul>
+</nav>
 </nav>
 <div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
@@ -186,20 +225,194 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p>I wrote a step-by-step tutorial on how to deploy an API (using R and the plumber package) that renders Quarto documents via Google Cloud. You can check out the README in <a href="https://github.com/ekholme/gcp_quarto_api">this repo</a> for a full walkthrough.</p>
+<p>I recently saw someone mention that they received an interview question for a DS position in which they were asked to calculate the probability of drawing a full house when drawing 5 cards from a standard 52-card deck.</p>
+<p>So let’s solve that in Julia.</p>
+<section id="solving-analytically" class="level2">
+<h2 class="anchored" data-anchor-id="solving-analytically">Solving analytically</h2>
+<p>The function we want is <code>binomial(n::Integer, k::Integer)</code>, which returns the <a href="https://en.wikipedia.org/wiki/Binomial_coefficient">binomial coefficient</a> – the number of ways to choose <code>k</code> out of <code>n</code> items.</p>
+<p>Let’s look at some examples. First, if we try 4C1 (4 choose 1), we expect to just get 4 – there are 4 different ways to choose 1 item from a group of 4 items.</p>
+<div class="cell" data-execution_count="1">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">binomial</span>(<span class="fl">4</span>, <span class="fl">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<pre><code>4</code></pre>
+</div>
+</div>
+<p>Now imagine we choose 2 different items from a group of 4. We expect to get 6 (assuming we don’t care about order, i.e.&nbsp;that 1,2 is the same as 2,1):</p>
+<ol type="1">
+<li>1, 2</li>
+<li>1, 3</li>
+<li>1, 4</li>
+<li>2, 3</li>
+<li>2, 4</li>
+<li>3, 4</li>
+</ol>
+<div class="cell" data-execution_count="2">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">binomial</span>(<span class="fl">4</span>, <span class="fl">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<pre><code>6</code></pre>
+</div>
+</div>
+<p>So let’s solve the actual problem now. A full house is 5 cards comprising 3-of-a-kind and a pair. There are 52 cards in a deck – 4 suits comprising 13 unique values (2, 3, …, Ace) each.</p>
+<p>The approach here is to calculate the number of ways to get a full house and divide that by the number of ways to draw 5 cards from a deck. We can start with the number of ways to draw 5 cards from a deck (the denominator) first, since it’s the most straightforward:</p>
+<div class="cell" data-execution_count="3">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>denom <span class="op">=</span> <span class="fu">binomial</span>(<span class="fl">52</span>, <span class="fl">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>2598960</code></pre>
+</div>
+</div>
+<p>Then let’s calculate the number of ways we can get three of a kind. There are 13 different card values and 4 different suits. We need to choose 1 value with 3 different suits:</p>
+<ul>
+<li><code>binomial(13, 1)</code> gives us the number of ways to choose 1 value from 13 options (which is just 13)</li>
+<li><code>binomial(4, 3)</code> gives us the number of ways to choose 3 different suits from 4 possible options</li>
+</ul>
+<p>And then since this is probability, we multiply everything together:</p>
+<div class="cell" data-execution_count="4">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>three_kind <span class="op">=</span> <span class="fu">binomial</span>(<span class="fl">13</span>, <span class="fl">1</span>) <span class="op">*</span> <span class="fu">binomial</span>(<span class="fl">4</span>, <span class="fl">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="5">
+<pre><code>52</code></pre>
+</div>
+</div>
+<p>Then we do the same thing for drawing a pair. There are now 12 different card values (we can’t get a pair of the value that we already drew three-of-a-kind for), and we need to choose 1 value with 2 different suits:</p>
+<div class="cell" data-execution_count="5">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>two_kind <span class="op">=</span> <span class="fu">binomial</span>(<span class="fl">12</span>, <span class="fl">1</span>) <span class="op">*</span> <span class="fu">binomial</span>(<span class="fl">4</span>, <span class="fl">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>72</code></pre>
+</div>
+</div>
+<p>And from here, we can estimate the probability of a full house by multiplying and dividing:</p>
+<div class="cell" data-execution_count="6">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>(three_kind <span class="op">*</span> two_kind) <span class="op">/</span> denom</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>0.0014405762304921968</code></pre>
+</div>
+</div>
+<p>So there’s a 0.144% chance of drawing a full house from a typical 52-card deck.</p>
+</section>
+<section id="solving-with-simulation" class="level2">
+<h2 class="anchored" data-anchor-id="solving-with-simulation">Solving with simulation</h2>
+<p>We could also take a simulation-approach to solving this. First, let’s create a deck of cards.</p>
+<div class="cell" data-execution_count="7">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">Random</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">using</span> <span class="bu">StatsBase</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="bu">Random</span>.<span class="fu">seed!</span>(<span class="fl">0408</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>deck <span class="op">=</span> <span class="fu">collect</span>(<span class="fu">repeat</span>(<span class="fl">1</span><span class="op">:</span><span class="fl">13</span>, <span class="fl">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>52-element Vector{Int64}:
+  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+  ⋮
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13</code></pre>
+</div>
+</div>
+<p>Then we’ll create a few functions to help us with the simulation:</p>
+<ol type="1">
+<li><code>make_hands()</code> will draw <code>n</code> 5-card hands from the deck;</li>
+<li><code>is_full_house()</code> will check whether any given hand is a full house;</li>
+<li><code>count_full_house()</code> takes a vector of hands and counts the number of them that have a full house</li>
+</ol>
+<div class="cell" data-execution_count="8">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">make_hands</span>(deck<span class="op">::</span><span class="dt">AbstractVector{&lt;:Integer}</span>, n<span class="op">::</span><span class="dt">Int64</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    v <span class="op">=</span> <span class="fu">Vector</span><span class="dt">{Vector{Int64}}</span>(<span class="cn">undef</span>, n)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span>n</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>        v[i] <span class="op">=</span> <span class="fu">sample</span>(deck, <span class="fl">5</span>; replace<span class="op">=</span><span class="cn">false</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> v</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">is_full_house</span>(hand<span class="op">::</span><span class="dt">AbstractVector{&lt;:Integer}</span>)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fu">extrema</span>(<span class="fu">values</span>(<span class="fu">countmap</span>(hand))) <span class="op">==</span> (<span class="fl">2</span>, <span class="fl">3</span>)</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">count_full_house</span>(hands<span class="op">::</span><span class="dt">Vector{Vector{Int64}}</span>)</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> <span class="fl">0</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="fu">eachindex</span>(hands)</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="fu">is_full_house</span>(hands[i])</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>            s <span class="op">+=</span> <span class="fl">1</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">end</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">end</span></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> s</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a><span class="kw">end</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<pre><code>count_full_house (generic function with 1 method)</code></pre>
+</div>
+</div>
+<p>Then from here we just run our simulation.</p>
+<div class="cell" data-execution_count="9">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode julia code-with-copy"><code class="sourceCode julia"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="fl">1_000_000</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>hands <span class="op">=</span> <span class="fu">make_hands</span>(deck, n);</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">count_full_house</span>(hands) <span class="op">/</span> n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>0.001446</code></pre>
+</div>
+</div>
+<p>And we see that we get roughly the same answer as we did previously.</p>
 
 
+</section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div id="quarto-reuse" class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">https://creativecommons.org/licenses/by-nc/4.0/</a></div></div></section><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">Citation</h2><div><div class="quarto-appendix-secondary-label">BibTeX citation:</div><pre class="sourceCode code-with-copy quarto-appendix-bibtex"><code class="sourceCode bibtex">@online{ekholm2024,
   author = {Ekholm, Eric},
-  title = {Deploying an {API} with {R,} {Quarto,} and {Google} {Cloud}},
+  title = {Probability of {Drawing} a {Full} {House}},
   date = {2024-03-29},
-  url = {https://www.ericekholm.com/posts/gcp-quarto-api},
+  url = {https://www.ericekholm.com/posts/full-house},
   langid = {en}
 }
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre><div class="quarto-appendix-secondary-label">For attribution, please cite this work as:</div><div id="ref-ekholm2024" class="csl-entry quarto-appendix-citeas" role="listitem">
-Ekholm, Eric. 2024. <span>“Deploying an API with R, Quarto, and Google
-Cloud.”</span> March 29, 2024. <a href="https://www.ericekholm.com/posts/gcp-quarto-api">https://www.ericekholm.com/posts/gcp-quarto-api</a>.
+Ekholm, Eric. 2024. <span>“Probability of Drawing a Full House.”</span>
+March 29, 2024. <a href="https://www.ericekholm.com/posts/full-house">https://www.ericekholm.com/posts/full-house</a>.
 </div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {

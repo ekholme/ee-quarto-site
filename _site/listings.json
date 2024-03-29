@@ -2,8 +2,9 @@
   {
     "listing": "/blog.html",
     "items": [
-      "/posts/cf-open-24/index.html",
+      "/posts/full-house/index.html",
       "/posts/gcp-quarto-api/index.html",
+      "/posts/cf-open-24/index.html",
       "/posts/kaduzs/index.html",
       "/posts/string-match-jl/index.html",
       "/posts/stranger-strings/index.html",
