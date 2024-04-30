@@ -32,6 +32,8 @@ website:
       - icon: mastodon
         aria-label: mastodon
         href: https://fosstodon.org/@ekholme
+      - icon: rss
+        href: blog.xml
       - icon: linkedin
         aria-label: linkedin
         href: https://www.linkedin.com/in/eric-ekholm-8a481022/
