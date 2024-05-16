@@ -1,0 +1,9 @@
+---
+title: "Introducing Bluey Colors"
+description: |
+  An R package that provides bluey-inspired color palettes
+date: 2024-05-16
+categories: [R, Bluey, Package Development]
+---
+
+I just released an R package that provides Bluey-inspired color palettes to use in ggplot. Check it out [here](https://ekholme.github.io/blueycolors/)

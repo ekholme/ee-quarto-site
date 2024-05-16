@@ -2,8 +2,8 @@
 title: "Blog"
 listing:
   contents: posts
+  type: table
   sort: "date desc"
-  type: default
   categories: true
   sort-ui: false
   filter-ui: false
