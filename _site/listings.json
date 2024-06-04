@@ -2,8 +2,8 @@
   {
     "listing": "/blog.html",
     "items": [
-      "/posts/bluey-colors/index.html",
       "/posts/gcp-quarto-api/index.html",
+      "/posts/bluey-colors/index.html",
       "/posts/full-house/index.html",
       "/posts/cf-open-24/index.html",
       "/posts/kaduzs/index.html",

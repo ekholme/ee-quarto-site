@@ -47,7 +47,7 @@ I am a data scientist with over 5 years of experience using data to improve educ
 * Built dashboards displaying student assessment performance accessed by hundreds of users, using R, Shiny, Docker, and Google Cloud. 
 * Evaluated the return on investment of over $5 million in new and existing programs using quantitative and qualitative methods.
 * Developed and maintained several internal R packages used by the entire Research and Evaluation team.
-* Developed and maintained ETL pipelines for integrating data from vendors into internal databases, using R, Go, and SQLServer.
+* Developed and maintained ETL pipelines for integrating data from vendors into internal databases, using R, Go, and SQL Server.
 * Fit an early warning model predicting student chronic absenteeism using R and the tidymodels framework. Educated division leaders on appropriate use of this model.
 * Created and maintained an internal website containing all reports written by the Research and Evaluation team, using Quarto, Python, and Google Cloud.
 * Led the migration of analytics tools from locally-hosted tools to Google Cloud tools, improving team efficiency.
@@ -119,10 +119,10 @@ I am a data scientist with over 5 years of experience using data to improve educ
   \hrule
 \end{large}
 \vspace{7pt}
-**Languages:** R, SQL, Go, Julia, Python, Bash
+**Languages:** R, Python, SQL, Go, Julia, Bash
 \vspace{-0.2cm}
 
-**Technologies:** Git, Quarto, Postgres, SQLServer, NoSQL, Google Cloud Platform, Docker
+**Technologies:** Git, Quarto, Relational databases, NoSQL databases, Google Cloud Platform, Docker
 \vspace{-0.2cm}
 
 **Other:** Machine learning, Causal inference, Statistics, Data visualization, Research design, Data structures and algorithms
@@ -134,10 +134,9 @@ I am a data scientist with over 5 years of experience using data to improve educ
   \hrule
 \end{large}
 \vspace{7pt}
-**Flex Creek:** Workout tracking and recommendation application in Go. Concepts include REST API design, NoSQL database (Firestore), and JWT authentication. See the [source on Github](https://github.com/ekholme/flex_creek). 
-\vspace{-0.2cm}
-
-**Saul:** AI-powered lesson plan generator written in Go. Concepts include integration with the OpenAI API, REST API design, and front-end templating. See the [source on Github](https://github.com/ekholme/saul) 
-\vspace{-0.2cm}
-
 **Leakybrain:** A [technical notes site](https://leakybrain.netlify.app/) containing notes on statistics and data science workflows, among other things.
+\vspace{-0.2cm}
+
+**Blueycolors:** An R package that provides [Bluey](https://www.bluey.tv/)-inspired color palettes and ggplot2 scales. See the [source on Github](https://github.com/ekholme/blueycolors)
+
+
