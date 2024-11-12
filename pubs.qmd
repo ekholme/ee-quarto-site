@@ -66,7 +66,10 @@ Back when I was more actively involved in academia, I published some papers, mos
 <br/>
 
 #### Conference Presentations & Invited Talks
-_Only conference presentations & talks since 2018 included_
+
++ __Ekholme, E.__, Keyes, O., Senechal, J., Parthemos, C., Strawderman, M., & Caratachea, M. (June, 2024). An interactive discussion of AI in K12 education. Session presented at the annual Metropolitan Educational Research Consortium (MERC) conference, Richmond, VA.  
+
++ __Ekholm, E.__, Fox, P., & Darby, J (June, 2024). Lessons learned from return-on-investment evaluations. Session presented at the annual Metropolitan Educational Research Consortium (MERC) conference, Richmond, VA. 
 
 + Panelist (February, 2024) "Empowering Leaders and Learners: Navigating the AI Landscape." [Greater Richmond Area Educational Technology (GRAETC)](http://www.graetc.org/) AI Symposium, Richmond, VA. 
 
