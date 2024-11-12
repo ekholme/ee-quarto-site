@@ -2,7 +2,7 @@
 title: "About Me"
 ---
 
-I am an educator, researcher, data scientist, and writer. I am currently an Education Data Specialist for Chesterfield County Public Schools, where I use data to help guide decisions and improve students' educational experiences. In my free time, I enjoy reading, writing, coding, going to the gym, and spending time with friends & family (including my pup, Nala).
+I am a data scientist, researcher, educator, and writer. I am currently Data Scientist for Chesterfield County Public Schools, where I use data to help guide decisions and improve students' educational experiences. In my free time, I enjoy reading, writing, coding, working out, and spending time with friends & family (including my pup, Nala).
 
 ![](img/fam.jpg){width=49%} ![](img/nala.jpg){width=49%} 
 
@@ -11,15 +11,14 @@ I am an educator, researcher, data scientist, and writer. I am currently an Educ
 
 I earned my PhD in educational psychology from the [VCU School of Education](https://soe.vcu.edu/) in July 2019, where I worked in the [Motivation in Context Lab](https://rampages.us/motivationincontext/) and in the [Discourse and Learning Lab](https://disclearnlab.squarespace.com/) to study students' motivation, behaviors, and achievement. In my [dissertation](https://scholarscompass.vcu.edu/etd/5977/), I studied how writers' daily emotional states (think: anxiety, enjoyment, boredom) influenced their productivity as well as the day-to-day inertia of these emotional states.
 
-During grad school, I discovered a love for working with data -- exploring, visualizing, modeling, and communicating. I mostly work (and blog) in `R`, but I'm also proficient in `Julia`, `Go`, and `SQL` as well. Plus I'm always trying to learn new technologies. Well, as much as I can with a toddler and an infant in the house.
+During grad school, I discovered a love for working with data and coding. I mostly work  in `R`, but I'm also proficient in `SQL`, `Python`, `Julia`, and `Go` as well. Plus I'm always trying to learn new technologies.
 
 ## Projects and Publications
 
 I've published some stuff -- both academic and not -- which you can find on my [publications page](pubs.qmd).
 
-
 ## Consulting and Contracted Work
 
-Time permitting, I occasionally do some consulting and contract work. Although I specialize in education research and data analysis, I'm generally proficient with in statistical modeling, data visualization, dashboard design, and API development, among other things. If you're interested in working with me, [send me an email](mailto:eric.ekholm@gmail.com).
+Time permitting, I occasionally do some consulting and contract work. Although I specialize in education research, I'm generally proficient in statistical modeling, data visualization, dashboard design, and API development, among other things. If you're interested in working with me, [send me an email](mailto:eric.ekholm@gmail.com).
 
 
