@@ -5,4 +5,4 @@ about:
   template: jolla
 ---
 
-I am an educator, researcher, data scientist, and writer. I am currently an Education Data Specialist for Chesterfield County Public Schools, where I use data to help guide decisions and improve students' educational experiences.
+I am an educator, researcher, data scientist, and writer. I am currently a Data Scientist for Chesterfield County Public Schools, where I use data to help guide decisions and improve students' educational experiences.
