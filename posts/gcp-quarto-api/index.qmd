@@ -2,7 +2,7 @@
 title: "Deploying an API with R, Quarto, and Google Cloud"
 description: |
   A step-by-step tutorial
-date: today
+date: 2024-11-12
 categories: [R, GCP, Quarto, plumber]
 ---
 

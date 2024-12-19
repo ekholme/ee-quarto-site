@@ -10,7 +10,7 @@
 <atom:link href="https://www.ericekholm.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description></description>
 <generator>quarto-1.3.361</generator>
-<lastBuildDate>Tue, 12 Nov 2024 05:00:00 GMT</lastBuildDate>
+<lastBuildDate>Thu, 19 Dec 2024 05:00:00 GMT</lastBuildDate>
 <item>
   <title>Deploying an API with R, Quarto, and Google Cloud</title>
   <dc:creator>Eric Ekholm</dc:creator>
@@ -40,7 +40,7 @@ Cloud.”</span> November 12, 2024. <a href="https://www.ericekholm.com/posts/gc
   <category>Quarto</category>
   <category>plumber</category>
   <guid>https://www.ericekholm.com/posts/gcp-quarto-api/index.html</guid>
-  <pubDate>Tue, 12 Nov 2024 05:00:00 GMT</pubDate>
+  <pubDate>Thu, 19 Dec 2024 05:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Introducing Bluey Colors</title>

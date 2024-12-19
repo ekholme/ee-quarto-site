@@ -16,8 +16,8 @@ website:
       - pubs.qmd
       - text: "Resume"
         href: resume.pdf
-      - text: "Leakybrain"
-        href: https://leakybrain.ericekholm.com
+      - text: "Brain"
+        href: https://ekholme.github.io/brain
 
     right:
       - icon: github
@@ -29,9 +29,9 @@ website:
       - icon: envelope
         aria-label: email
         href: "mailto:eric.ekholm@gmail.com"
-      - icon: mastodon
-        aria-label: mastodon
-        href: https://fosstodon.org/@ekholme
+      - icon: bluesky
+        aria-label: bluesky
+        href: https://bsky.app/profile/ekholme.bsky.social
       - icon: rss
         href: blog.xml
       - icon: linkedin
