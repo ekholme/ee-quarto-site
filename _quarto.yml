@@ -18,6 +18,8 @@ website:
         href: resume.pdf
       - text: "Brain"
         href: https://ekholme.github.io/brain
+      - text: "Edudata"
+        href: https://edudata.blog
 
     right:
       - icon: github
@@ -29,8 +31,7 @@ website:
       - icon: envelope
         aria-label: email
         href: "mailto:eric.ekholm@gmail.com"
-      - icon: bluesky
-        aria-label: bluesky
+      - text: "{{< iconify simple-icons bluesky >}}"
         href: https://bsky.app/profile/ekholme.bsky.social
       - icon: rss
         href: blog.xml
@@ -43,5 +44,6 @@ format:
     theme: litera
     css: styles.css
 
-
+execute:
+  freeze: auto
 

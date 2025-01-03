@@ -11,11 +11,13 @@ I am a data scientist, researcher, educator, and writer. I am currently a Data S
 
 I earned my PhD in educational psychology from the [VCU School of Education](https://soe.vcu.edu/) in July 2019, where I worked in the [Motivation in Context Lab](https://rampages.us/motivationincontext/) and in the [Discourse and Learning Lab](https://disclearnlab.squarespace.com/) to study students' motivation, behaviors, and achievement. In my [dissertation](https://scholarscompass.vcu.edu/etd/5977/), I studied how writers' daily emotional states (think: anxiety, enjoyment, boredom) influenced their productivity as well as the day-to-day inertia of these emotional states.
 
-During grad school, I discovered a love for working with data and coding. I mostly work  in `R`, but I'm also proficient in `SQL`, `Python`, `Julia`, and `Go` as well. Plus I'm always trying to learn new technologies.
+## Writing
 
-## Projects and Publications
+I write a newsletter called [Edudata](https://edudata.blog) about the intersection of education and data.
 
-I've published some stuff -- both academic and not -- which you can find on my [publications page](pubs.qmd).
+I take notes about coding, stats, fitness, and anything else interesting to me at [Brain](https://ekholme.github.io/brain)
+
+You can check out my other publications and talks on my [publications page](pubs.qmd).
 
 ## Consulting and Contracted Work
 
