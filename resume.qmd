@@ -122,10 +122,10 @@ I am a data scientist with over 5 years of experience using data to improve educ
 **Languages:** R, Python, SQL, Go, Julia, Bash
 \vspace{-0.2cm}
 
-**Technologies:** Git, Quarto, Relational databases, NoSQL databases, Google Cloud Platform, Docker
+**Technologies:** Git, Quarto, Relational databases, NoSQL databases, Google Cloud Platform, Docker, GCP Vertex AI
 \vspace{-0.2cm}
 
-**Other:** Machine learning, Causal inference, Statistics, Data visualization, Research design, Data structures and algorithms
+**Other:** Machine learning, Causal inference, Statistics, Data visualization, Research design, AI, Web development
 
 <!-- Projects -->
 \begin{large}
@@ -134,7 +134,7 @@ I am a data scientist with over 5 years of experience using data to improve educ
   \hrule
 \end{large}
 \vspace{7pt}
-**Leakybrain:** A [technical notes site](https://leakybrain.netlify.app/) containing notes on statistics and data science workflows, among other things.
+**Brain:** A [public notes site](https://ekholme.github.io/brain/) containing notes on statistics, data science, coding, and more.
 \vspace{-0.2cm}
 
 **Blueycolors:** An R package that provides [Bluey](https://www.bluey.tv/)-inspired color palettes and ggplot2 scales. See the [source on Github](https://github.com/ekholme/blueycolors)

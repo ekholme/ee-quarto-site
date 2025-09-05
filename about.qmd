@@ -2,20 +2,20 @@
 title: "About Me"
 ---
 
-I am a data scientist, researcher, educator, and writer. I am currently a Data Scientist for Chesterfield County Public Schools, where I use data to help guide decisions and improve students' educational experiences. In my free time, I enjoy reading, writing, coding, working out, and spending time with friends & family (including my pup, Nala).
+I am a data scientist, researcher, educator, and writer. I am currently a Data Scientist for Chesterfield County Public Schools, where I use data to help guide decisions and improve students' educational experiences. In my free time, I enjoy reading, writing, coding, working out, baking, and spending time with friends & family (including my pup, Nala).
 
-![](img/fam.jpg){width=49%} ![](img/nala.jpg){width=49%} 
+![](img/new_fam.jpeg){width=49%} ![](img/nala.jpg){width=49%} 
 
 
 <br/>
 
-I earned my PhD in educational psychology from the [VCU School of Education](https://soe.vcu.edu/) in July 2019, where I worked in the [Motivation in Context Lab](https://rampages.us/motivationincontext/) and in the [Discourse and Learning Lab](https://disclearnlab.squarespace.com/) to study students' motivation, behaviors, and achievement. In my [dissertation](https://scholarscompass.vcu.edu/etd/5977/), I studied how writers' daily emotional states (think: anxiety, enjoyment, boredom) influenced their productivity as well as the day-to-day inertia of these emotional states.
+I earned my PhD in educational psychology from the [VCU School of Education](https://soe.vcu.edu/) in July 2019, where I worked in the Motivation in Context Lab and in the [Discourse and Learning Lab](https://disclearnlab.squarespace.com/) to study students' motivation, behaviors, and achievement. In my [dissertation](https://scholarscompass.vcu.edu/etd/5977/), I studied how writers' daily emotional states (think: anxiety, enjoyment, boredom) influenced their productivity as well as the day-to-day inertia of these emotional states.
 
 ## Writing
 
-I write a newsletter called [Edudata](https://edudata.blog) about the intersection of education and data.
+I write a newsletter called [Edudata](https://edudata.blog) about stuff residing at the intersection of education and data.
 
-I take notes about coding, stats, fitness, and anything else interesting to me at [Brain](https://ekholme.github.io/brain)
+I take notes about coding, stats, fitness, and anything else interesting to me at [Brain](https://ekholme.github.io/brain), my public notes site.
 
 You can check out my other publications and talks on my [publications page](pubs.qmd).
 
